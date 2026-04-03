@@ -4,13 +4,26 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 
+import {MaterialModule } from './material-modules';
+import { LeftSideMenu } from './left-side-menu/left-side-menu';
+import { RightSideMenu } from './right-side-menu/right-side-menu';
+import { RecipeCard } from './recipe-card/recipe-card';
+import { RecipeScroll } from './recipe-scroll/recipe-scroll';
+import { RecipeView } from './recipe-view/recipe-view'
+
 @NgModule({
   declarations: [
-    App
+    App,
+    LeftSideMenu,
+    RightSideMenu,
+    RecipeCard,
+    RecipeScroll,
+    RecipeView
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MaterialModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
