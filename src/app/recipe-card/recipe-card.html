@@ -1,1 +1,35 @@
 <p>recipe-card works!</p>
+
+<div class="wrapper">
+  <mat-card class="card">
+
+    <mat-card-header class="card-header">
+      <div class="header-content">
+
+        <p class="title">Cuisine</p>
+
+        <div class="divider"></div>
+
+        <div class="tags-container" (mousedown)="startDrag($event)" (mousemove)="onDrag($event)" (mouseup)="endDrag()" (mouseleave)="endDrag()">
+            <div class="tag" *ngFor="let _ of [].constructor(5)" (click)="onTagClick($event)">
+                tag
+            </div>
+        </div>
+
+        <div class="profilePicture">
+            <img src="https://images.unsplash.com/vector-1742875355318-00d715aec3e8?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDM2fHx8ZW58MHx8fHx8" alt="" height="30vh" width="30vh">
+        </div>
+
+      </div>
+    </mat-card-header>
+
+    <mat-card-content class="card-content">
+      <img 
+        src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg" 
+        alt=""
+        class="image"
+      >
+    </mat-card-content>
+
+  </mat-card>
+</div>

@@ -9,7 +9,11 @@ import { LeftSideMenu } from './left-side-menu/left-side-menu';
 import { RightSideMenu } from './right-side-menu/right-side-menu';
 import { RecipeCard } from './recipe-card/recipe-card';
 import { RecipeScroll } from './recipe-scroll/recipe-scroll';
-import { RecipeView } from './recipe-view/recipe-view'
+import { RecipeView } from './recipe-view/recipe-view';
+import { ProfileView } from './profile-view/profile-view';
+import { SavedView } from './saved-view/saved-view';
+import { FullView } from './full-view/full-view';
+import { LoginView } from './login-view/login-view'
 
 @NgModule({
   declarations: [
@@ -18,7 +22,11 @@ import { RecipeView } from './recipe-view/recipe-view'
     RightSideMenu,
     RecipeCard,
     RecipeScroll,
-    RecipeView
+    RecipeView,
+    ProfileView,
+    SavedView,
+    FullView,
+    LoginView
   ],
   imports: [
     BrowserModule,
