@@ -6,29 +6,59 @@
     <mat-card-header class="card-header">
       <div class="header-content">
 
-        <p class="title">Cuisine</p>
+        <p class="tag" (click)="onTagClick($event)">
+            {{recipeData.cuisine}}
+        </p>
 
         <div class="divider"></div>
 
         <div class="tags-container" (mousedown)="startDrag($event)" (mousemove)="onDrag($event)" (mouseup)="endDrag()" (mouseleave)="endDrag()">
-            <div class="tag" *ngFor="let _ of [].constructor(5)" (click)="onTagClick($event)">
-                tag
+            <div class="tag" *ngFor="let tag of recipeData.tags" (click)="onTagClick($event)">
+                {{tag.name}}
             </div>
         </div>
 
         <div class="profilePicture">
-            <img src="https://images.unsplash.com/vector-1742875355318-00d715aec3e8?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDM2fHx8ZW58MHx8fHx8" alt="" height="30vh" width="30vh">
+            <img src="{{recipeData.authorProfilePictureURL}}" alt="" height="30vh" width="30vh">
         </div>
 
       </div>
     </mat-card-header>
 
-    <mat-card-content class="card-content">
-      <img 
-        src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg" 
-        alt=""
-        class="image"
-      >
+    <mat-card-content class="card-body">
+        <div class="image-holder">
+            <img 
+                src="{{recipeData.imageURL}}" 
+                alt=""
+                class="image"
+            >
+        </div>
+      <div class="body-content">
+        <div class="title-rating">
+            <p>{{recipeData.title}}</p>
+            <div class="divider"></div>
+            <div class="rating">
+                <div *ngFor="let star of stars">
+                    @if (star) {
+                        <mat-icon class="icon">star</mat-icon>
+                    }@else {
+                        <mat-icon class="icon">star_border</mat-icon>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="description-preptime">
+            <p>{{recipeData.description}}</p>
+            <div class="preptime">
+                <p>Preparacion: {{recipeData.prepTime}} min</p>
+                <div class="divider"></div>
+                <p>Cocinado: {{recipeData.cookTime}} min</p>
+                <div class="divider"></div>
+                <p>Total: {{recipeData.totalTime}} min</p>
+            </div>
+        </div>
+      </div>
     </mat-card-content>
 
   </mat-card>

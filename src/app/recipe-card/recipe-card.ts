@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, input, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { RecipeData } from '../../model/recipe/recipe-data';
 
 @Component({
   selector: 'app-recipe-card',
@@ -10,38 +11,59 @@ import { Router } from '@angular/router';
 export class RecipeCard {
   constructor(private router: Router) {}
 
-  isDragging = false;
-  startX = 0;
-  scrollLeft = 0;
+  @Input() recipeData!: RecipeData;
+
+  ngOnInit(){
+    for(let i = 0; i<this.recipeData.stars; i++){
+      this.stars[i] = true;
+    }
+    for(let i = 0; i<4-this.recipeData.stars; i++){
+      this.stars[4-i] = false;
+    }
+  }
+
+  stars : Boolean[] = [];
+
+  private isDragging = false;
+  private startX = 0;
+  private scrollLeft = 0;
+  private moved = false;
 
   startDrag(event: MouseEvent) {
-    const container = event.currentTarget as HTMLElement;
-    this.isDragging = false;
-    this.startX = event.pageX - container.offsetLeft;
+    this.isDragging = true;
+    this.moved = false;
+    this.startX = event.pageX;
+    this.scrollLeft = (event.currentTarget as HTMLElement).scrollLeft;
   }
 
   onDrag(event: MouseEvent) {
+    if (!this.isDragging) return;
+
     const container = event.currentTarget as HTMLElement;
+    const x = event.pageX;
+    const walk = x - this.startX;
 
-    const x = event.pageX - container.offsetLeft;
-    const walk = Math.abs(x - this.startX);
-
-    if (walk > 5) { // umbral para considerar drag
-      this.isDragging = true;
-      container.scrollLeft -= (x - this.startX);
+    if (Math.abs(walk) > 5) {
+      this.moved = true;
     }
+
+    container.scrollLeft = this.scrollLeft - walk;
   }
 
   endDrag() {
-      setTimeout(() => {
-        this.isDragging = false;
-      });
-    }
+    this.isDragging = false;
+  }
 
   onTagClick(event: MouseEvent) {
-    if (this.isDragging) return;
+    if (this.moved) {
+      // Si hubo scroll, bloqueamos el click
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
 
-
+    // Aquí sí puedes navegar
+    console.log('Abrir enlace');
     this.router.navigate(['/tag']);
   }
 }
