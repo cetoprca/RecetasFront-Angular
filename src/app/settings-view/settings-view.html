@@ -1,0 +1,28 @@
+<div class="settings-container">
+  <div class="settings-card" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
+    <h2 class="settings-title" [style.borderColor]="currentTheme.divider">Configuración</h2>
+
+    <div class="settings-section">
+      <h3 class="section-title">Tema</h3>
+      <div class="theme-options">
+        @for (theme of themes; track theme.value) {
+          <label class="theme-option" [class.selected]="selectedTheme === theme.value">
+            <input 
+              type="radio" 
+              name="theme" 
+              [value]="theme.value" 
+              [(ngModel)]="selectedTheme"
+              (change)="applyTheme()">
+            <div class="theme-preview" [style.backgroundColor]="theme.background" [style.color]="theme.text">
+              <span>Aa</span>
+            </div>
+            <span class="theme-label">{{ theme.name }}</span>
+          </label>
+        }
+      </div>
+      <button class="reset-button" (click)="resetTheme()" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+        Restablecer tema
+      </button>
+    </div>
+  </div>
+</div>

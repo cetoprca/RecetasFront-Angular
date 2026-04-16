@@ -1,65 +1,68 @@
-<p>recipe-card works!</p>
+<div class="recipe-card" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text" [style.border]="'1px solid ' + currentTheme.divider">
 
-<div class="wrapper">
-  <mat-card class="card">
+  <div class="card-header" [style.borderBottom]="'1px solid ' + currentTheme.divider">
+    <div class="author-row">
+      @if (recipeData.authorProfilePictureURL && recipeData.authorProfilePictureURL !== '') {
+        <img class="author-avatar" [src]="recipeData.authorProfilePictureURL" alt="">
+      } @else {
+        <div class="author-avatar-placeholder" [style.backgroundColor]="currentTheme.primary"></div>
+      }
+      <span class="author-name">{{recipeData.cuisine}}</span>
+    </div>
 
-    <mat-card-header class="card-header">
-      <div class="header-content">
-
-        <p class="tag" (click)="onTagClick($event)">
-            {{recipeData.cuisine}}
-        </p>
-
-        <div class="divider"></div>
-
-        <div class="tags-container" (mousedown)="startDrag($event)" (mousemove)="onDrag($event)" (mouseup)="endDrag()" (mouseleave)="endDrag()">
-            <div class="tag" *ngFor="let tag of recipeData.tags" (click)="onTagClick($event)">
-                {{tag.name}}
-            </div>
-        </div>
-
-        <div class="profilePicture">
-            <img src="{{recipeData.authorProfilePictureURL}}" alt="" height="30vh" width="30vh">
-        </div>
-
+    <div class="tags-row">
+      <span class="cuisine-tag" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+        {{recipeData.cuisine}}
+      </span>
+      <span class="tag-divider" [style.backgroundColor]="currentTheme.divider"></span>
+      <div class="scrollable-tags" [class.dragging]="isTagDragging" (mousedown)="startDrag($event)" (mousemove)="onDrag($event)" (mouseup)="endDrag()" (mouseleave)="endDrag()">
+        <span class="tag" *ngFor="let tag of recipeData.tags" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.tagBg" [style.color]="currentTheme.text">
+          {{tag.name}}
+        </span>
       </div>
-    </mat-card-header>
+    </div>
+  </div>
 
-    <mat-card-content class="card-body">
-        <div class="image-holder">
-            <img 
-                src="{{recipeData.imageURL}}" 
-                alt=""
-                class="image"
-            >
-        </div>
-      <div class="body-content">
-        <div class="title-rating">
-            <p>{{recipeData.title}}</p>
-            <div class="divider"></div>
-            <div class="rating">
-                <div *ngFor="let star of stars">
-                    @if (star) {
-                        <mat-icon class="icon">star</mat-icon>
-                    }@else {
-                        <mat-icon class="icon">star_border</mat-icon>
-                    }
-                </div>
+  <div class="card-body">
+    @if (recipeData.imageURL && recipeData.imageURL !== '') {
+      <div class="image-container">
+        <img class="recipe-image" [src]="recipeData.imageURL" alt="" (error)="onImageError($event)">
+      </div>
+    }
+
+    <div class="content-section">
+      <h2 class="recipe-title">{{recipeData.title}}</h2>
+      <p class="recipe-description">{{recipeData.description}}</p>
+
+      <div class="meta-row">
+        <div class="rating">
+          <div class="star-container" *ngFor="let star of stars">
+            <div class="star-background" [style.backgroundColor]="currentTheme.starBg">
+              <mat-icon class="star-icon" [style.color]="star ? currentTheme.starActive : currentTheme.starInactive">
+                {{star ? 'star' : 'star_border'}}
+              </mat-icon>
             </div>
+          </div>
         </div>
 
-        <div class="description-preptime">
-            <p>{{recipeData.description}}</p>
-            <div class="preptime">
-                <p>Preparacion: {{recipeData.prepTime}} min</p>
-                <div class="divider"></div>
-                <p>Cocinado: {{recipeData.cookTime}} min</p>
-                <div class="divider"></div>
-                <p>Total: {{recipeData.totalTime}} min</p>
-            </div>
+        <div class="times">
+          <span class="time-item">
+            <mat-icon class="time-icon">schedule</mat-icon>
+            Prep: {{recipeData.prepTime}}m
+          </span>
+          <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
+          <span class="time-item">
+            <mat-icon class="time-icon">local_fire_department</mat-icon>
+            Coc: {{recipeData.cookTime}}m
+          </span>
+          <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
+          <span class="time-item total">
+            <mat-icon class="time-icon">timer</mat-icon>
+            {{recipeData.totalTime}}m
+          </span>
         </div>
       </div>
-    </mat-card-content>
+    </div>
+  </div>
 
-  </mat-card>
 </div>

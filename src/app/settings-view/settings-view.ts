@@ -1,14 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ThemeService, Theme } from '../services/theme.service';
 
 @Component({
-  selector: 'app-left-side-menu',
+  selector: 'app-settings-view',
   standalone: false,
-  templateUrl: './left-side-menu.html',
-  styleUrl: './left-side-menu.css',
+  templateUrl: './settings-view.html',
+  styleUrl: './settings-view.css',
 })
-export class LeftSideMenu implements OnInit, OnDestroy {
+export class SettingsView implements OnInit, OnDestroy {
+  selectedTheme: string = 'light';
+  themes: Theme[] = [];
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
 
@@ -16,6 +19,8 @@ export class LeftSideMenu implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentTheme = this.themeService.getCurrentTheme();
+    this.themes = this.themeService.themesList;
+    this.selectedTheme = this.currentTheme.value;
     this.themeSubscription = this.themeService.currentTheme$.subscribe(
       (theme) => {
         this.currentTheme = theme;
@@ -29,6 +34,12 @@ export class LeftSideMenu implements OnInit, OnDestroy {
     }
   }
 
-  username: string = "Chef María";
-  profilePicture: string = "https://randomuser.me/api/portraits/women/44.jpg";
+  applyTheme() {
+    this.themeService.setTheme(this.selectedTheme);
+  }
+
+  resetTheme() {
+    this.themeService.resetTheme();
+    this.selectedTheme = 'light';
+  }
 }

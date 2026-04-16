@@ -1,1 +1,135 @@
-<p>right-side-menu works!</p>
+<div class="menu-container">
+  <div class="filter-card" [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text">
+    <h2 class="filter-title">Filtros</h2>
+
+    <div class="filter-section">
+      <label class="filter-label">Tags</label>
+      <div class="chips-input">
+        <div class="selected-chips">
+          @for (tag of selectedTags; track tag.id) {
+            <span class="chip tag-chip">
+              {{ tag.name }}
+              <button class="remove-chip" (click)="removeTag(tag)">×</button>
+            </span>
+          }
+        </div>
+        <select class="chip-selector" 
+                [style.backgroundColor]="currentTheme.inputBg" 
+                [style.borderColor]="currentTheme.inputBorder"
+                [style.color]="currentTheme.inputText"
+                (change)="addTag($event)">
+          <option value="">Añadir tag...</option>
+          @for (tag of availableTags; track tag.id) {
+            @if (!isTagSelected(tag.id)) {
+              <option [value]="tag.id">{{ tag.name }}</option>
+            }
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <label class="filter-label">Ingredientes</label>
+      <div class="chips-input">
+        <div class="selected-chips">
+          @for (ingredient of selectedIngredients; track ingredient.id) {
+            <span class="chip ingredient-chip">
+              {{ ingredient.name }}
+              <button class="remove-chip" (click)="removeIngredient(ingredient)">×</button>
+            </span>
+          }
+        </div>
+        <select class="chip-selector" 
+                [style.backgroundColor]="currentTheme.inputBg" 
+                [style.borderColor]="currentTheme.inputBorder"
+                [style.color]="currentTheme.inputText"
+                (change)="addIngredient($event)">
+          <option value="">Añadir ingrediente...</option>
+          @for (ingredient of availableIngredients; track ingredient.id) {
+            @if (!isIngredientSelected(ingredient.id)) {
+              <option [value]="ingredient.id">{{ ingredient.name }}</option>
+            }
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-row">
+        <label class="filter-label">Valoración</label>
+        <label class="exact-checkbox">
+          <input type="checkbox" [(ngModel)]="exactRating">
+          <span>Exacto</span>
+        </label>
+      </div>
+      <div class="star-rating">
+        @for (star of [1, 2, 3, 4, 5]; track star) {
+          <button 
+            class="star-button" 
+            [class.filled]="star <= rating"
+            (click)="setRating(star)">
+            <div class="star-bg" [style.backgroundColor]="currentTheme.starBg">
+              <mat-icon [style.color]="star <= rating ? currentTheme.starActive : currentTheme.starInactive">{{ star <= rating ? 'star' : 'star_border' }}</mat-icon>
+            </div>
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-row">
+        <label class="filter-label">Tiempo de preparación</label>
+        <label class="exact-checkbox">
+          <input type="checkbox" [(ngModel)]="exactPrepTime">
+          <span>Exacto</span>
+        </label>
+      </div>
+      <div class="slider-input-container">
+        <input type="range" min="0" max="120" [(ngModel)]="prepTime" class="slider" [style.backgroundColor]="currentTheme.inputBorder">
+        <input type="number" min="0" max="120" [(ngModel)]="prepTime" class="slider-input" placeholder="min"
+               [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-row">
+        <label class="filter-label">Tiempo de cocinado</label>
+        <label class="exact-checkbox">
+          <input type="checkbox" [(ngModel)]="exactCookTime">
+          <span>Exacto</span>
+        </label>
+      </div>
+      <div class="slider-input-container">
+        <input type="range" min="0" max="180" [(ngModel)]="cookTime" class="slider" [style.backgroundColor]="currentTheme.inputBorder">
+        <input type="number" min="0" max="180" [(ngModel)]="cookTime" class="slider-input" placeholder="min"
+               [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-row">
+        <label class="filter-label">Tiempo total</label>
+        <label class="exact-checkbox">
+          <input type="checkbox" [(ngModel)]="exactTotalTime">
+          <span>Exacto</span>
+        </label>
+      </div>
+      <div class="slider-input-container">
+        <input type="range" min="0" max="240" [(ngModel)]="totalTime" class="slider" [style.backgroundColor]="currentTheme.inputBorder">
+        <input type="number" min="0" max="240" [(ngModel)]="totalTime" class="slider-input" placeholder="min"
+               [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <label class="filter-label">Fecha de creación</label>
+      <input type="date" [(ngModel)]="creationDate" class="date-input"
+             [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+    </div>
+
+    <div class="filter-actions">
+      <button class="apply-button" (click)="applyFilters()" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">Aplicar</button>
+      <button class="clear-button" (click)="clearFilters()" [style.backgroundColor]="currentTheme.inputBg" [style.color]="currentTheme.inputText">Limpiar</button>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,8 @@
-import { Component, ElementRef, input, Input } from '@angular/core';
+import { Component, ElementRef, input, Input, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { RecipeData } from '../../model/recipe/recipe-data';
+import { ThemeService, Theme } from '../services/theme.service';
 
 @Component({
   selector: 'app-recipe-card',
@@ -8,17 +10,34 @@ import { RecipeData } from '../../model/recipe/recipe-data';
   templateUrl: './recipe-card.html',
   styleUrl: './recipe-card.css',
 })
-export class RecipeCard {
-  constructor(private router: Router) {}
+export class RecipeCard implements OnInit, OnDestroy {
+  constructor(
+    private router: Router,
+    private themeService: ThemeService
+  ) {}
 
   @Input() recipeData!: RecipeData;
+  currentTheme!: Theme;
+  private themeSubscription!: Subscription;
 
   ngOnInit(){
+    this.currentTheme = this.themeService.getCurrentTheme();
+    this.themeSubscription = this.themeService.currentTheme$.subscribe(
+      (theme) => {
+        this.currentTheme = theme;
+      }
+    );
     for(let i = 0; i<this.recipeData.stars; i++){
       this.stars[i] = true;
     }
     for(let i = 0; i<4-this.recipeData.stars; i++){
       this.stars[4-i] = false;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
     }
   }
 
@@ -28,9 +47,11 @@ export class RecipeCard {
   private startX = 0;
   private scrollLeft = 0;
   private moved = false;
+  isTagDragging = false;
 
   startDrag(event: MouseEvent) {
     this.isDragging = true;
+    this.isTagDragging = true;
     this.moved = false;
     this.startX = event.pageX;
     this.scrollLeft = (event.currentTarget as HTMLElement).scrollLeft;
@@ -52,18 +73,23 @@ export class RecipeCard {
 
   endDrag() {
     this.isDragging = false;
+    this.isTagDragging = false;
+    this.moved = false;
   }
 
   onTagClick(event: MouseEvent) {
     if (this.moved) {
-      // Si hubo scroll, bloqueamos el click
       event.preventDefault();
       event.stopPropagation();
       return;
     }
 
-    // Aquí sí puedes navegar
     console.log('Abrir enlace');
     this.router.navigate(['/tag']);
+  }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.parentElement?.remove();
   }
 }

@@ -2,23 +2,14 @@ import { Component, Input, OnInit } from '@angular/core';
 import { RecipeData } from '../../model/recipe/recipe-data';
 import { TagData } from '../../model/tag/tag-data';
 import { RecipeScroll } from '../recipe-scroll/recipe-scroll';
-import { ProfileHeader } from '../profile-header/profile-header';
 
 @Component({
-  selector: 'app-profile-view',
+  selector: 'app-feed-view',
   standalone: false,
-  templateUrl: './profile-view.html',
-  styleUrl: './profile-view.css',
+  templateUrl: './feed-view.html',
+  styleUrl: './feed-view.css',
 })
-export class ProfileView implements OnInit {
-  @Input() username: string = "Chef María";
-  @Input() userHandle: string = "chefmaria";
-  @Input() bio: string = "Amante de la cocina mediterránea. Compartiendo mis recetas favoritas 🍳";
-  @Input() profilePicture: string = "https://randomuser.me/api/portraits/women/44.jpg";
-  @Input() followers: number = 1250;
-  @Input() following: number = 342;
-  @Input() recipesCount: number = 28;
-
+export class FeedView implements OnInit {
   recipes: RecipeData[] = [];
 
   ngOnInit() {
@@ -26,21 +17,14 @@ export class ProfileView implements OnInit {
   }
 
   private loadRecipes() {
-    const profileTags = [
-      new TagData("Freidora de aire"),
-      new TagData("Delicioso"),
-      new TagData("Facil"),
-      new TagData("Amarillo"),
-    ];
-
-    const profileRecipes = [
+    const feedRecipes = [
       new RecipeData(
-        profileTags,
+        [new TagData("Freidora de aire"), new TagData("Delicioso"), new TagData("Facil"), new TagData("Facil"), new TagData("Facil"), new TagData("Facil"), new TagData("Facil"), new TagData("Facil"), new TagData("Facil"), new TagData("Facil"), new TagData("Facil"), new TagData("Facil"), ],
         "https://yhoyquecomemos.com/wp-content/uploads/2017/01/tarta-de-manzana-receta-1.jpg",
         "Tarta de manzana",
         "Tarta de manzana muy rica y vegana",
         "HomeMade",
-        this.profilePicture,
+        "https://cdng.europosters.eu/pod_public/750/175230.jpg",
         3,
         20,
         30
@@ -51,7 +35,7 @@ export class ProfileView implements OnInit {
         "Cheesecake Vasco",
         "Cheesecake al estilo del restaurante La Viña",
         "Postre",
-        this.profilePicture,
+        "https://randomuser.me/api/portraits/women/44.jpg",
         4,
         15,
         45
@@ -62,13 +46,24 @@ export class ProfileView implements OnInit {
         "Ensalada de Lentejas",
         "Ensalada fresca y nutritiva con lentejas y verduras de temporada",
         "Saludable",
-        this.profilePicture,
+        "https://randomuser.me/api/portraits/men/32.jpg",
         4,
         10,
         25
       ),
+      new RecipeData(
+        [new TagData("Pasta"), new TagData("Italiana"), new TagData("Queso")],
+        "https://www.clarin.com/img/2023/02/23/lasagna_70_RZZDOB1S_2000x1500__1.jpg",
+        "Lasagna Casera",
+        "Lasagna tradicional italiana con carne y queso mozzarella",
+        "Italiana",
+        "https://randomuser.me/api/portraits/women/68.jpg",
+        3,
+        30,
+        60
+      ),
     ];
 
-    this.recipes = profileRecipes;
+    this.recipes = feedRecipes;
   }
 }

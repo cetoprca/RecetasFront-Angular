@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ThemeService, Theme } from '../services/theme.service';
 
 @Component({
-  selector: 'app-left-side-menu',
+  selector: 'app-saved-header',
   standalone: false,
-  templateUrl: './left-side-menu.html',
-  styleUrl: './left-side-menu.css',
+  templateUrl: './saved-header.html',
+  styleUrl: './saved-header.css',
 })
-export class LeftSideMenu implements OnInit, OnDestroy {
+export class SavedHeader implements OnInit, OnDestroy {
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
 
@@ -29,6 +29,5 @@ export class LeftSideMenu implements OnInit, OnDestroy {
     }
   }
 
-  username: string = "Chef María";
-  profilePicture: string = "https://randomuser.me/api/portraits/women/44.jpg";
+  @Input() savedCount: number = 0;
 }

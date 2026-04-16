@@ -9,9 +9,12 @@ import { LeftSideMenu } from './left-side-menu/left-side-menu';
 import { RightSideMenu } from './right-side-menu/right-side-menu';
 import { RecipeCard } from './recipe-card/recipe-card';
 import { RecipeScroll } from './recipe-scroll/recipe-scroll';
-import { RecipeView } from './recipe-view/recipe-view';
 import { ProfileView } from './profile-view/profile-view';
 import { SavedView } from './saved-view/saved-view';
+import { FeedView } from './feed-view/feed-view';
+import { ProfileHeader } from './profile-header/profile-header';
+import { SavedHeader } from './saved-header/saved-header';
+import { SettingsView } from './settings-view/settings-view';
 import { FullView } from './full-view/full-view';
 import { LoginView } from './login-view/login-view'
 
@@ -22,9 +25,12 @@ import { LoginView } from './login-view/login-view'
     RightSideMenu,
     RecipeCard,
     RecipeScroll,
-    RecipeView,
     ProfileView,
     SavedView,
+    FeedView,
+    ProfileHeader,
+    SavedHeader,
+    SettingsView,
     FullView,
     LoginView
   ],

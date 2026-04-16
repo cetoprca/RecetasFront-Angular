@@ -1,1 +1,29 @@
-<p>left-side-menu works!</p>
+<div class="menu-container">
+  <div class="profile-card" [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text">
+    <div class="profile-info">
+      <div class="profile-picture">
+        <img [src]="profilePicture" alt="Profile">
+      </div>
+      <span class="username">{{ username }}</span>
+    </div>
+
+    <div class="menu-buttons">
+      <button class="menu-button" routerLink="/" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+        <mat-icon>home</mat-icon>
+        <span>Inicio</span>
+      </button>
+      <button class="menu-button" routerLink="/profile" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+        <mat-icon>person</mat-icon>
+        <span>Perfil</span>
+      </button>
+      <button class="menu-button" routerLink="/saved" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+        <mat-icon>bookmark</mat-icon>
+        <span>Recetas guardadas</span>
+      </button>
+      <button class="menu-button" routerLink="/settings" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+        <mat-icon>settings</mat-icon>
+        <span>Configuración</span>
+      </button>
+    </div>
+  </div>
+</div>

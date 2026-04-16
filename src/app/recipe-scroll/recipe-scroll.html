@@ -1,1 +1,8 @@
-<p>recipe-scroll works!</p>
+<div class="scroll-container">
+  <ng-content select="[slot=header]"></ng-content>
+  <div class="cards-container">
+    @for (recipe of recipes; track recipe.title) {
+      <app-recipe-card [recipeData]="recipe"/>
+    }
+  </div>
+</div>

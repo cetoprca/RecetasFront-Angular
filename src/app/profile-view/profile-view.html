@@ -1,1 +1,12 @@
-<p>profile-view works!</p>
+<app-recipe-scroll [recipes]="recipes">
+  <app-profile-header
+    slot="header"
+    [username]="username"
+    [userHandle]="userHandle"
+    [bio]="bio"
+    [profilePicture]="profilePicture"
+    [followers]="followers"
+    [following]="following"
+    [recipesCount]="recipesCount"
+  />
+</app-recipe-scroll>
