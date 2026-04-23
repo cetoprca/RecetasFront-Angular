@@ -46,8 +46,9 @@
     overflow-y: auto;
   }
   
-  .page > router-outlet {
-    width: 750px;
+.page > router-outlet {
+    max-width: 750px;
+    width: 100%;
     flex-shrink: 0;
     overflow-y: hidden;
   }

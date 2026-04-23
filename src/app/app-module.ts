@@ -9,6 +9,7 @@ import { LeftSideMenu } from './left-side-menu/left-side-menu';
 import { RightSideMenu } from './right-side-menu/right-side-menu';
 import { RecipeCard } from './recipe-card/recipe-card';
 import { RecipeDetail } from './recipe-detail/recipe-detail';
+import { RecipeInfo } from './recipe-info/recipe-info';
 import { RecipeScroll } from './recipe-scroll/recipe-scroll';
 import { ProfileView } from './profile-view/profile-view';
 import { SavedView } from './saved-view/saved-view';
@@ -26,6 +27,7 @@ import { LoginView } from './login-view/login-view'
     RightSideMenu,
     RecipeCard,
     RecipeDetail,
+    RecipeInfo,
     RecipeScroll,
     ProfileView,
     SavedView,
