@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ThemeService, Theme } from '../services/theme.service';
+import { ThemeService, Theme } from '../../../services/theme.service';
 
 @Component({
   selector: 'app-profile-header',

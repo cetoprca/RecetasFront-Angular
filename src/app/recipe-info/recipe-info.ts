@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, HostListener, Input, OnChanges, SimpleCha
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RecipeData } from '../../model/recipe/recipe-data';
-import { ThemeService, Theme } from '../services/theme.service';
+import { ThemeService, Theme } from '../../../services/theme.service';
 
 @Component({
   selector: 'app-recipe-info',

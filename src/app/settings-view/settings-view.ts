@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ThemeService, Theme } from '../services/theme.service';
+import { ThemeService, Theme } from '../../../services/theme.service';
 
 @Component({
   selector: 'app-settings-view',

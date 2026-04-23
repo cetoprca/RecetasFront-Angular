@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { RecipeData } from '../../model/recipe/recipe-data';
 import { TagData } from '../../model/tag/tag-data';
 import { StepData } from '../../model/step/step-data';
-import { ThemeService, Theme } from '../services/theme.service';
+import { ThemeService, Theme } from '../../../services/theme.service';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeInfo } from '../recipe-info/recipe-info';
 
