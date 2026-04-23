@@ -4,6 +4,7 @@ import { RecipeData } from '../../model/recipe/recipe-data';
 import { TagData } from '../../model/tag/tag-data';
 import { ThemeService, Theme } from '../services/theme.service';
 import { ActivatedRoute } from '@angular/router';
+import { RecipeInfo } from '../recipe-info/recipe-info';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -16,7 +17,6 @@ export class RecipeDetail implements OnInit, OnDestroy {
   private themeSubscription!: Subscription;
   recipeId!: number;
   recipe: RecipeData | null = null;
-  stars: Boolean[] = [];
 
   constructor(
     private themeService: ThemeService,
@@ -47,28 +47,16 @@ export class RecipeDetail implements OnInit, OnDestroy {
     this.recipe = new RecipeData(
       this.recipeId,
       [new TagData("Postre"), new TagData("Dulce")],
-      "https://images.hola.com/imagenes/cocina/recetas/20230915185337/cheesecake-vasco/1-144-979/cheesecake-vasco-t.jpg",
-      "Cheesecake Vasco",
-      "Cheesecake al estilo del restaurante La Viña. Una receta clásica de este delicioso postre español.",
+      "https://cdn.blog.paulinacocina.net/wp-content/uploads/2024/01/pastel-de-manzana-con-hojaldre-Paulina-Cocina-Recetas-1722251870.jpg",
+      "Tarta de Manzana",
+      "Tarta de manzana muy rica y vegana. Una receta clásica que nunca pasa de moda.",
       "Postre",
       1,
       "chef_maria",
       "https://randomuser.me/api/portraits/women/44.jpg",
       4,
-      15,
-      45
+      20,
+      30
     );
-
-    this.stars = [];
-    for(let i = 0; i<this.recipe.stars; i++){
-      this.stars[i] = true;
-    }
-    for(let i = 0; i<5-this.recipe.stars; i++){
-      this.stars[4-i] = false;
-    }
-  }
-
-  toggleMenu(event: Event) {
-    event.stopPropagation();
   }
 }
