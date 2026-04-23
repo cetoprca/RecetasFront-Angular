@@ -20,6 +20,8 @@ export interface Theme {
   inputBg: string;
   inputBorder: string;
   inputText: string;
+  hoverBg: string;
+  menuIcon: string;
 }
 
 @Injectable({
@@ -45,7 +47,9 @@ export class ThemeService {
       buttonText: 'rgb(255, 255, 255)',
       inputBg: 'rgb(255, 255, 255)',
       inputBorder: 'rgb(180, 180, 180)',
-      inputText: 'rgb(30, 30, 30)'
+      inputText: 'rgb(30, 30, 30)',
+      hoverBg: 'rgba(0, 0, 0, 0.1)',
+      menuIcon: 'rgb(80, 80, 80)'
     },
     {
       value: 'dark',
@@ -65,7 +69,9 @@ export class ThemeService {
       buttonText: 'rgb(240, 240, 240)',
       inputBg: 'rgb(50, 50, 50)',
       inputBorder: 'rgb(100, 100, 100)',
-      inputText: 'rgb(240, 240, 240)'
+      inputText: 'rgb(240, 240, 240)',
+      hoverBg: 'rgba(255, 255, 255, 0.1)',
+      menuIcon: 'rgb(180, 180, 180)'
     },
     {
       value: 'blue',
@@ -85,7 +91,9 @@ export class ThemeService {
       buttonText: 'rgb(200, 220, 255)',
       inputBg: 'rgb(20, 40, 70)',
       inputBorder: 'rgb(80, 120, 170)',
-      inputText: 'rgb(230, 240, 255)'
+      inputText: 'rgb(230, 240, 255)',
+      hoverBg: 'rgba(255, 255, 255, 0.1)',
+      menuIcon: 'rgb(160, 190, 230)'
     },
     {
       value: 'green',
@@ -105,7 +113,9 @@ export class ThemeService {
       buttonText: 'rgb(220, 240, 225)',
       inputBg: 'rgb(30, 50, 40)',
       inputBorder: 'rgb(80, 120, 100)',
-      inputText: 'rgb(230, 245, 235)'
+      inputText: 'rgb(230, 245, 235)',
+      hoverBg: 'rgba(255, 255, 255, 0.1)',
+      menuIcon: 'rgb(160, 200, 170)'
     }
   ];
 

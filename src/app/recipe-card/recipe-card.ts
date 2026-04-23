@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, input, Input, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RecipeData } from '../../model/recipe/recipe-data';
@@ -42,6 +42,34 @@ export class RecipeCard implements OnInit, OnDestroy {
   }
 
   stars : Boolean[] = [];
+
+  showMenu = false;
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    if (this.showMenu) {
+      this.closeMenu();
+    }
+  }
+
+  toggleMenu(event: Event) {
+    event.stopPropagation();
+    this.showMenu = !this.showMenu;
+  }
+
+  closeMenu() {
+    this.showMenu = false;
+  }
+
+  saveRecipe() {
+    console.log('Save recipe:', this.recipeData.title);
+    this.closeMenu();
+  }
+
+  shareRecipe() {
+    console.log('Share recipe:', this.recipeData.title);
+    this.closeMenu();
+  }
 
   private isDragging = false;
   private startX = 0;
@@ -91,5 +119,11 @@ export class RecipeCard implements OnInit, OnDestroy {
   onImageError(event: Event) {
     const img = event.target as HTMLImageElement;
     img.parentElement?.remove();
+  }
+
+  openRecipe() {
+    if (this.recipeData && this.recipeData.id) {
+      this.router.navigate(['/recipe', this.recipeData.id]);
+    }
   }
 }

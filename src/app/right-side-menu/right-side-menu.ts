@@ -98,6 +98,48 @@ export class RightSideMenu implements OnInit, OnDestroy {
   
   creationDate: string = '';
 
+  expandedSections: { [key: string]: boolean } = {
+    rating: true,
+    tiempo: true,
+    prepTime: true,
+    cookTime: true,
+    totalTime: true,
+    creationDate: true
+  };
+
+  showTagDropdown: boolean = false;
+  showIngredientDropdown: boolean = false;
+
+  toggleSection(section: string): void {
+    this.expandedSections[section] = !this.expandedSections[section];
+  }
+
+  toggleTagDropdown(): void {
+    this.showTagDropdown = !this.showTagDropdown;
+    this.showIngredientDropdown = false;
+  }
+
+  toggleIngredientDropdown(): void {
+    this.showIngredientDropdown = !this.showIngredientDropdown;
+    this.showTagDropdown = false;
+  }
+
+  addTagById(tagId: number): void {
+    const tag = this.availableTags.find(t => t.id === tagId);
+    if (tag && !this.isTagSelected(tagId)) {
+      this.selectedTags.push(tag);
+    }
+    this.showTagDropdown = false;
+  }
+
+  addIngredientById(ingredientId: number): void {
+    const ingredient = this.availableIngredients.find(i => i.id === ingredientId);
+    if (ingredient && !this.isIngredientSelected(ingredientId)) {
+      this.selectedIngredients.push(ingredient);
+    }
+    this.showIngredientDropdown = false;
+  }
+
   isTagSelected(tagId: number): boolean {
     return this.selectedTags.some(t => t.id === tagId);
   }
