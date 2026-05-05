@@ -1,13 +1,13 @@
 <div class="recipe-info" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text" [style.border]="'1px solid ' + currentTheme.divider">
 
   <div class="card-header" [style.borderBottom]="'1px solid ' + currentTheme.divider">
-    <div class="author-row">
-      @if (recipeData.authorProfilePictureURL && recipeData.authorProfilePictureURL !== '') {
-        <img class="author-avatar" [src]="recipeData.authorProfilePictureURL" alt="">
-      } @else {
-        <div class="author-avatar-placeholder" [style.backgroundColor]="currentTheme.primary"></div>
-      }
-      <span class="author-name">{{recipeData.authorUsername}}</span>
+  <div class="author-row">
+    @if (authorProfilePictureURL && authorProfilePictureURL !== '') {
+      <img class="author-avatar" [src]="authorProfilePictureURL" alt="">
+    } @else {
+      <div class="author-avatar-placeholder" [style.backgroundColor]="currentTheme.primary"></div>
+    }
+    <span class="author-name">{{authorUsername}}</span>
       <div class="menu-container">
         <button class="menu-button" (click)="toggleMenu($event)" [style.color]="currentTheme.menuIcon" [style.--hover-bg]="currentTheme.hoverBg">
           <mat-icon>more_vert</mat-icon>
@@ -27,29 +27,29 @@
       </div>
     </div>
 
-    <div class="tags-row">
-      <span class="cuisine-tag" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
-        {{recipeData.cuisine}}
+  <div class="tags-row">
+    <span class="cuisine-tag" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+      {{cuisineDisplay}}
+    </span>
+    <span class="tag-divider" [style.backgroundColor]="currentTheme.divider"></span>
+    <div class="scrollable-tags">
+      <span class="tag" *ngFor="let tag of tagList" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.tagBg" [style.color]="currentTheme.text">
+        {{tag.name}}
       </span>
-      <span class="tag-divider" [style.backgroundColor]="currentTheme.divider"></span>
-      <div class="scrollable-tags">
-        <span class="tag" *ngFor="let tag of recipeData.tags" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.tagBg" [style.color]="currentTheme.text">
-          {{tag.name}}
-        </span>
-      </div>
     </div>
+  </div>
   </div>
 
   <div class="card-body">
-    @if (recipeData.imageURL && recipeData.imageURL !== '') {
+    @if (imageURL && imageURL !== '') {
       <div class="image-container">
-        <img class="recipe-image" [src]="recipeData.imageURL" alt="">
+        <img class="recipe-image" [src]="imageURL" alt="">
       </div>
     }
 
     <div class="content-section">
-      <h2 class="recipe-title">{{recipeData.title}}</h2>
-      <p class="recipe-description">{{recipeData.description}}</p>
+      <h2 class="recipe-title">{{recipeTitle}}</h2>
+      <p class="recipe-description">{{recipeDescription}}</p>
 
       <div class="meta-row">
         <div class="rating">
@@ -65,12 +65,12 @@
         <div class="times">
           <span class="time-item">
             <mat-icon class="time-icon">schedule</mat-icon>
-            Prep: {{recipeData.prepTime}}m
+            Prep: {{recipePrepTime}}m
           </span>
           <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
           <span class="time-item">
             <mat-icon class="time-icon">local_fire_department</mat-icon>
-            Coc: {{recipeData.cookTime}}m
+            Coc: {{recipeCookTime}}m
           </span>
           <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
           <span class="time-item total">

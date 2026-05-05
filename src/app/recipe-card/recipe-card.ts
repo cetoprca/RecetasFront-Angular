@@ -1,7 +1,7 @@
-import { Component, ElementRef, input, Input, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { RecipeData } from '../../model/recipe/recipe-data';
+import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { ThemeService, Theme } from '../../../services/theme.service';
 
 @Component({
@@ -16,9 +16,12 @@ export class RecipeCard implements OnInit, OnDestroy {
     private themeService: ThemeService
   ) {}
 
-  @Input() recipeData!: RecipeData;
+  @Input() recipeData!: RecipeCardDTO;
+
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
+  stars: Boolean[] = [];
+  showMenu = false;
 
   ngOnInit(){
     this.currentTheme = this.themeService.getCurrentTheme();
@@ -27,10 +30,11 @@ export class RecipeCard implements OnInit, OnDestroy {
         this.currentTheme = theme;
       }
     );
-    for(let i = 0; i<this.recipeData.stars; i++){
+    const stars = this.recipeData.stars || 0;
+    for(let i = 0; i<stars; i++){
       this.stars[i] = true;
     }
-    for(let i = 0; i<4-this.recipeData.stars; i++){
+    for(let i = 0; i<5-stars; i++){
       this.stars[4-i] = false;
     }
   }
@@ -41,9 +45,53 @@ export class RecipeCard implements OnInit, OnDestroy {
     }
   }
 
-  stars : Boolean[] = [];
+  get imageURL(): string {
+    return this.recipeData.imageURL || '';
+  }
 
-  showMenu = false;
+  get authorUsername(): string {
+    return this.recipeData.author?.username || '';
+  }
+
+  get authorProfilePictureURL(): string {
+    return this.recipeData.author?.profilePicturePath || '';
+  }
+
+  get cuisineName(): string {
+    return this.recipeData.cuisine || '';
+  }
+
+  get tagList(): any[] {
+    return this.recipeData.tags || [];
+  }
+
+  get recipeTitle(): string {
+    return this.recipeData.title;
+  }
+
+  get recipeDescription(): string {
+    return this.recipeData.description;
+  }
+
+  get recipePrepTime(): number {
+    return this.recipeData.prepTime;
+  }
+
+  get recipeCookTime(): number {
+    return this.recipeData.cookTime;
+  }
+
+  openRecipe() {
+    if (this.recipeData && this.recipeData.id) {
+      this.router.navigate(['/recipe', this.recipeData.id]);
+    }
+  }
+
+  navigateToProfile() {
+    if (this.recipeData.author?.id) {
+      this.router.navigate(['/profile', this.recipeData.author.id]);
+    }
+  }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event) {
@@ -119,11 +167,5 @@ export class RecipeCard implements OnInit, OnDestroy {
   onImageError(event: Event) {
     const img = event.target as HTMLImageElement;
     img.parentElement?.remove();
-  }
-
-  openRecipe() {
-    if (this.recipeData && this.recipeData.id) {
-      this.router.navigate(['/recipe', this.recipeData.id]);
-    }
   }
 }

@@ -1,8 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { RecipeData } from '../../model/recipe/recipe-data';
-import { TagData } from '../../model/tag/tag-data';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { RecipeScroll } from '../recipe-scroll/recipe-scroll';
 import { ProfileHeader } from '../profile-header/profile-header';
+import { RecipeService } from '../services/recipe.service';
+import { FilterService } from '../services/filter.service';
+import { UserService } from '../services/user.service';
+import { UserDTO } from '../../model/user/user-dto';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile-view',
@@ -10,74 +15,95 @@ import { ProfileHeader } from '../profile-header/profile-header';
   templateUrl: './profile-view.html',
   styleUrl: './profile-view.css',
 })
-export class ProfileView implements OnInit {
-  @Input() username: string = "Chef María";
-  @Input() userHandle: string = "chefmaria";
-  @Input() bio: string = "Amante de la cocina mediterránea. Compartiendo mis recetas favoritas 🍳";
-  @Input() profilePicture: string = "https://randomuser.me/api/portraits/women/44.jpg";
-  @Input() followers: number = 1250;
-  @Input() following: number = 342;
-  @Input() recipesCount: number = 28;
+export class ProfileView implements OnInit, OnDestroy {
+  username: string = "Chef María";
+  userHandle: string = "chefmaria";
+  bio: string = "Amante de la cocina mediterránea. Compartiendo mis recetas favoritas 🍳";
+  profilePicture: string = "https://randomuser.me/api/portraits/women/44.jpg";
+  followers: number = 0;
+  following: number = 0;
+  recipesCount: number = 0;
+  userId: number = 0;
 
-  recipes: RecipeData[] = [];
+  recipes: RecipeCardDTO[] = [];
+  private filterSubscription!: Subscription;
+  private userSubscription!: Subscription;
+
+  constructor(
+    private recipeService: RecipeService,
+    private filterService: FilterService,
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit() {
+    console.log('ProfileView: Initializing, route params:', this.route.snapshot.params);
+    this.route.params.subscribe(params => {
+      const userId = params['userId'];
+      if (userId) {
+        this.loadUserById(+userId);
+      } else {
+        this.loadCurrentUser();
+      }
+    });
+
+    this.filterSubscription = this.filterService.currentFilter$.subscribe(() => {
+      this.loadRecipes();
+    });
+  }
+
+  get isOwnProfile(): boolean {
+    return !this.route.snapshot.paramMap.get('userId');
+  }
+
+  navigateToOwnProfile() {
+    this.router.navigate(['/profile']);
+  }
+
+  ngOnDestroy() {
+    if (this.filterSubscription) {
+      this.filterSubscription.unsubscribe();
+    }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+
+  private loadCurrentUser() {
+    this.userSubscription = this.userService.getCurrentUser().subscribe({
+      next: (user) => this.setUserData(user),
+      error: (err) => console.error('Error loading current user:', err)
+    });
+  }
+
+  private loadUserById(userId: number) {
+    this.userSubscription = this.userService.getUserById(userId).subscribe({
+      next: (user) => this.setUserData(user),
+      error: (err) => console.error('Error loading user:', err)
+    });
+  }
+
+  private setUserData(user: UserDTO) {
+    console.log('ProfileView: Loading user data', user);
+    this.userId = user.id;
+    this.username = user.username;
+    this.userHandle = user.username;
+    this.bio = user.biography || "";
+    this.profilePicture = user.profilePicturePath || "";
+    this.followers = 0;
+    this.following = 0;
+    this.recipesCount = user.recipes?.length || 0;
+
+    this.filterService.setAuthor(this.userId);
     this.loadRecipes();
   }
 
   private loadRecipes() {
-    const profileTags = [
-      new TagData("Freidora de aire"),
-      new TagData("Delicioso"),
-      new TagData("Facil"),
-      new TagData("Amarillo"),
-    ];
-
-    const profileRecipes = [
-      new RecipeData(
-        1,
-        profileTags,
-        "https://yhoyquecomemos.com/wp-content/uploads/2017/01/tarta-de-manzana-receta-1.jpg",
-        "Tarta de manzana",
-        "Tarta de manzana muy rica y vegana",
-        "HomeMade",
-        1,
-        "chef_maria",
-        this.profilePicture,
-        3,
-        20,
-        30
-      ),
-      new RecipeData(
-        2,
-        [new TagData("Postre"), new TagData("Dulce")],
-        "https://images.hola.com/imagenes/cocina/recetas/20230915185337/cheesecake-vasco/1-144-979/cheesecake-vasco-t.jpg",
-        "Cheesecake Vasco",
-        "Cheesecake al estilo del restaurante La Viña",
-        "Postre",
-        1,
-        "chef_maria",
-        this.profilePicture,
-        4,
-        15,
-        45
-      ),
-      new RecipeData(
-        3,
-        [new TagData("Ensalada"), new TagData("Saludable"), new TagData("Vegetal")],
-        "https://www.recetasderechupete.com/wp-content/uploads/2020/05/Ensalada-de-lentejas-con-verduras-768x530.jpg",
-        "Ensalada de Lentejas",
-        "Ensalada fresca y nutritiva con lentejas y verduras de temporada",
-        "Saludable",
-        1,
-        "chef_maria",
-        this.profilePicture,
-        4,
-        10,
-        25
-      ),
-    ];
-
-    this.recipes = profileRecipes;
+    const filter = this.filterService.currentFilter;
+    this.recipeService.getFilteredRecipes(filter).subscribe({
+      next: (recipes) => this.recipes = recipes,
+      error: (err) => console.error('Error loading recipes:', err)
+    });
   }
 }

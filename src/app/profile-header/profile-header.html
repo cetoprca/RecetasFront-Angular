@@ -1,27 +1,29 @@
 <div class="profile-header" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
   <div class="profile-banner"></div>
   <div class="profile-info">
-    <div class="profile-picture">
-      <img [src]="profilePicture" alt="Profile">
+    <img class="profile-picture" [src]="profilePicture" alt="Profile" (click)="navigateToProfile()">
+    <div class="user-details">
+      <h2 class="username">{{ username }}</h2>
+      <p class="user-handle">@{{ userHandle }}</p>
     </div>
-    <div class="profile-details">
-      <h1 class="username">{{ username }}</h1>
-      <p class="user-handle">&#64;{{ userHandle }}</p>
-      <p class="user-bio">{{ bio }}</p>
+  </div>
+  <div class="profile-details">
+    <h1 class="username">{{ username }}</h1>
+    <p class="user-handle">&#64;{{ userHandle }}</p>
+    <p class="user-bio">{{ bio }}</p>
+  </div>
+  <div class="profile-stats">
+    <div class="stat">
+      <span class="stat-value">{{ followers }}</span>
+      <span class="stat-label">Seguidores</span>
     </div>
-    <div class="profile-stats">
-      <div class="stat">
-        <span class="stat-value">{{ followers }}</span>
-        <span class="stat-label">Seguidores</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">{{ following }}</span>
-        <span class="stat-label">Siguiendo</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">{{ recipesCount }}</span>
-        <span class="stat-label">Recetas</span>
-      </div>
+    <div class="stat">
+      <span class="stat-value">{{ following }}</span>
+      <span class="stat-label">Siguiendo</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">{{ recipesCount }}</span>
+      <span class="stat-label">Recetas</span>
     </div>
   </div>
 </div>

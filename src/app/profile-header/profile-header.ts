@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ThemeService, Theme } from '../../../services/theme.service';
 
@@ -12,7 +13,7 @@ export class ProfileHeader implements OnInit, OnDestroy {
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
 
-  constructor(private themeService: ThemeService) {}
+  constructor(private themeService: ThemeService, private router: Router) {}
 
   ngOnInit() {
     this.currentTheme = this.themeService.getCurrentTheme();
@@ -36,4 +37,11 @@ export class ProfileHeader implements OnInit, OnDestroy {
   @Input() followers: number = 1250;
   @Input() following: number = 342;
   @Input() recipesCount: number = 28;
+  @Input() isOwnProfile: boolean = true;
+
+  navigateToProfile() {
+    if (this.isOwnProfile) {
+      this.router.navigate(['/profile']);
+    }
+  }
 }

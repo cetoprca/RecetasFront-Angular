@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RecipeData } from '../../model/recipe/recipe-data';
+import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { RecipeCard } from '../recipe-card/recipe-card';
 
 @Component({
@@ -9,5 +9,5 @@ import { RecipeCard } from '../recipe-card/recipe-card';
   styleUrl: './recipe-scroll.css',
 })
 export class RecipeScroll {
-  @Input() recipes: RecipeData[] = [];
+  @Input() recipes: RecipeCardDTO[] = [];
 }

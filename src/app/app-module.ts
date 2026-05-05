@@ -1,5 +1,6 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
@@ -18,7 +19,8 @@ import { ProfileHeader } from './profile-header/profile-header';
 import { SavedHeader } from './saved-header/saved-header';
 import { SettingsView } from './settings-view/settings-view';
 import { FullView } from './full-view/full-view';
-import { LoginView } from './login-view/login-view'
+import { LoginView } from './login-view/login-view';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { LoginView } from './login-view/login-view'
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [App]
 })

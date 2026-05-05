@@ -1,1 +1,33 @@
-<p>login-view works!</p>
+<div class="login-container" [style.backgroundColor]="currentTheme.background">
+  <mat-card class="login-card" [style.backgroundColor]="currentTheme.card">
+    <mat-card-header>
+      <mat-card-title>Log In</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form (ngSubmit)="onLogin()">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="username" name="username" required>
+        </mat-form-field>
+        
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" [(ngModel)]="password" name="password" required>
+        </mat-form-field>
+
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        <button mat-raised-button color="primary" class="full-width" type="submit">
+          Log In
+        </button>
+      </form>
+    </mat-card-content>
+    
+    <mat-card-actions>
+      <button mat-button (click)="onRegister()">Register</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

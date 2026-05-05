@@ -2,12 +2,12 @@
 
   <div class="card-header" [style.borderBottom]="'1px solid ' + currentTheme.divider">
     <div class="author-row">
-      @if (recipeData.authorProfilePictureURL && recipeData.authorProfilePictureURL !== '') {
-        <img class="author-avatar" [src]="recipeData.authorProfilePictureURL" alt="">
+      @if (authorProfilePictureURL && authorProfilePictureURL !== '') {
+        <img class="author-avatar" [src]="authorProfilePictureURL" alt="" (click)="navigateToProfile()">
       } @else {
-        <div class="author-avatar-placeholder" [style.backgroundColor]="currentTheme.primary"></div>
+        <div class="author-avatar-placeholder" [style.backgroundColor]="currentTheme.primary" (click)="navigateToProfile()"></div>
       }
-      <span class="author-name">{{recipeData.authorUsername}}</span>
+      <span class="author-name" (click)="navigateToProfile()">{{authorUsername}}</span>
       <div class="menu-container">
         <button class="menu-button" (click)="toggleMenu($event)" [style.color]="currentTheme.menuIcon" [style.--hover-bg]="currentTheme.hoverBg">
           <mat-icon>more_vert</mat-icon>
@@ -27,29 +27,29 @@
       </div>
     </div>
 
-    <div class="tags-row">
-      <span class="cuisine-tag" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
-        {{recipeData.cuisine}}
+  <div class="tags-row">
+    <span class="cuisine-tag" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+      {{cuisineName}}
+    </span>
+    <span class="tag-divider" [style.backgroundColor]="currentTheme.divider"></span>
+    <div class="scrollable-tags" [class.dragging]="isTagDragging" (mousedown)="startDrag($event)" (mousemove)="onDrag($event)" (mouseup)="endDrag()" (mouseleave)="endDrag()">
+      <span class="tag" *ngFor="let tag of tagList" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.tagBg" [style.color]="currentTheme.text">
+        {{tag.name}}
       </span>
-      <span class="tag-divider" [style.backgroundColor]="currentTheme.divider"></span>
-      <div class="scrollable-tags" [class.dragging]="isTagDragging" (mousedown)="startDrag($event)" (mousemove)="onDrag($event)" (mouseup)="endDrag()" (mouseleave)="endDrag()">
-        <span class="tag" *ngFor="let tag of recipeData.tags" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.tagBg" [style.color]="currentTheme.text">
-          {{tag.name}}
-        </span>
-      </div>
     </div>
+  </div>
   </div>
 
   <div class="card-body">
-    @if (recipeData.imageURL && recipeData.imageURL !== '') {
+    @if (imageURL && imageURL !== '') {
       <div class="image-container">
-        <img class="recipe-image" [src]="recipeData.imageURL" alt="" (error)="onImageError($event)">
+        <img class="recipe-image" [src]="imageURL" alt="" (error)="onImageError($event)">
       </div>
     }
 
     <div class="content-section">
-      <h2 class="recipe-title">{{recipeData.title}}</h2>
-      <p class="recipe-description">{{recipeData.description}}</p>
+      <h2 class="recipe-title">{{recipeTitle}}</h2>
+      <p class="recipe-description">{{recipeDescription}}</p>
 
       <div class="meta-row">
         <div class="rating">
@@ -65,12 +65,12 @@
         <div class="times">
           <span class="time-item">
             <mat-icon class="time-icon">schedule</mat-icon>
-            Prep: {{recipeData.prepTime}}m
+            Prep: {{recipePrepTime}}m
           </span>
           <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
           <span class="time-item">
             <mat-icon class="time-icon">local_fire_department</mat-icon>
-            Coc: {{recipeData.cookTime}}m
+            Coc: {{recipeCookTime}}m
           </span>
           <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
           <span class="time-item total">

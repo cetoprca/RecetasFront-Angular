@@ -1,1 +1,13 @@
-<app-full-view></app-full-view>
+<div [attr.data-theme]="currentTheme.value">
+  <header [style.backgroundColor]="currentTheme.header" [style.color]="currentTheme.text">
+    <span>Rataouille.net</span>
+    <div class="header-buttons">
+      @if (isAuthenticated$ | async) {
+        <button (click)="logout()">Cerrar sesión</button>
+      } @else {
+        <button (click)="navigateToLogin()">Iniciar sesión</button>
+      }
+    </div>
+  </header>
+  <router-outlet></router-outlet>
+</div>

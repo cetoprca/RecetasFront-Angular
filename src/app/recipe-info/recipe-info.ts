@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, HostListener, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { RecipeData } from '../../model/recipe/recipe-data';
+import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { ThemeService, Theme } from '../../../services/theme.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class RecipeInfo implements OnInit, OnDestroy, OnChanges {
     private themeService: ThemeService
   ) {}
 
-  @Input() recipeData!: RecipeData;
+  @Input() recipeData!: RecipeCardDTO;
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
   stars: Boolean[] = [];
@@ -47,13 +47,54 @@ export class RecipeInfo implements OnInit, OnDestroy, OnChanges {
   private updateStars() {
     this.stars = [];
     if (this.recipeData) {
-      for(let i = 0; i<this.recipeData.stars; i++){
+      const stars = this.recipeData.stars || 0;
+      for(let i = 0; i<stars; i++){
         this.stars[i] = true;
       }
-      for(let i = 0; i<5-this.recipeData.stars; i++){
+      for(let i = 0; i<5-stars; i++){
         this.stars[4-i] = false;
       }
     }
+  }
+
+  get imageURL(): string {
+    return this.recipeData.imageURL || '';
+  }
+
+  get authorUsername(): string {
+    return this.recipeData.author?.username || '';
+  }
+
+  get authorProfilePictureURL(): string {
+    return this.recipeData.author?.profilePicturePath || '';
+  }
+
+  get cuisineDisplay(): string {
+    return this.recipeData.cuisine || '';
+  }
+
+  get tagList(): any[] {
+    return this.recipeData.tags || [];
+  }
+
+  get starsCount(): number {
+    return this.recipeData.stars || 0;
+  }
+
+  get recipeTitle(): string {
+    return this.recipeData.title;
+  }
+
+  get recipeDescription(): string {
+    return this.recipeData.description;
+  }
+
+  get recipePrepTime(): number {
+    return this.recipeData.prepTime;
+  }
+
+  get recipeCookTime(): number {
+    return this.recipeData.cookTime;
   }
 
   @HostListener('document:click', ['$event'])

@@ -1,13 +1,7 @@
-<div class="page" [attr.data-theme]="currentTheme.value">
-    <header [style.backgroundColor]="currentTheme.header" [style.color]="currentTheme.text">
-        Rataouille.net
-    </header>
-
-    <div class="content-area">
-        <div class="center-container">
-            <app-left-side-menu/>
-            <router-outlet/>
-            <app-right-side-menu/>
-        </div>
+<div class="content-area">
+    <div class="center-container">
+        <app-left-side-menu/>
+        <router-outlet/>
+        <app-right-side-menu/>
     </div>
 </div>

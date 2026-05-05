@@ -24,6 +24,10 @@
         <mat-icon>settings</mat-icon>
         <span>Configuración</span>
       </button>
+      <button class="menu-button" (click)="logout()" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+        <mat-icon>logout</mat-icon>
+        <span>Cerrar sesión</span>
+      </button>
     </div>
   </div>
 </div>

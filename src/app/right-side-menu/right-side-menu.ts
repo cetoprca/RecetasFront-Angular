@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 import { ThemeService, Theme } from '../../../services/theme.service';
+import { FilterService } from '../services/filter.service';
+import { FilterDTO } from '../../model/filter/filter-dto';
 
 interface FilterOption {
   id: number;
@@ -19,7 +21,10 @@ export class RightSideMenu implements OnInit, OnDestroy {
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
 
-  constructor(private themeService: ThemeService) {}
+  constructor(
+    private themeService: ThemeService,
+    private filterService: FilterService
+  ) {}
 
   ngOnInit() {
     this.currentTheme = this.themeService.getCurrentTheme();
@@ -185,7 +190,7 @@ export class RightSideMenu implements OnInit, OnDestroy {
   }
 
   applyFilters(): void {
-    const filters = {
+    const filter: Partial<FilterDTO> = {
       tags: this.selectedTags.map(t => t.id),
       ingredients: this.selectedIngredients.map(i => i.id),
       rating: this.rating,
@@ -196,9 +201,9 @@ export class RightSideMenu implements OnInit, OnDestroy {
       exactCookTime: this.exactCookTime,
       totalTime: this.totalTime,
       exactTotalTime: this.exactTotalTime,
-      creationDate: this.creationDate || null
+      creationDate: this.creationDate || ''
     };
-    console.log('Applying filters:', filters);
+    this.filterService.updateFilter(filter);
   }
 
   clearFilters(): void {
@@ -213,5 +218,6 @@ export class RightSideMenu implements OnInit, OnDestroy {
     this.totalTime = 0;
     this.exactTotalTime = false;
     this.creationDate = '';
+    this.filterService.clearFilter();
   }
 }

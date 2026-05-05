@@ -1,6 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ThemeService, Theme } from '../../../services/theme.service';
+import { UserService } from '../services/user.service';
+import { AuthService } from '../services/auth.service';
+import { UserDTO } from '../../model/user/user-dto';
 
 @Component({
   selector: 'app-left-side-menu',
@@ -11,8 +15,14 @@ import { ThemeService, Theme } from '../../../services/theme.service';
 export class LeftSideMenu implements OnInit, OnDestroy {
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
+  currentUser: UserDTO | null = null;
 
-  constructor(private themeService: ThemeService) {}
+  constructor(
+    private themeService: ThemeService,
+    private router: Router,
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.currentTheme = this.themeService.getCurrentTheme();
@@ -21,6 +31,7 @@ export class LeftSideMenu implements OnInit, OnDestroy {
         this.currentTheme = theme;
       }
     );
+    this.loadCurrentUser();
   }
 
   ngOnDestroy() {
@@ -29,6 +40,33 @@ export class LeftSideMenu implements OnInit, OnDestroy {
     }
   }
 
-  username: string = "Chef María";
-  profilePicture: string = "https://randomuser.me/api/portraits/women/44.jpg";
+  private loadCurrentUser() {
+    this.userService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.currentUser = user;
+      },
+      error: (err) => console.error('Error loading current user:', err)
+    });
+  }
+
+  navigateToProfile() {
+    this.router.navigate(['/profile']);
+  }
+
+  logout() {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (err) => console.error('Logout error:', err)
+    });
+  }
+
+  get username(): string {
+    return this.currentUser?.username || "Chef María";
+  }
+
+  get profilePicture(): string {
+    return this.currentUser?.profilePicturePath || "https://randomuser.me/api/portraits/women/44.jpg";
+  }
 }
