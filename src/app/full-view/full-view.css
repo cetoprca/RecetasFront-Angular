@@ -1,54 +1,45 @@
-.page {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-  }
-  
-  .page > header {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    padding: 0 1.5rem;
-    font-size: 1.5rem;
-    font-weight: 600;
-    height: 64px;
-  }
-  
-  .content-area {
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    min-height: 0;
-    overflow: hidden;
-  }
-  
-  .center-container {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    height: 100%;
-    align-items: flex-start;
-  }
-  
-  .page > app-left-side-menu {
-    width: 220px;
-    flex-shrink: 0;
-    border-radius: 12px;
-    overflow-y: auto;
-  }
-  
-  .page > app-right-side-menu {
-    width: 220px;
-    flex-shrink: 0;
-    border-radius: 12px;
-    overflow-y: auto;
-  }
-  
-.page > router-outlet {
-    max-width: 750px;
-    width: 100%;
-    flex-shrink: 0;
-    overflow-y: hidden;
-  }
+:host {
+  display: block;
+  height: 100%;
+}
+
+.content-area {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.center-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  height: 100%;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.center-container > app-left-side-menu {
+  width: 220px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.center-container > .main-content {
+  max-width: 750px;
+  width: 100%;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.center-container > app-right-side-menu {
+  width: 220px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  height: 100%;
+  overflow-y: auto;
+}
