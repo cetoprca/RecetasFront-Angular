@@ -9,6 +9,8 @@ import { SettingsView } from './settings-view/settings-view';
 import { RecipeDetail } from './recipe-detail/recipe-detail';
 import { AuthGuard } from './services/auth.guard';
 import { UserResolver } from './services/user.resolver';
+import { FeedRecipesResolver } from './services/feed-recipes.resolver';
+import { SavedRecipesResolver } from './services/saved-recipes.resolver';
 
 const routes: Routes = [
   { path: 'login', component: LoginView },
@@ -17,10 +19,10 @@ const routes: Routes = [
     component: FullView,
     canActivate: [AuthGuard],
     children: [
-      { path: '', component: FeedView },
+      { path: '', component: FeedView, resolve: { recipes: FeedRecipesResolver } },
       { path: 'profile', component: ProfileView, resolve: { user: UserResolver } },
       { path: 'profile/:userId', component: ProfileView, resolve: { user: UserResolver } },
-      { path: 'saved', component: SavedView },
+      { path: 'saved', component: SavedView, resolve: { recipes: SavedRecipesResolver } },
       { path: 'settings', component: SettingsView },
       { path: 'recipe/:recipeId', component: RecipeDetail },
     ]

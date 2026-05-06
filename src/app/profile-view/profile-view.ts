@@ -35,11 +35,12 @@ export class ProfileView implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    console.log('ProfileView: Initializing with resolved user data');
+    console.log('ProfileView: Initializing with resolved user and recipes');
     
-    // Get user data from route resolver (synchronously available)
-    const user = this.route.snapshot.data['user'] as UserDTO;
-    this.setUserData(user);
+    // Get user and recipes from route resolver (both loaded before component renders)
+    const resolvedData = this.route.snapshot.data['user'] as any;
+    this.setUserData(resolvedData.user);
+    this.recipes = resolvedData.recipes;
 
     this.filterSubscription = this.filterService.currentFilter$.subscribe(() => {
       this.loadRecipes();
