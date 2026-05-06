@@ -1,8 +1,11 @@
 .saved-header {
   width: 100%;
+  max-width: 630px;
+  margin: 0 auto;
   border-bottom: 2px solid;
   padding: 1.5rem;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .header-title {

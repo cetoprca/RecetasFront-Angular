@@ -1,7 +1,8 @@
 .recipe-info {
   width: 100%;
   max-width: 630px;
-  min-width: 0;
+  min-width:0;
+  margin: 0 auto;
   border-radius: 0;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
