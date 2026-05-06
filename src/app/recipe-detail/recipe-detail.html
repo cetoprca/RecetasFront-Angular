@@ -1,20 +1,22 @@
 @if (recipe) {
-  <app-recipe-info [recipeData]="recipe"/>
-  <div class="steps-separator" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text" [style.borderTop]="'1px solid ' + currentTheme.divider">
-    <span>Pasos</span>
-  </div>
-  <div class="steps-list">
-    @for (step of steps; track step.id) {
-      <div class="step-card" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text" [style.border]="'1px solid ' + currentTheme.divider">
-        <div class="step-number" [style.backgroundColor]="currentTheme.primary">{{step.position}}</div>
-        <div class="step-content">
-          <h3 class="step-title">{{step.title}}</h3>
-          <p class="step-description">{{step.description}}</p>
-          @if (step.image && step.image !== '') {
-            <img class="step-image" [src]="imageUrl + step.image" alt="">
-          }
+  <div class="detail-container">
+    <app-recipe-info [recipeData]="recipe"/>
+    <div class="steps-separator" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text" [style.borderTop]="'1px solid ' + currentTheme.divider">
+      <span>Pasos</span>
+    </div>
+    <div class="steps-list">
+      @for (step of steps; track step.id) {
+        <div class="step-card" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text" [style.border]="'1px solid ' + currentTheme.divider">
+          <div class="step-number" [style.backgroundColor]="currentTheme.primary">{{step.position}}</div>
+          <div class="step-content">
+            <h3 class="step-title">{{step.title}}</h3>
+            <p class="step-description">{{step.description}}</p>
+            @if (step.image && step.image !== '') {
+              <img class="step-image" [src]="imageUrl + step.image" alt="">
+            }
+          </div>
         </div>
-      </div>
-    }
+      }
+    </div>
   </div>
 }

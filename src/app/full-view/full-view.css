@@ -33,6 +33,7 @@
   width: 100%;
   flex-shrink: 0;
   height: 100%;
+  margin: 0 auto;
 }
 
 .center-container > app-right-side-menu {
