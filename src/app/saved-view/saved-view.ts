@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { RecipeScroll } from '../recipe-scroll/recipe-scroll';
 import { SavedHeader } from '../saved-header/saved-header';
-import { RecipeService } from '../services/recipe.service';
 
 @Component({
   selector: 'app-saved-view',
@@ -14,19 +14,13 @@ export class SavedView implements OnInit {
   savedCount: number = 0;
   recipes: RecipeCardDTO[] = [];
 
-  constructor(private recipeService: RecipeService) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.loadSavedRecipes();
-  }
-
-  private loadSavedRecipes() {
-    this.recipeService.getSavedRecipes().subscribe({
-      next: (recipes) => {
-        this.recipes = recipes;
-        this.savedCount = recipes.length;
-      },
-      error: (err) => console.error('Error loading saved recipes:', err)
-    });
+    console.log('SavedView: Initializing with resolved saved recipes');
+    
+    // Get saved recipes from resolver
+    this.recipes = this.route.snapshot.data['recipes'];
+    this.savedCount = this.recipes.length;
   }
 }

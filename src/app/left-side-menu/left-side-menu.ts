@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ThemeService, Theme } from '../../../services/theme.service';
+import { ThemeService, Theme } from '../services/theme.service';
 import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 import { UserDTO } from '../../model/user/user-dto';
@@ -60,13 +60,5 @@ export class LeftSideMenu implements OnInit, OnDestroy {
       },
       error: (err) => console.error('Logout error:', err)
     });
-  }
-
-  get username(): string {
-    return this.currentUser?.username || "Chef María";
-  }
-
-  get profilePicture(): string {
-    return this.currentUser?.profilePicturePath || "https://randomuser.me/api/portraits/women/44.jpg";
   }
 }

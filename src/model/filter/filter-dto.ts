@@ -1,32 +1,32 @@
 export class FilterDTO {
-  tags: number[];
-  ingredients: number[];
-  author: number;
-  cuisine: number;
-  rating: number;
-  exactRating: boolean;
-  creationDate: string;
-  prepTime: number;
-  exactPrepTime: boolean;
-  cookTime: number;
-  exactCookTime: boolean;
-  totalTime: number;
-  exactTotalTime: boolean;
+  tags: number[] | null;
+  ingredients: number[] | null;
+  author: number | null;
+  cuisine: number | null;
+  rating: number | null;
+  exactRating: boolean | null;
+  creationDate: string | null;
+  prepTime: number | null;
+  exactPrepTime: boolean | null;
+  cookTime: number | null;
+  exactCookTime: boolean | null;
+  totalTime: number | null;
+  exactTotalTime: boolean | null;
 
   constructor(
-    tags: number[] = [],
-    ingredients: number[] = [],
-    author: number = 0,
-    cuisine: number = 0,
-    rating: number = 0,
-    exactRating: boolean = false,
-    creationDate: string = "",
-    prepTime: number = 0,
-    exactPrepTime: boolean = false,
-    cookTime: number = 0,
-    exactCookTime: boolean = false,
-    totalTime: number = 0,
-    exactTotalTime: boolean = false
+    tags: number[] | null = null,
+    ingredients: number[] | null = null,
+    author: number | null = null,
+    cuisine: number | null = null,
+    rating: number | null = null,
+    exactRating: boolean | null = null,
+    creationDate: string | null = null,
+    prepTime: number | null = null,
+    exactPrepTime: boolean | null = null,
+    cookTime: number | null = null,
+    exactCookTime: boolean | null = null,
+    totalTime: number | null = null,
+    exactTotalTime: boolean | null = null
   ) {
     this.tags = tags;
     this.ingredients = ingredients;

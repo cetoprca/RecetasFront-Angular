@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
-import { ThemeService, Theme } from '../../../services/theme.service';
+import { ThemeService, Theme } from '../services/theme.service';
 import { FilterService } from '../services/filter.service';
 import { FilterDTO } from '../../model/filter/filter-dto';
 

@@ -8,6 +8,10 @@ import { SavedView } from './saved-view/saved-view';
 import { SettingsView } from './settings-view/settings-view';
 import { RecipeDetail } from './recipe-detail/recipe-detail';
 import { AuthGuard } from './services/auth.guard';
+import { UserResolver } from './services/user.resolver';
+import { FeedRecipesResolver } from './services/feed-recipes.resolver';
+import { SavedRecipesResolver } from './services/saved-recipes.resolver';
+import { RecipeDetailResolver } from './services/recipe-detail.resolver';
 
 const routes: Routes = [
   { path: 'login', component: LoginView },
@@ -16,12 +20,12 @@ const routes: Routes = [
     component: FullView,
     canActivate: [AuthGuard],
     children: [
-      { path: '', component: FeedView },
-      { path: 'profile', component: ProfileView },
-      { path: 'profile/:userId', component: ProfileView },
-      { path: 'saved', component: SavedView },
+      { path: '', component: FeedView, resolve: { recipes: FeedRecipesResolver } },
+      { path: 'profile', component: ProfileView, resolve: { user: UserResolver } },
+      { path: 'profile/:userId', component: ProfileView, resolve: { user: UserResolver } },
+      { path: 'saved', component: SavedView, resolve: { recipes: SavedRecipesResolver } },
       { path: 'settings', component: SettingsView },
-      { path: 'recipe/:recipeId', component: RecipeDetail },
+      { path: 'recipe/:recipeId', component: RecipeDetail, resolve: { recipeData: RecipeDetailResolver } },
     ]
   },
   { path: '**', redirectTo: 'login' },

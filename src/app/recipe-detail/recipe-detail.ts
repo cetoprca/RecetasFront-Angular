@@ -2,11 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { StepDTO } from '../../model/step/step-dto';
-import { ThemeService, Theme } from '../../../services/theme.service';
+import { ThemeService, Theme } from '../services/theme.service';
 import { ActivatedRoute } from '@angular/router';
-import { RecipeService } from '../services/recipe.service';
-import { StepService } from '../services/step.service';
 import { RecipeInfo } from '../recipe-info/recipe-info';
+import { RecipeDetailData } from '../services/recipe-detail.resolver';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -17,15 +17,14 @@ import { RecipeInfo } from '../recipe-info/recipe-info';
 export class RecipeDetail implements OnInit, OnDestroy {
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
+  imageUrl = `${environment.apiUrl}/image/file/`;
   recipeId!: number;
   recipe: RecipeCardDTO | null = null;
   steps: StepDTO[] = [];
 
   constructor(
     private themeService: ThemeService,
-    private route: ActivatedRoute,
-    private recipeService: RecipeService,
-    private stepService: StepService
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -36,27 +35,15 @@ export class RecipeDetail implements OnInit, OnDestroy {
       }
     );
 
-    this.route.params.subscribe(params => {
-      this.recipeId = params['recipeId'];
-      this.loadRecipe();
-    });
+    const data = this.route.snapshot.data['recipeData'] as RecipeDetailData;
+    this.recipe = data.recipe;
+    this.steps = data.steps;
+    this.recipeId = data.recipe.id;
   }
 
   ngOnDestroy() {
     if (this.themeSubscription) {
       this.themeSubscription.unsubscribe();
     }
-  }
-
-  private loadRecipe() {
-    this.recipeService.getRecipeById(this.recipeId).subscribe({
-      next: (recipe) => this.recipe = recipe,
-      error: (err) => console.error('Error loading recipe:', err)
-    });
-
-    this.stepService.getStepsByRecipeId(this.recipeId).subscribe({
-      next: (steps) => this.steps = steps,
-      error: (err) => console.error('Error loading steps:', err)
-    });
   }
 }

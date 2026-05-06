@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { CredentialsDTO } from '../../model/auth/credentials-dto';
-import { ThemeService, Theme } from '../../../services/theme.service';
+import { ThemeService, Theme } from '../services/theme.service';
 
 @Component({
   selector: 'app-login-view',

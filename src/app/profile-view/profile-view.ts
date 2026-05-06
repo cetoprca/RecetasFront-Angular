@@ -5,7 +5,6 @@ import { RecipeScroll } from '../recipe-scroll/recipe-scroll';
 import { ProfileHeader } from '../profile-header/profile-header';
 import { RecipeService } from '../services/recipe.service';
 import { FilterService } from '../services/filter.service';
-import { UserService } from '../services/user.service';
 import { UserDTO } from '../../model/user/user-dto';
 import { Subscription } from 'rxjs';
 
@@ -27,26 +26,21 @@ export class ProfileView implements OnInit, OnDestroy {
 
   recipes: RecipeCardDTO[] = [];
   private filterSubscription!: Subscription;
-  private userSubscription!: Subscription;
 
   constructor(
     private recipeService: RecipeService,
     private filterService: FilterService,
-    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit() {
-    console.log('ProfileView: Initializing, route params:', this.route.snapshot.params);
-    this.route.params.subscribe(params => {
-      const userId = params['userId'];
-      if (userId) {
-        this.loadUserById(+userId);
-      } else {
-        this.loadCurrentUser();
-      }
-    });
+    console.log('ProfileView: Initializing with resolved user and recipes');
+    
+    // Get user and recipes from route resolver (both loaded before component renders)
+    const resolvedData = this.route.snapshot.data['user'] as any;
+    this.setUserData(resolvedData.user);
+    this.recipes = resolvedData.recipes;
 
     this.filterSubscription = this.filterService.currentFilter$.subscribe(() => {
       this.loadRecipes();
@@ -65,23 +59,6 @@ export class ProfileView implements OnInit, OnDestroy {
     if (this.filterSubscription) {
       this.filterSubscription.unsubscribe();
     }
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-  }
-
-  private loadCurrentUser() {
-    this.userSubscription = this.userService.getCurrentUser().subscribe({
-      next: (user) => this.setUserData(user),
-      error: (err) => console.error('Error loading current user:', err)
-    });
-  }
-
-  private loadUserById(userId: number) {
-    this.userSubscription = this.userService.getUserById(userId).subscribe({
-      next: (user) => this.setUserData(user),
-      error: (err) => console.error('Error loading user:', err)
-    });
   }
 
   private setUserData(user: UserDTO) {
