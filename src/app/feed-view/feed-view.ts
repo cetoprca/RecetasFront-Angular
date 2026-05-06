@@ -38,6 +38,8 @@ export class FeedView implements OnInit, OnDestroy {
       .subscribe(() => {
         this.loadRecipes();
       });
+
+      console.log(this.recipes);
   }
 
   ngOnDestroy() {

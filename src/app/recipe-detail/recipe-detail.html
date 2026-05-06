@@ -11,7 +11,7 @@
           <h3 class="step-title">{{step.title}}</h3>
           <p class="step-description">{{step.description}}</p>
           @if (step.image && step.image !== '') {
-            <img class="step-image" [src]="step.image" alt="">
+            <img class="step-image" [src]="imageUrl + step.image" alt="">
           }
         </div>
       </div>

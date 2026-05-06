@@ -2,6 +2,7 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ThemeService, Theme } from '../services/theme.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-profile-header',
@@ -12,6 +13,7 @@ import { ThemeService, Theme } from '../services/theme.service';
 export class ProfileHeader implements OnInit, OnDestroy {
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
+  imageUrl = `${environment.apiUrl}/image/file/`;
 
   constructor(private themeService: ThemeService, private router: Router) {}
 

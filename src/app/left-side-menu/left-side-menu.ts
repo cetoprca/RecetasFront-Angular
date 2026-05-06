@@ -5,6 +5,7 @@ import { ThemeService, Theme } from '../services/theme.service';
 import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 import { UserDTO } from '../../model/user/user-dto';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-left-side-menu',
@@ -16,6 +17,8 @@ export class LeftSideMenu implements OnInit, OnDestroy {
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
   currentUser: UserDTO | null = null;
+
+  imageUrl = `${environment.apiUrl}/image/file/`;
 
   constructor(
     private themeService: ThemeService,

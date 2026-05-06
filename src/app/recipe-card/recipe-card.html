@@ -3,7 +3,7 @@
   <div class="card-header" [style.borderBottom]="'1px solid ' + currentTheme.divider">
     <div class="author-row">
       @if (authorProfilePictureURL && authorProfilePictureURL !== '') {
-        <img class="author-avatar" [src]="authorProfilePictureURL" alt="" (click)="navigateToProfile()">
+        <img class="author-avatar" [src]="imageUrl + authorProfilePictureURL" alt="" (click)="navigateToProfile()">
       } @else {
         <div class="author-avatar-placeholder" [style.backgroundColor]="currentTheme.primary" (click)="navigateToProfile()"></div>
       }

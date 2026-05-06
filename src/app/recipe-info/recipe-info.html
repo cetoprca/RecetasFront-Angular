@@ -2,11 +2,7 @@
 
   <div class="card-header" [style.borderBottom]="'1px solid ' + currentTheme.divider">
   <div class="author-row">
-    @if (authorProfilePictureURL && authorProfilePictureURL !== '') {
-      <img class="author-avatar" [src]="authorProfilePictureURL" alt="">
-    } @else {
-      <div class="author-avatar-placeholder" [style.backgroundColor]="currentTheme.primary"></div>
-    }
+    <img class="author-avatar" [src]="imageURL + authorProfilePictureURL" alt="">
     <span class="author-name">{{authorUsername}}</span>
       <div class="menu-container">
         <button class="menu-button" (click)="toggleMenu($event)" [style.color]="currentTheme.menuIcon" [style.--hover-bg]="currentTheme.hoverBg">

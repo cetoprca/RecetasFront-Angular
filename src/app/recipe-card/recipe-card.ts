@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { ThemeService, Theme } from '../services/theme.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-recipe-card',
@@ -20,6 +21,7 @@ export class RecipeCard implements OnInit, OnDestroy {
 
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
+  imageUrl = `${environment.apiUrl}/image/file/`;
   stars: Boolean[] = [];
   showMenu = false;
 
