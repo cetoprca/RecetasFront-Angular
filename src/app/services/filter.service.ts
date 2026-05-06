@@ -37,6 +37,25 @@ export class FilterService {
     this.updateFilter({ author: authorId });
   }
 
+  resetFilter(): void {
+    const nullFilter = new FilterDTO(
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    );
+    this.filterSubject.next(nullFilter);
+  }
+
   clearFilter(): void {
     this.filterSubject.next(new FilterDTO());
   }

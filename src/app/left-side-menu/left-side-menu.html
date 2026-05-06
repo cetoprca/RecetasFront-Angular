@@ -2,9 +2,9 @@
   <div class="profile-card" [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text">
     <div class="profile-info">
       <div class="profile-picture">
-        <img [src]="profilePicture" alt="Profile">
+        <img [src]="currentUser?.profilePicturePath" alt="Profile">
       </div>
-      <span class="username">{{ username }}</span>
+      <span class="username">{{ currentUser?.username }}</span>
     </div>
 
     <div class="menu-buttons">

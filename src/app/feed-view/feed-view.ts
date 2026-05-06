@@ -21,7 +21,7 @@ export class FeedView implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.loadRecipes();
+    this.initializeFilter();
     this.filterSubscription = this.filterService.currentFilter$.subscribe(() => {
       this.loadRecipes();
     });
@@ -33,7 +33,11 @@ export class FeedView implements OnInit, OnDestroy {
     }
   }
 
-  private loadRecipes() {
+  private initializeFilter(): void {
+    this.filterService.resetFilter();
+  }
+
+  private loadRecipes(): void {
     const filter = this.filterService.currentFilter;
     this.recipeService.getFilteredRecipes(filter).subscribe({
       next: (recipes) => this.recipes = recipes,

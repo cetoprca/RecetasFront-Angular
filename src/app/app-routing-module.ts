@@ -8,6 +8,7 @@ import { SavedView } from './saved-view/saved-view';
 import { SettingsView } from './settings-view/settings-view';
 import { RecipeDetail } from './recipe-detail/recipe-detail';
 import { AuthGuard } from './services/auth.guard';
+import { UserResolver } from './services/user.resolver';
 
 const routes: Routes = [
   { path: 'login', component: LoginView },
@@ -17,8 +18,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', component: FeedView },
-      { path: 'profile', component: ProfileView },
-      { path: 'profile/:userId', component: ProfileView },
+      { path: 'profile', component: ProfileView, resolve: { user: UserResolver } },
+      { path: 'profile/:userId', component: ProfileView, resolve: { user: UserResolver } },
       { path: 'saved', component: SavedView },
       { path: 'settings', component: SettingsView },
       { path: 'recipe/:recipeId', component: RecipeDetail },

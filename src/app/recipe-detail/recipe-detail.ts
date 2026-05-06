@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { StepDTO } from '../../model/step/step-dto';
-import { ThemeService, Theme } from '../../../services/theme.service';
+import { ThemeService, Theme } from '../services/theme.service';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from '../services/recipe.service';
 import { StepService } from '../services/step.service';
