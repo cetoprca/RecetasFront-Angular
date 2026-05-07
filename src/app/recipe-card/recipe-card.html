@@ -14,11 +14,11 @@
         </button>
         @if (showMenu) {
           <div class="dropdown-menu" [style.backgroundColor]="currentTheme.card" [style.border]="'1px solid ' + currentTheme.divider">
-            <button class="menu-option" (click)="saveRecipe()" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
+            <button class="menu-option" (click)="saveRecipe($event)" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
               <mat-icon [style.color]="currentTheme.menuIcon">bookmark_border</mat-icon>
               <span>Guardar receta</span>
             </button>
-            <button class="menu-option" (click)="shareRecipe()" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
+            <button class="menu-option" (click)="shareRecipe($event)" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
               <mat-icon [style.color]="currentTheme.menuIcon">share</mat-icon>
               <span>Compartir</span>
             </button>

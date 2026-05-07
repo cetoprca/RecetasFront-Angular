@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { ThemeService, Theme } from '../services/theme.service';
 import { environment } from '../../environments/environment';
+import { RecipeService } from '../services/recipe.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-recipe-card',
@@ -14,7 +16,8 @@ import { environment } from '../../environments/environment';
 export class RecipeCard implements OnInit, OnDestroy {
   constructor(
     private router: Router,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private userService: UserService
   ) {}
 
   @Input() recipeData!: RecipeCardDTO;
@@ -111,12 +114,22 @@ export class RecipeCard implements OnInit, OnDestroy {
     this.showMenu = false;
   }
 
-  saveRecipe() {
-    console.log('Save recipe:', this.recipeData.title);
+  saveRecipe(event: Event) {
+    event.stopPropagation();
+    console.log('Save recipe:', this.recipeData.title, this.recipeData.id);
+    this.userService.saveRecipe(this.recipeData.id).subscribe({
+      next: () => {
+        console.error('Success saving the recipe:');
+      },
+      error: (err) => {
+        console.error('Error saving the recipe:', err);
+      }
+    });
     this.closeMenu();
   }
 
-  shareRecipe() {
+  shareRecipe(event: Event) {
+    event.stopPropagation();
     console.log('Share recipe:', this.recipeData.title);
     this.closeMenu();
   }
