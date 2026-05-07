@@ -13,6 +13,7 @@ export class RecipeCardDTO {
   prepTime: number = 0;
   cookTime: number = 0;
   totalTime: number = 0;
+  isSaved: boolean = false;
 
   constructor() {}
 

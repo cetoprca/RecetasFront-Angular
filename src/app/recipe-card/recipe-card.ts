@@ -50,42 +50,6 @@ export class RecipeCard implements OnInit, OnDestroy {
     }
   }
 
-  get imageURL(): string {
-    return this.recipeData.imageURL || '';
-  }
-
-  get authorUsername(): string {
-    return this.recipeData.author?.username || '';
-  }
-
-  get authorProfilePictureURL(): string {
-    return this.recipeData.author?.profilePicturePath || '';
-  }
-
-  get cuisineName(): string {
-    return this.recipeData.cuisine || '';
-  }
-
-  get tagList(): any[] {
-    return this.recipeData.tags || [];
-  }
-
-  get recipeTitle(): string {
-    return this.recipeData.title;
-  }
-
-  get recipeDescription(): string {
-    return this.recipeData.description;
-  }
-
-  get recipePrepTime(): number {
-    return this.recipeData.prepTime;
-  }
-
-  get recipeCookTime(): number {
-    return this.recipeData.cookTime;
-  }
-
   openRecipe() {
     if (this.recipeData && this.recipeData.id) {
       this.router.navigate(['/recipe', this.recipeData.id]);
@@ -118,13 +82,14 @@ export class RecipeCard implements OnInit, OnDestroy {
     event.stopPropagation();
     console.log('Save recipe:', this.recipeData.title, this.recipeData.id);
     this.userService.saveRecipe(this.recipeData.id).subscribe({
-      next: () => {
-        console.error('Success saving the recipe:');
-      },
+       next: () => {
+         console.error('Success saving the recipe:');
+       },
       error: (err) => {
         console.error('Error saving the recipe:', err);
       }
     });
+    this.recipeData.isSaved = !this.recipeData.isSaved;
     this.closeMenu();
   }
 

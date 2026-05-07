@@ -18,10 +18,6 @@ export class RecipeService {
     return this.http.post<RecipeCardDTO[]>(`${this.baseUrl}/filter`, filter, { withCredentials: true });
   }
 
-  getSavedRecipes(): Observable<RecipeCardDTO[]> {
-    return this.http.get<RecipeCardDTO[]>(`${this.baseUrl}/user/saved`, { withCredentials: true });
-  }
-
   getRecipeById(id: number): Observable<RecipeCardDTO> {
     return this.http.get<RecipeCardDTO>(`${this.baseUrl}/card/${id}`, { withCredentials: true });
   }
