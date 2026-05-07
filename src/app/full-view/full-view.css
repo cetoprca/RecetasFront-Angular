@@ -15,10 +15,10 @@
 .center-container {
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap:1rem;
   height: 100%;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1240px;
 }
 
 .center-container > app-left-side-menu {
@@ -33,10 +33,11 @@
   width: 100%;
   flex-shrink: 0;
   height: 100%;
+  margin: 0 auto;
 }
 
 .center-container > app-right-side-menu {
-  width: 220px;
+  width: 290px;
   flex-shrink: 0;
   border-radius: 12px;
   height: 100%;
