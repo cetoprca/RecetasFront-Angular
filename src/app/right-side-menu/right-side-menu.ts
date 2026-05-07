@@ -164,20 +164,22 @@ export class RightSideMenu implements OnInit, OnDestroy {
   }
 
   applyFilters(): void {
-    this.filterService.resetFilter();
-    this.filterService.updateFilter({
-      tags: this.selectedTags.length > 0 ? this.selectedTags.map(t => t.id) : null,
-      ingredients: this.selectedIngredients.length > 0 ? this.selectedIngredients.map(i => i.id) : null,
-      rating: this.rating || null,
-      exactRating: this.exactRating || null,
-      prepTime: this.prepTime || null,
-      exactPrepTime: this.exactPrepTime || null,
-      cookTime: this.cookTime || null,
-      exactCookTime: this.exactCookTime || null,
-      totalTime: this.totalTime || null,
-      exactTotalTime: this.exactTotalTime || null,
-      creationDate: this.creationDate || ''
-    });
+    const filter = new FilterDTO(
+      this.selectedTags.length > 0 ? this.selectedTags.map(t => t.id) : null,
+      this.selectedIngredients.length > 0 ? this.selectedIngredients.map(i => i.id) : null,
+      null,
+      null,
+      this.rating || null,
+      this.exactRating || null,
+      this.creationDate || '',
+      this.prepTime || null,
+      this.exactPrepTime || null,
+      this.cookTime || null,
+      this.exactCookTime || null,
+      this.totalTime || null,
+      this.exactTotalTime || null
+    );
+    this.filterService.setFilter(filter);
 
     if (this.router.url !== '/') {
       this.router.navigate(['/']);

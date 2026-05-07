@@ -88,6 +88,7 @@ export class FeedView implements OnInit, OnDestroy {
   }
 
   private onFilterChanged(): void {
+    if (this.loading) return;
     this.currentPage = 0;
     this.loading = true;
     const filter = this.filterService.currentFilter;
