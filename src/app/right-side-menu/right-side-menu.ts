@@ -25,7 +25,6 @@ export class RightSideMenu implements OnInit, OnDestroy {
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
   private filterSubscription!: Subscription;
-  private updatingFromService = false;
 
   constructor(
     private themeService: ThemeService,
@@ -60,9 +59,7 @@ export class RightSideMenu implements OnInit, OnDestroy {
     });
 
     this.filterSubscription = this.filterService.currentFilter$.subscribe(filter => {
-      if (!this.updatingFromService) {
-        this.syncFromService(filter);
-      }
+      this.syncFromService(filter);
     });
   }
 
@@ -164,6 +161,7 @@ export class RightSideMenu implements OnInit, OnDestroy {
       this.selectedTags.push(tag);
     }
     this.showTagDropdown = false;
+    this.filterService.updateFilter({ tags: this.selectedTags.map(t => t.id) });
   }
 
   addIngredientById(ingredientId: number): void {
@@ -172,6 +170,7 @@ export class RightSideMenu implements OnInit, OnDestroy {
       this.selectedIngredients.push(ingredient);
     }
     this.showIngredientDropdown = false;
+    this.filterService.updateFilter({ ingredients: this.selectedIngredients.map(i => i.id) });
   }
 
   isTagSelected(tagId: number): boolean {
@@ -185,10 +184,12 @@ export class RightSideMenu implements OnInit, OnDestroy {
   selectCuisine(cuisineId: number): void {
     this.selectedCuisineId = cuisineId;
     this.showCuisineDropdown = false;
+    this.filterService.updateFilter({ cuisine: cuisineId });
   }
 
   removeCuisine(): void {
     this.selectedCuisineId = null;
+    this.filterService.updateFilter({ cuisine: null });
   }
 
   getCuisineName(cuisineId: number): string {
@@ -209,6 +210,7 @@ export class RightSideMenu implements OnInit, OnDestroy {
 
   removeTag(tag: FilterOption): void {
     this.selectedTags = this.selectedTags.filter(t => t.id !== tag.id);
+    this.filterService.updateFilter({ tags: this.selectedTags.map(t => t.id) });
   }
 
   addIngredient(event: Event): void {
@@ -225,14 +227,15 @@ export class RightSideMenu implements OnInit, OnDestroy {
 
   removeIngredient(ingredient: FilterOption): void {
     this.selectedIngredients = this.selectedIngredients.filter(i => i.id !== ingredient.id);
+    this.filterService.updateFilter({ ingredients: this.selectedIngredients.map(i => i.id) });
   }
 
   setRating(star: number): void {
     this.rating = this.rating === star ? 0 : star;
+    this.filterService.updateFilter({ rating: this.rating || null, exactRating: this.exactRating || null });
   }
 
   applyFilters(): void {
-    this.updatingFromService = true;
     const filter = new FilterDTO(
       this.selectedTags.length > 0 ? this.selectedTags.map(t => t.id) : null,
       this.selectedIngredients.length > 0 ? this.selectedIngredients.map(i => i.id) : null,
@@ -248,8 +251,7 @@ export class RightSideMenu implements OnInit, OnDestroy {
       this.totalTime || null,
       this.exactTotalTime || null
     );
-    this.filterService.setFilter(filter);
-    this.updatingFromService = false;
+    this.filterService.applyFilter(filter);
 
     if (this.router.url !== '/') {
       this.router.navigate(['/']);
@@ -272,6 +274,20 @@ export class RightSideMenu implements OnInit, OnDestroy {
     this.tagSearchText = '';
     this.ingredientSearchText = '';
     this.cuisineSearchText = '';
+    this.filterService.updateFilter({
+      tags: null,
+      ingredients: null,
+      cuisine: null,
+      rating: null,
+      exactRating: null,
+      prepTime: null,
+      exactPrepTime: null,
+      cookTime: null,
+      exactCookTime: null,
+      totalTime: null,
+      exactTotalTime: null,
+      creationDate: ''
+    });
   }
 
   private syncFromService(filter: FilterDTO): void {

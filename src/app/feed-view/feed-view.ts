@@ -46,7 +46,9 @@ export class FeedView implements OnInit, OnDestroy {
     this.filterSubscription = this.filterService.currentFilter$
       .pipe(skip(1))
       .subscribe(() => {
-        this.onFilterChanged();
+        if (this.filterService.consumeShouldRequest()) {
+          this.onFilterChanged();
+        }
       });
   }
 

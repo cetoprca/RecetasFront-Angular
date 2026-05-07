@@ -156,12 +156,11 @@ export class RecipeCard implements OnInit, OnDestroy {
     }
     event.stopPropagation();
 
-    const currentFilter = this.filterService.currentFilter;
-    const currentTags = currentFilter.tags || [];
+    const currentPending = this.filterService.currentFilter;
+    const currentTags = currentPending.tags || [];
     if (!currentTags.includes(tag.id)) {
       this.filterService.updateFilter({ tags: [...currentTags, tag.id] });
     }
-    this.router.navigate(['/']);
   }
 
   onCuisineClick(event: MouseEvent, cuisineName: string) {
@@ -175,7 +174,6 @@ export class RecipeCard implements OnInit, OnDestroy {
     const cuisineId = this.cuisinesByName.get(cuisineName.toLowerCase());
     if (cuisineId) {
       this.filterService.updateFilter({ cuisine: cuisineId });
-      this.router.navigate(['/']);
     }
   }
 
