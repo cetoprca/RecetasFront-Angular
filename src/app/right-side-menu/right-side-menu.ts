@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 import { ThemeService, Theme } from '../services/theme.service';
 import { FilterService } from '../services/filter.service';
 import { FilterDTO } from '../../model/filter/filter-dto';
+import { TagService } from '../services/tag.service';
+import { IngredientService } from '../services/ingredient.service';
 
 interface FilterOption {
   id: number;
@@ -25,7 +27,9 @@ export class RightSideMenu implements OnInit, OnDestroy {
   constructor(
     private themeService: ThemeService,
     private filterService: FilterService,
-    private router: Router
+    private router: Router,
+    private tagService: TagService,
+    private ingredientService: IngredientService
   ) {}
 
   ngOnInit() {
@@ -35,6 +39,16 @@ export class RightSideMenu implements OnInit, OnDestroy {
         this.currentTheme = theme;
       }
     );
+
+    this.tagService.getAllTags().subscribe({
+      next: (tags) => this.availableTags = tags.map(t => ({ id: t.id, name: t.name })),
+      error: (err) => console.error('Error loading tags:', err)
+    });
+
+    this.ingredientService.getAllIngredients().subscribe({
+      next: (ingredients) => this.availableIngredients = ingredients.map(i => ({ id: i.id, name: i.name })),
+      error: (err) => console.error('Error loading ingredients:', err)
+    });
   }
 
   ngOnDestroy() {
@@ -44,52 +58,10 @@ export class RightSideMenu implements OnInit, OnDestroy {
   }
 
   selectedTags: FilterOption[] = [];
-  availableTags: FilterOption[] = [
-    { id: 1, name: 'Freidora de aire' },
-    { id: 2, name: 'Delicioso' },
-    { id: 3, name: 'Fácil' },
-    { id: 4, name: 'Postre' },
-    { id: 5, name: 'Dulce' },
-    { id: 6, name: 'Ensalada' },
-    { id: 7, name: 'Saludable' },
-    { id: 8, name: 'Pasta' },
-    { id: 9, name: 'Italiana' },
-    { id: 10, name: 'Vegetariano' },
-    { id: 11, name: 'Vegano' },
-    { id: 12, name: 'Carnes' },
-    { id: 13, name: 'Pescado' },
-    { id: 14, name: 'Marisco' },
-    { id: 15, name: 'Sopa' },
-    { id: 16, name: 'Arroz' },
-  ];
+  availableTags: FilterOption[] = [];
 
   selectedIngredients: FilterOption[] = [];
-  availableIngredients: FilterOption[] = [
-    { id: 1, name: 'Pollo' },
-    { id: 2, name: 'Carne de cerdo' },
-    { id: 3, name: 'Carne de vaca' },
-    { id: 4, name: 'Pescado' },
-    { id: 5, name: 'Mariscos' },
-    { id: 6, name: 'Arroz' },
-    { id: 7, name: 'Pasta' },
-    { id: 8, name: 'Patatas' },
-    { id: 9, name: 'Tomate' },
-    { id: 10, name: 'Cebolla' },
-    { id: 11, name: 'Ajo' },
-    { id: 12, name: 'Pimiento' },
-    { id: 13, name: 'Zanahoria' },
-    { id: 14, name: 'Lechuga' },
-    { id: 15, name: 'Queso' },
-    { id: 16, name: 'Huevo' },
-    { id: 17, name: 'Leche' },
-    { id: 18, name: 'Harina' },
-    { id: 19, name: 'Azúcar' },
-    { id: 20, name: 'Aceite de oliva' },
-    { id: 21, name: 'Mantequilla' },
-    { id: 22, name: 'Limón' },
-    { id: 23, name: 'AOVE' },
-    { id: 24, name: 'Hierbas provenzales' },
-  ];
+  availableIngredients: FilterOption[] = [];
 
   rating: number = 0;
   exactRating: boolean = false;
@@ -206,7 +178,10 @@ export class RightSideMenu implements OnInit, OnDestroy {
       exactTotalTime: this.exactTotalTime || null,
       creationDate: this.creationDate || ''
     });
-    this.router.navigate(['/']);
+
+    if (this.router.url !== '/') {
+      this.router.navigate(['/']);
+    }
   }
 
   clearFilters(): void {
@@ -221,7 +196,5 @@ export class RightSideMenu implements OnInit, OnDestroy {
     this.totalTime = 0;
     this.exactTotalTime = false;
     this.creationDate = '';
-    this.filterService.resetFilter();
-    this.router.navigate(['/']);
   }
 }
