@@ -32,4 +32,8 @@ export class UserService {
   getCurrentUser(): Observable<UserDTO> {
     return this.http.get<UserDTO>(`${this.baseUrl}/logged`, { withCredentials: true });
   }
+
+  saveRecipe(recipeID: number): Observable<UserDTO>{
+    return this.http.post<UserDTO>(`${this.baseUrl}/save/${recipeID}`, {}, {withCredentials: true});
+  }
 }
