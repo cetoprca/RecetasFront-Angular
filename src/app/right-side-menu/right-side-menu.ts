@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
@@ -23,7 +24,8 @@ export class RightSideMenu implements OnInit, OnDestroy {
 
   constructor(
     private themeService: ThemeService,
-    private filterService: FilterService
+    private filterService: FilterService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -190,20 +192,21 @@ export class RightSideMenu implements OnInit, OnDestroy {
   }
 
   applyFilters(): void {
-    const filter: Partial<FilterDTO> = {
-      tags: this.selectedTags.map(t => t.id),
-      ingredients: this.selectedIngredients.map(i => i.id),
-      rating: this.rating,
-      exactRating: this.exactRating,
-      prepTime: this.prepTime,
-      exactPrepTime: this.exactPrepTime,
-      cookTime: this.cookTime,
-      exactCookTime: this.exactCookTime,
-      totalTime: this.totalTime,
-      exactTotalTime: this.exactTotalTime,
+    this.filterService.resetFilter();
+    this.filterService.updateFilter({
+      tags: this.selectedTags.length > 0 ? this.selectedTags.map(t => t.id) : null,
+      ingredients: this.selectedIngredients.length > 0 ? this.selectedIngredients.map(i => i.id) : null,
+      rating: this.rating || null,
+      exactRating: this.exactRating || null,
+      prepTime: this.prepTime || null,
+      exactPrepTime: this.exactPrepTime || null,
+      cookTime: this.cookTime || null,
+      exactCookTime: this.exactCookTime || null,
+      totalTime: this.totalTime || null,
+      exactTotalTime: this.exactTotalTime || null,
       creationDate: this.creationDate || ''
-    };
-    this.filterService.updateFilter(filter);
+    });
+    this.router.navigate(['/']);
   }
 
   clearFilters(): void {
@@ -218,6 +221,7 @@ export class RightSideMenu implements OnInit, OnDestroy {
     this.totalTime = 0;
     this.exactTotalTime = false;
     this.creationDate = '';
-    this.filterService.clearFilter();
+    this.filterService.resetFilter();
+    this.router.navigate(['/']);
   }
 }
