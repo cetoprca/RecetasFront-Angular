@@ -8,7 +8,7 @@
     </div>
 
     <div class="menu-buttons">
-      <button class="menu-button" routerLink="/" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+      <button class="menu-button" (click)="navigateToFeed()" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
         <mat-icon>home</mat-icon>
         <span>Inicio</span>
       </button>

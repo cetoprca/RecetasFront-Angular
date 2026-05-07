@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ThemeService, Theme } from '../services/theme.service';
+import { FilterService } from '../services/filter.service';
 import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 import { UserDTO } from '../../model/user/user-dto';
@@ -24,7 +25,8 @@ export class LeftSideMenu implements OnInit, OnDestroy {
     private themeService: ThemeService,
     private router: Router,
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private filterService: FilterService
   ) {}
 
   ngOnInit() {
@@ -50,6 +52,11 @@ export class LeftSideMenu implements OnInit, OnDestroy {
       },
       error: (err) => console.error('Error loading current user:', err)
     });
+  }
+
+  navigateToFeed() {
+    this.filterService.resetFilter();
+    this.router.navigate(['/']);
   }
 
   navigateToProfile() {
