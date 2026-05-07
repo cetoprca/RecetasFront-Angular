@@ -1,12 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
+import { PageResponse } from '../../model/page-response';
 import { RecipeScroll } from '../recipe-scroll/recipe-scroll';
 import { ProfileHeader } from '../profile-header/profile-header';
 import { RecipeService } from '../services/recipe.service';
 import { FilterService } from '../services/filter.service';
 import { UserDTO } from '../../model/user/user-dto';
+import { UserWithRecipes } from '../services/user.resolver';
+import { PaginationDTO } from '../../model/pagination/pagination-dto';
+import { RecipeFilterRequest } from '../../model/recipe/recipe-filter-request';
+import { environment } from '../../environments/environment';
 import { Subscription } from 'rxjs';
+import { skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile-view',
@@ -15,16 +21,19 @@ import { Subscription } from 'rxjs';
   styleUrl: './profile-view.css',
 })
 export class ProfileView implements OnInit, OnDestroy {
-  username: string = "Chef María";
-  userHandle: string = "chefmaria";
-  bio: string = "Amante de la cocina mediterránea. Compartiendo mis recetas favoritas 🍳";
-  profilePicture: string = "https://randomuser.me/api/portraits/women/44.jpg";
+  username: string = "";
+  userHandle: string = "";
+  bio: string = "";
+  profilePicture: string = "";
   followers: number = 0;
   following: number = 0;
   recipesCount: number = 0;
   userId: number = 0;
 
   recipes: RecipeCardDTO[] = [];
+  currentPage: number = 0;
+  hasMore: boolean = false;
+  loading: boolean = false;
   private filterSubscription!: Subscription;
 
   constructor(
@@ -36,15 +45,19 @@ export class ProfileView implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('ProfileView: Initializing with resolved user and recipes');
-    
-    // Get user and recipes from route resolver (both loaded before component renders)
-    const resolvedData = this.route.snapshot.data['user'] as any;
-    this.setUserData(resolvedData.user);
-    this.recipes = resolvedData.recipes;
 
-    this.filterSubscription = this.filterService.currentFilter$.subscribe(() => {
-      this.loadRecipes();
-    });
+    const resolvedData = this.route.snapshot.data['user'] as UserWithRecipes;
+    this.setUserData(resolvedData.user);
+    this.recipes = resolvedData.recipes.content;
+    this.hasMore = !resolvedData.recipes.last;
+    this.currentPage = 0;
+    this.recipesCount = resolvedData.recipes.totalElements;
+
+    this.filterSubscription = this.filterService.currentFilter$
+      .pipe(skip(1))
+      .subscribe(() => {
+        this.onFilterChanged();
+      });
   }
 
   get isOwnProfile(): boolean {
@@ -61,8 +74,26 @@ export class ProfileView implements OnInit, OnDestroy {
     }
   }
 
+  onLoadMore(): void {
+    if (this.loading || !this.hasMore) return;
+
+    this.loading = true;
+    this.currentPage++;
+
+    this.recipeService.getRecipesByUser(this.userId, new PaginationDTO(this.currentPage, environment.defaultPageSize)).subscribe({
+      next: (page) => {
+        this.recipes = [...this.recipes, ...page.content];
+        this.hasMore = !page.last;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading more recipes:', err);
+        this.loading = false;
+      }
+    });
+  }
+
   private setUserData(user: UserDTO) {
-    console.log('ProfileView: Loading user data', user);
     this.userId = user.id;
     this.username = user.username;
     this.userHandle = user.username;
@@ -70,17 +101,27 @@ export class ProfileView implements OnInit, OnDestroy {
     this.profilePicture = user.profilePicturePath || "";
     this.followers = 0;
     this.following = 0;
-    this.recipesCount = user.recipes?.length || 0;
 
     this.filterService.setAuthor(this.userId);
-    this.loadRecipes();
   }
 
-  private loadRecipes() {
+  private onFilterChanged(): void {
+    this.currentPage = 0;
+    this.loading = true;
     const filter = this.filterService.currentFilter;
-    this.recipeService.getFilteredRecipes(filter).subscribe({
-      next: (recipes) => this.recipes = recipes,
-      error: (err) => console.error('Error loading recipes:', err)
+    const request = new RecipeFilterRequest(filter, new PaginationDTO(0, environment.defaultPageSize));
+
+    this.recipeService.getFilteredRecipes(request).subscribe({
+      next: (page) => {
+        this.recipes = page.content;
+        this.hasMore = !page.last;
+        this.recipesCount = page.totalElements;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading recipes:', err);
+        this.loading = false;
+      }
     });
   }
 }

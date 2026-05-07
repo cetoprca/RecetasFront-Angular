@@ -6,11 +6,13 @@ import { UserDTO } from '../../model/user/user-dto';
 import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { UserService } from './user.service';
 import { RecipeService } from './recipe.service';
-import { FilterDTO } from '../../model/filter/filter-dto';
+import { PaginationDTO } from '../../model/pagination/pagination-dto';
+import { PageResponse } from '../../model/page-response';
+import { environment } from '../../environments/environment';
 
 export interface UserWithRecipes {
   user: UserDTO;
-  recipes: RecipeCardDTO[];
+  recipes: PageResponse<RecipeCardDTO>;
 }
 
 @Injectable({
@@ -28,9 +30,7 @@ export class UserResolver implements Resolve<UserWithRecipes> {
     
     return userObs.pipe(
       switchMap(user => {
-        // Create a filter with the author set to this user's ID
-        const authorFilter = new FilterDTO(null, null, user.id, null, null, null, null, null, null, null, null, null, null);
-        return this.recipeService.getFilteredRecipes(authorFilter).pipe(
+        return this.recipeService.getRecipesByUser(user.id, new PaginationDTO(0, environment.defaultPageSize)).pipe(
           map(recipes => ({ user, recipes }))
         );
       })

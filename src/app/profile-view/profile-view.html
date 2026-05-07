@@ -1,4 +1,9 @@
-<app-recipe-scroll [recipes]="recipes">
+<app-recipe-scroll
+  [recipes]="recipes"
+  [hasMore]="hasMore"
+  [loading]="loading"
+  (loadMore)="onLoadMore()"
+>
   <app-profile-header
     slot="header"
     [username]="username"

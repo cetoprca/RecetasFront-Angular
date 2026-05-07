@@ -4,6 +4,9 @@ import { Observable } from "rxjs";
 import { RecipeDTO } from "../../model/recipe/recipe-dto";
 import { RecipeCardDTO } from "../../model/recipe/recipe-card-dto";
 import { FilterDTO } from "../../model/filter/filter-dto";
+import { RecipeFilterRequest } from "../../model/recipe/recipe-filter-request";
+import { PaginationDTO } from "../../model/pagination/pagination-dto";
+import { PageResponse } from "../../model/page-response";
 import { environment } from "../../environments/environment";
 
 @Injectable({
@@ -14,8 +17,12 @@ export class RecipeService {
 
   constructor(private http: HttpClient) {}
 
-  getFilteredRecipes(filter: FilterDTO): Observable<RecipeCardDTO[]> {
-    return this.http.post<RecipeCardDTO[]>(`${this.baseUrl}/filter`, filter, { withCredentials: true });
+  getFilteredRecipes(request: RecipeFilterRequest): Observable<PageResponse<RecipeCardDTO>> {
+    return this.http.post<PageResponse<RecipeCardDTO>>(`${this.baseUrl}/filter`, request, { withCredentials: true });
+  }
+
+  getRecipesByUser(userId: number, pagination: PaginationDTO): Observable<PageResponse<RecipeCardDTO>> {
+    return this.http.post<PageResponse<RecipeCardDTO>>(`${this.baseUrl}/byUser/${userId}`, pagination, { withCredentials: true });
   }
 
   getRecipeById(id: number): Observable<RecipeCardDTO> {

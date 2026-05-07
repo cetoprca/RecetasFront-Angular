@@ -1,8 +1,12 @@
-<div class="scroll-container">
+<div #scrollContainer class="scroll-container">
   <ng-content select="[slot=header]"></ng-content>
   <div class="cards-container">
     @for (recipe of recipes; track recipe.title) {
       <app-recipe-card [recipeData]="recipe"/>
     }
+    @if (loading) {
+      <div class="loading-spinner">Loading more recipes...</div>
+    }
+    <div #sentinel class="sentinel"></div>
   </div>
 </div>

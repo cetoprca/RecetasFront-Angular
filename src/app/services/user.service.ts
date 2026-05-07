@@ -5,6 +5,8 @@ import { UserDTO } from "../../model/user/user-dto";
 import { CredentialsDTO } from "../../model/auth/credentials-dto";
 import { environment } from "../../environments/environment";
 import { RecipeCardDTO } from "../../model/recipe/recipe-card-dto";
+import { PaginationDTO } from "../../model/pagination/pagination-dto";
+import { PageResponse } from "../../model/page-response";
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +40,7 @@ export class UserService {
     return this.http.post<UserDTO>(`${this.baseUrl}/save/${recipeID}`, {}, {withCredentials: true});
   }
 
-  getSavedRecipes(): Observable<RecipeCardDTO[]> {
-    return this.http.get<RecipeCardDTO[]>(`${this.baseUrl}/savedRecipes`, { withCredentials: true });
+  getSavedRecipes(pagination: PaginationDTO): Observable<PageResponse<RecipeCardDTO>> {
+    return this.http.post<PageResponse<RecipeCardDTO>>(`${this.baseUrl}/savedRecipes`, pagination, { withCredentials: true });
   }
 }
