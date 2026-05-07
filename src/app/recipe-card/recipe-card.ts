@@ -2,7 +2,10 @@ import { Component, ElementRef, Input, OnInit, OnDestroy, HostListener } from '@
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
+import { TagDTO } from '../../model/tag/tag-dto';
 import { ThemeService, Theme } from '../services/theme.service';
+import { FilterService } from '../services/filter.service';
+import { CuisineService } from '../services/cuisine.service';
 import { environment } from '../../environments/environment';
 import { RecipeService } from '../services/recipe.service';
 import { UserService } from '../services/user.service';
@@ -17,6 +20,8 @@ export class RecipeCard implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private themeService: ThemeService,
+    private filterService: FilterService,
+    private cuisineService: CuisineService,
     private userService: UserService
   ) {}
 
@@ -27,6 +32,7 @@ export class RecipeCard implements OnInit, OnDestroy {
   imageUrl = `${environment.apiUrl}/image/file/`;
   stars: Boolean[] = [];
   showMenu = false;
+  private cuisinesByName: Map<string, number> = new Map();
 
   ngOnInit(){
     this.currentTheme = this.themeService.getCurrentTheme();
@@ -42,6 +48,15 @@ export class RecipeCard implements OnInit, OnDestroy {
     for(let i = 0; i<5-stars; i++){
       this.stars[4-i] = false;
     }
+
+    this.cuisineService.getAllCuisines().subscribe({
+      next: (cuisines) => {
+        for (const c of cuisines) {
+          this.cuisinesByName.set(c.name.toLowerCase(), c.id);
+        }
+      },
+      error: (err) => console.error('Error loading cuisines:', err)
+    });
   }
 
   ngOnDestroy() {
@@ -133,15 +148,33 @@ export class RecipeCard implements OnInit, OnDestroy {
     this.moved = false;
   }
 
-  onTagClick(event: MouseEvent) {
+  onTagClick(event: MouseEvent, tag: TagDTO) {
     if (this.moved) {
       event.preventDefault();
       event.stopPropagation();
       return;
     }
+    event.stopPropagation();
 
-    console.log('Abrir enlace');
-    this.router.navigate(['/tag']);
+    const currentPending = this.filterService.currentFilter;
+    const currentTags = currentPending.tags || [];
+    if (!currentTags.includes(tag.id)) {
+      this.filterService.updateFilter({ tags: [...currentTags, tag.id] });
+    }
+  }
+
+  onCuisineClick(event: MouseEvent, cuisineName: string) {
+    if (this.moved) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    event.stopPropagation();
+
+    const cuisineId = this.cuisinesByName.get(cuisineName.toLowerCase());
+    if (cuisineId) {
+      this.filterService.updateFilter({ cuisine: cuisineId });
+    }
   }
 
   onImageError(event: Event) {

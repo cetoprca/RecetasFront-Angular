@@ -1,10 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 import { ThemeService, Theme } from '../services/theme.service';
 import { FilterService } from '../services/filter.service';
 import { FilterDTO } from '../../model/filter/filter-dto';
+import { TagService } from '../services/tag.service';
+import { IngredientService } from '../services/ingredient.service';
+import { CuisineService } from '../services/cuisine.service';
 
 interface FilterOption {
   id: number;
@@ -20,10 +24,15 @@ interface FilterOption {
 export class RightSideMenu implements OnInit, OnDestroy {
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
+  private filterSubscription!: Subscription;
 
   constructor(
     private themeService: ThemeService,
-    private filterService: FilterService
+    private filterService: FilterService,
+    private router: Router,
+    private tagService: TagService,
+    private ingredientService: IngredientService,
+    private cuisineService: CuisineService
   ) {}
 
   ngOnInit() {
@@ -33,61 +42,66 @@ export class RightSideMenu implements OnInit, OnDestroy {
         this.currentTheme = theme;
       }
     );
+
+    this.tagService.getAllTags().subscribe({
+      next: (tags) => this.availableTags = tags.map(t => ({ id: t.id, name: t.name })),
+      error: (err) => console.error('Error loading tags:', err)
+    });
+
+    this.ingredientService.getAllIngredients().subscribe({
+      next: (ingredients) => this.availableIngredients = ingredients.map(i => ({ id: i.id, name: i.name })),
+      error: (err) => console.error('Error loading ingredients:', err)
+    });
+
+    this.cuisineService.getAllCuisines().subscribe({
+      next: (cuisines) => this.availableCuisines = cuisines.map(c => ({ id: c.id, name: c.name })),
+      error: (err) => console.error('Error loading cuisines:', err)
+    });
+
+    this.filterSubscription = this.filterService.currentFilter$.subscribe(filter => {
+      this.syncFromService(filter);
+    });
   }
 
   ngOnDestroy() {
     if (this.themeSubscription) {
       this.themeSubscription.unsubscribe();
     }
+    if (this.filterSubscription) {
+      this.filterSubscription.unsubscribe();
+    }
   }
 
   selectedTags: FilterOption[] = [];
-  availableTags: FilterOption[] = [
-    { id: 1, name: 'Freidora de aire' },
-    { id: 2, name: 'Delicioso' },
-    { id: 3, name: 'Fácil' },
-    { id: 4, name: 'Postre' },
-    { id: 5, name: 'Dulce' },
-    { id: 6, name: 'Ensalada' },
-    { id: 7, name: 'Saludable' },
-    { id: 8, name: 'Pasta' },
-    { id: 9, name: 'Italiana' },
-    { id: 10, name: 'Vegetariano' },
-    { id: 11, name: 'Vegano' },
-    { id: 12, name: 'Carnes' },
-    { id: 13, name: 'Pescado' },
-    { id: 14, name: 'Marisco' },
-    { id: 15, name: 'Sopa' },
-    { id: 16, name: 'Arroz' },
-  ];
+  availableTags: FilterOption[] = [];
 
   selectedIngredients: FilterOption[] = [];
-  availableIngredients: FilterOption[] = [
-    { id: 1, name: 'Pollo' },
-    { id: 2, name: 'Carne de cerdo' },
-    { id: 3, name: 'Carne de vaca' },
-    { id: 4, name: 'Pescado' },
-    { id: 5, name: 'Mariscos' },
-    { id: 6, name: 'Arroz' },
-    { id: 7, name: 'Pasta' },
-    { id: 8, name: 'Patatas' },
-    { id: 9, name: 'Tomate' },
-    { id: 10, name: 'Cebolla' },
-    { id: 11, name: 'Ajo' },
-    { id: 12, name: 'Pimiento' },
-    { id: 13, name: 'Zanahoria' },
-    { id: 14, name: 'Lechuga' },
-    { id: 15, name: 'Queso' },
-    { id: 16, name: 'Huevo' },
-    { id: 17, name: 'Leche' },
-    { id: 18, name: 'Harina' },
-    { id: 19, name: 'Azúcar' },
-    { id: 20, name: 'Aceite de oliva' },
-    { id: 21, name: 'Mantequilla' },
-    { id: 22, name: 'Limón' },
-    { id: 23, name: 'AOVE' },
-    { id: 24, name: 'Hierbas provenzales' },
-  ];
+  availableIngredients: FilterOption[] = [];
+
+  selectedCuisineId: number | null = null;
+  availableCuisines: FilterOption[] = [];
+
+  tagSearchText: string = '';
+  ingredientSearchText: string = '';
+  cuisineSearchText: string = '';
+
+  get filteredAvailableTags(): FilterOption[] {
+    return this.availableTags.filter(t =>
+      t.name.toLowerCase().includes(this.tagSearchText.toLowerCase())
+    );
+  }
+
+  get filteredAvailableIngredients(): FilterOption[] {
+    return this.availableIngredients.filter(i =>
+      i.name.toLowerCase().includes(this.ingredientSearchText.toLowerCase())
+    );
+  }
+
+  get filteredAvailableCuisines(): FilterOption[] {
+    return this.availableCuisines.filter(c =>
+      c.name.toLowerCase().includes(this.cuisineSearchText.toLowerCase())
+    );
+  }
 
   rating: number = 0;
   exactRating: boolean = false;
@@ -114,6 +128,7 @@ export class RightSideMenu implements OnInit, OnDestroy {
 
   showTagDropdown: boolean = false;
   showIngredientDropdown: boolean = false;
+  showCuisineDropdown: boolean = false;
 
   toggleSection(section: string): void {
     this.expandedSections[section] = !this.expandedSections[section];
@@ -121,12 +136,23 @@ export class RightSideMenu implements OnInit, OnDestroy {
 
   toggleTagDropdown(): void {
     this.showTagDropdown = !this.showTagDropdown;
+    this.tagSearchText = '';
     this.showIngredientDropdown = false;
+    this.showCuisineDropdown = false;
   }
 
   toggleIngredientDropdown(): void {
     this.showIngredientDropdown = !this.showIngredientDropdown;
+    this.ingredientSearchText = '';
     this.showTagDropdown = false;
+    this.showCuisineDropdown = false;
+  }
+
+  toggleCuisineDropdown(): void {
+    this.showCuisineDropdown = !this.showCuisineDropdown;
+    this.cuisineSearchText = '';
+    this.showTagDropdown = false;
+    this.showIngredientDropdown = false;
   }
 
   addTagById(tagId: number): void {
@@ -135,6 +161,7 @@ export class RightSideMenu implements OnInit, OnDestroy {
       this.selectedTags.push(tag);
     }
     this.showTagDropdown = false;
+    this.filterService.updateFilter({ tags: this.selectedTags.map(t => t.id) });
   }
 
   addIngredientById(ingredientId: number): void {
@@ -143,6 +170,7 @@ export class RightSideMenu implements OnInit, OnDestroy {
       this.selectedIngredients.push(ingredient);
     }
     this.showIngredientDropdown = false;
+    this.filterService.updateFilter({ ingredients: this.selectedIngredients.map(i => i.id) });
   }
 
   isTagSelected(tagId: number): boolean {
@@ -151,6 +179,21 @@ export class RightSideMenu implements OnInit, OnDestroy {
 
   isIngredientSelected(ingredientId: number): boolean {
     return this.selectedIngredients.some(i => i.id === ingredientId);
+  }
+
+  selectCuisine(cuisineId: number): void {
+    this.selectedCuisineId = cuisineId;
+    this.showCuisineDropdown = false;
+    this.filterService.updateFilter({ cuisine: cuisineId });
+  }
+
+  removeCuisine(): void {
+    this.selectedCuisineId = null;
+    this.filterService.updateFilter({ cuisine: null });
+  }
+
+  getCuisineName(cuisineId: number): string {
+    return this.availableCuisines.find(c => c.id === cuisineId)?.name || '';
   }
 
   addTag(event: Event): void {
@@ -167,6 +210,7 @@ export class RightSideMenu implements OnInit, OnDestroy {
 
   removeTag(tag: FilterOption): void {
     this.selectedTags = this.selectedTags.filter(t => t.id !== tag.id);
+    this.filterService.updateFilter({ tags: this.selectedTags.map(t => t.id) });
   }
 
   addIngredient(event: Event): void {
@@ -183,32 +227,41 @@ export class RightSideMenu implements OnInit, OnDestroy {
 
   removeIngredient(ingredient: FilterOption): void {
     this.selectedIngredients = this.selectedIngredients.filter(i => i.id !== ingredient.id);
+    this.filterService.updateFilter({ ingredients: this.selectedIngredients.map(i => i.id) });
   }
 
   setRating(star: number): void {
     this.rating = this.rating === star ? 0 : star;
+    this.filterService.updateFilter({ rating: this.rating || null, exactRating: this.exactRating || null });
   }
 
   applyFilters(): void {
-    const filter: Partial<FilterDTO> = {
-      tags: this.selectedTags.map(t => t.id),
-      ingredients: this.selectedIngredients.map(i => i.id),
-      rating: this.rating,
-      exactRating: this.exactRating,
-      prepTime: this.prepTime,
-      exactPrepTime: this.exactPrepTime,
-      cookTime: this.cookTime,
-      exactCookTime: this.exactCookTime,
-      totalTime: this.totalTime,
-      exactTotalTime: this.exactTotalTime,
-      creationDate: this.creationDate || ''
-    };
-    this.filterService.updateFilter(filter);
+    const filter = new FilterDTO(
+      this.selectedTags.length > 0 ? this.selectedTags.map(t => t.id) : null,
+      this.selectedIngredients.length > 0 ? this.selectedIngredients.map(i => i.id) : null,
+      null,
+      this.selectedCuisineId,
+      this.rating || null,
+      this.exactRating || null,
+      this.creationDate || '',
+      this.prepTime || null,
+      this.exactPrepTime || null,
+      this.cookTime || null,
+      this.exactCookTime || null,
+      this.totalTime || null,
+      this.exactTotalTime || null
+    );
+    this.filterService.applyFilter(filter);
+
+    if (this.router.url !== '/') {
+      this.router.navigate(['/']);
+    }
   }
 
   clearFilters(): void {
     this.selectedTags = [];
     this.selectedIngredients = [];
+    this.selectedCuisineId = null;
     this.rating = 0;
     this.exactRating = false;
     this.prepTime = 0;
@@ -218,6 +271,53 @@ export class RightSideMenu implements OnInit, OnDestroy {
     this.totalTime = 0;
     this.exactTotalTime = false;
     this.creationDate = '';
-    this.filterService.clearFilter();
+    this.tagSearchText = '';
+    this.ingredientSearchText = '';
+    this.cuisineSearchText = '';
+    this.filterService.updateFilter({
+      tags: null,
+      ingredients: null,
+      cuisine: null,
+      rating: null,
+      exactRating: null,
+      prepTime: null,
+      exactPrepTime: null,
+      cookTime: null,
+      exactCookTime: null,
+      totalTime: null,
+      exactTotalTime: null,
+      creationDate: ''
+    });
+  }
+
+  private syncFromService(filter: FilterDTO): void {
+    this.selectedCuisineId = filter.cuisine;
+
+    if (filter.tags) {
+      this.selectedTags = this.availableTags.filter(t => filter.tags!.includes(t.id));
+    } else {
+      this.selectedTags = [];
+    }
+
+    if (filter.ingredients) {
+      this.selectedIngredients = this.availableIngredients.filter(i => filter.ingredients!.includes(i.id));
+    } else {
+      this.selectedIngredients = [];
+    }
+
+    if (filter.rating !== null) {
+      this.rating = filter.rating;
+    } else {
+      this.rating = 0;
+    }
+
+    this.exactRating = filter.exactRating ?? false;
+    this.prepTime = filter.prepTime ?? 0;
+    this.exactPrepTime = filter.exactPrepTime ?? false;
+    this.cookTime = filter.cookTime ?? 0;
+    this.exactCookTime = filter.exactCookTime ?? false;
+    this.totalTime = filter.totalTime ?? 0;
+    this.exactTotalTime = filter.exactTotalTime ?? false;
+    this.creationDate = filter.creationDate ?? '';
   }
 }

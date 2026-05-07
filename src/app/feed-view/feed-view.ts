@@ -5,6 +5,7 @@ import { PageResponse } from '../../model/page-response';
 import { RecipeScroll } from '../recipe-scroll/recipe-scroll';
 import { RecipeService } from '../services/recipe.service';
 import { FilterService } from '../services/filter.service';
+import { FilterDTO } from '../../model/filter/filter-dto';
 import { RecipeFilterRequest } from '../../model/recipe/recipe-filter-request';
 import { PaginationDTO } from '../../model/pagination/pagination-dto';
 import { environment } from '../../environments/environment';
@@ -38,12 +39,16 @@ export class FeedView implements OnInit, OnDestroy {
     this.hasMore = !page.last;
     this.currentPage = 0;
 
-    this.initializeFilter();
+    if (this.hasActiveFilter(this.filterService.currentFilter)) {
+      this.onFilterChanged();
+    }
 
     this.filterSubscription = this.filterService.currentFilter$
       .pipe(skip(1))
       .subscribe(() => {
-        this.onFilterChanged();
+        if (this.filterService.consumeShouldRequest()) {
+          this.onFilterChanged();
+        }
       });
   }
 
@@ -74,11 +79,18 @@ export class FeedView implements OnInit, OnDestroy {
     });
   }
 
-  private initializeFilter(): void {
-    this.filterService.resetFilter();
+  private hasActiveFilter(filter: FilterDTO): boolean {
+    return filter.tags !== null
+      || filter.ingredients !== null
+      || filter.rating !== null
+      || filter.prepTime !== null
+      || filter.cookTime !== null
+      || filter.totalTime !== null
+      || (filter.creationDate !== null && filter.creationDate !== '');
   }
 
   private onFilterChanged(): void {
+    if (this.loading) return;
     this.currentPage = 0;
     this.loading = true;
     const filter = this.filterService.currentFilter;

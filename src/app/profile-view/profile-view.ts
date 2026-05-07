@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { PageResponse } from '../../model/page-response';
@@ -9,10 +9,7 @@ import { FilterService } from '../services/filter.service';
 import { UserDTO } from '../../model/user/user-dto';
 import { UserWithRecipes } from '../services/user.resolver';
 import { PaginationDTO } from '../../model/pagination/pagination-dto';
-import { RecipeFilterRequest } from '../../model/recipe/recipe-filter-request';
 import { environment } from '../../environments/environment';
-import { Subscription } from 'rxjs';
-import { skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile-view',
@@ -20,7 +17,7 @@ import { skip } from 'rxjs/operators';
   templateUrl: './profile-view.html',
   styleUrl: './profile-view.css',
 })
-export class ProfileView implements OnInit, OnDestroy {
+export class ProfileView implements OnInit {
   username: string = "";
   userHandle: string = "";
   bio: string = "";
@@ -34,7 +31,6 @@ export class ProfileView implements OnInit, OnDestroy {
   currentPage: number = 0;
   hasMore: boolean = false;
   loading: boolean = false;
-  private filterSubscription!: Subscription;
 
   constructor(
     private recipeService: RecipeService,
@@ -52,12 +48,6 @@ export class ProfileView implements OnInit, OnDestroy {
     this.hasMore = !resolvedData.recipes.last;
     this.currentPage = 0;
     this.recipesCount = resolvedData.recipes.totalElements;
-
-    this.filterSubscription = this.filterService.currentFilter$
-      .pipe(skip(1))
-      .subscribe(() => {
-        this.onFilterChanged();
-      });
   }
 
   get isOwnProfile(): boolean {
@@ -66,12 +56,6 @@ export class ProfileView implements OnInit, OnDestroy {
 
   navigateToOwnProfile() {
     this.router.navigate(['/profile']);
-  }
-
-  ngOnDestroy() {
-    if (this.filterSubscription) {
-      this.filterSubscription.unsubscribe();
-    }
   }
 
   onLoadMore(): void {
@@ -105,23 +89,4 @@ export class ProfileView implements OnInit, OnDestroy {
     this.filterService.setAuthor(this.userId);
   }
 
-  private onFilterChanged(): void {
-    this.currentPage = 0;
-    this.loading = true;
-    const filter = this.filterService.currentFilter;
-    const request = new RecipeFilterRequest(filter, new PaginationDTO(0, environment.defaultPageSize));
-
-    this.recipeService.getFilteredRecipes(request).subscribe({
-      next: (page) => {
-        this.recipes = page.content;
-        this.hasMore = !page.last;
-        this.recipesCount = page.totalElements;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error loading recipes:', err);
-        this.loading = false;
-      }
-    });
-  }
 }

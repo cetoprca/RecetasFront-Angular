@@ -34,12 +34,12 @@
     </div>
 
   <div class="tags-row">
-    <span class="cuisine-tag" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
-      {{recipeData.cuisine}}
-    </span>
+      <span class="cuisine-tag" (click)="onCuisineClick($event, recipeData.cuisine)" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+        {{recipeData.cuisine}}
+      </span>
     <span class="tag-divider" [style.backgroundColor]="currentTheme.divider"></span>
     <div class="scrollable-tags" [class.dragging]="isTagDragging" (mousedown)="startDrag($event)" (mousemove)="onDrag($event)" (mouseup)="endDrag()" (mouseleave)="endDrag()">
-      <span class="tag" *ngFor="let tag of recipeData.tags" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.tagBg" [style.color]="currentTheme.text">
+      <span class="tag" *ngFor="let tag of recipeData.tags" (click)="onTagClick($event, tag)" [style.backgroundColor]="currentTheme.tagBg" [style.color]="currentTheme.text">
         {{tag.name}}
       </span>
     </div>

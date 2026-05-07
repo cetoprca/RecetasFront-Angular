@@ -200,6 +200,20 @@
   margin-top: 0.25rem;
 }
 
+.search-input {
+  width: 100%;
+  padding: 0.4rem;
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.cuisine-chip {
+  background-color: rgb(255, 165, 0);
+}
+
 .chip-option {
   padding: 0.4rem 0.5rem;
   cursor: pointer;
