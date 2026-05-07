@@ -23,7 +23,7 @@ export class RecipeService {
   }
 
   getRecipeById(id: number): Observable<RecipeCardDTO> {
-    return this.http.get<RecipeCardDTO>(`${this.baseUrl}/${id}`, { withCredentials: true });
+    return this.http.get<RecipeCardDTO>(`${this.baseUrl}/card/${id}`, { withCredentials: true });
   }
 
   saveRecipe(recipe: RecipeDTO): Observable<RecipeDTO> {

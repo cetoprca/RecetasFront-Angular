@@ -19,7 +19,7 @@ export class RecipeInfo implements OnInit, OnDestroy, OnChanges {
 
   @Input() recipeData!: RecipeCardDTO;
   currentTheme!: Theme;
-  imageUrl = `${environment.apiUrl}/image/file/`;
+  imageFileUrl = `${environment.apiUrl}/image/file/`;
   private themeSubscription!: Subscription;
   stars: Boolean[] = [];
   showMenu = false;
@@ -32,6 +32,7 @@ export class RecipeInfo implements OnInit, OnDestroy, OnChanges {
       }
     );
     this.updateStars();
+    console.log(this.recipeData)
   }
 
   ngOnDestroy() {
