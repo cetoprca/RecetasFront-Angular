@@ -20,7 +20,9 @@
         </div>
         @if (showTagDropdown) {
           <div class="chip-dropdown" [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder">
-            @for (tag of availableTags; track tag.id) {
+            <input type="text" [(ngModel)]="tagSearchText" placeholder="Buscar tags..." class="search-input"
+                   [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+            @for (tag of filteredAvailableTags; track tag.id) {
               @if (!isTagSelected(tag.id)) {
                 <div class="chip-option" (click)="addTagById(tag.id)" [style.color]="currentTheme.inputText">
                   {{ tag.name }}
@@ -50,12 +52,44 @@
         </div>
         @if (showIngredientDropdown) {
           <div class="chip-dropdown" [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder">
-            @for (ingredient of availableIngredients; track ingredient.id) {
+            <input type="text" [(ngModel)]="ingredientSearchText" placeholder="Buscar ingredientes..." class="search-input"
+                   [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+            @for (ingredient of filteredAvailableIngredients; track ingredient.id) {
               @if (!isIngredientSelected(ingredient.id)) {
                 <div class="chip-option" (click)="addIngredientById(ingredient.id)" [style.color]="currentTheme.inputText">
                   {{ ingredient.name }}
                 </div>
               }
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <label class="filter-label">Cocina</label>
+      <div class="chips-input">
+        <div class="selected-chips">
+          @if (selectedCuisineId) {
+            <span class="chip cuisine-chip">
+              {{ getCuisineName(selectedCuisineId) }}
+              <button class="remove-chip" (click)="removeCuisine()">×</button>
+            </span>
+          }
+          @if (!selectedCuisineId) {
+            <button class="add-chip-button" (click)="toggleCuisineDropdown()">
+              <mat-icon>add</mat-icon>
+            </button>
+          }
+        </div>
+        @if (showCuisineDropdown) {
+          <div class="chip-dropdown" [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder">
+            <input type="text" [(ngModel)]="cuisineSearchText" placeholder="Buscar cocina..." class="search-input"
+                   [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+            @for (cuisine of filteredAvailableCuisines; track cuisine.id) {
+              <div class="chip-option" (click)="selectCuisine(cuisine.id)" [style.color]="currentTheme.inputText">
+                {{ cuisine.name }}
+              </div>
             }
           </div>
         }
