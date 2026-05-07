@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { ThemeService, Theme } from '../services/theme.service';
 import { environment } from '../../environments/environment';
+import { RecipeService } from '../services/recipe.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-recipe-card',
@@ -14,7 +16,8 @@ import { environment } from '../../environments/environment';
 export class RecipeCard implements OnInit, OnDestroy {
   constructor(
     private router: Router,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private userService: UserService
   ) {}
 
   @Input() recipeData!: RecipeCardDTO;
@@ -47,42 +50,6 @@ export class RecipeCard implements OnInit, OnDestroy {
     }
   }
 
-  get imageURL(): string {
-    return this.recipeData.imageURL || '';
-  }
-
-  get authorUsername(): string {
-    return this.recipeData.author?.username || '';
-  }
-
-  get authorProfilePictureURL(): string {
-    return this.recipeData.author?.profilePicturePath || '';
-  }
-
-  get cuisineName(): string {
-    return this.recipeData.cuisine || '';
-  }
-
-  get tagList(): any[] {
-    return this.recipeData.tags || [];
-  }
-
-  get recipeTitle(): string {
-    return this.recipeData.title;
-  }
-
-  get recipeDescription(): string {
-    return this.recipeData.description;
-  }
-
-  get recipePrepTime(): number {
-    return this.recipeData.prepTime;
-  }
-
-  get recipeCookTime(): number {
-    return this.recipeData.cookTime;
-  }
-
   openRecipe() {
     if (this.recipeData && this.recipeData.id) {
       this.router.navigate(['/recipe', this.recipeData.id]);
@@ -111,12 +78,23 @@ export class RecipeCard implements OnInit, OnDestroy {
     this.showMenu = false;
   }
 
-  saveRecipe() {
-    console.log('Save recipe:', this.recipeData.title);
+  saveRecipe(event: Event) {
+    event.stopPropagation();
+    console.log('Save recipe:', this.recipeData.title, this.recipeData.id);
+    this.userService.saveRecipe(this.recipeData.id).subscribe({
+       next: () => {
+         console.error('Success saving the recipe:');
+       },
+      error: (err) => {
+        console.error('Error saving the recipe:', err);
+      }
+    });
+    this.recipeData.isSaved = !this.recipeData.isSaved;
     this.closeMenu();
   }
 
-  shareRecipe() {
+  shareRecipe(event: Event) {
+    event.stopPropagation();
     console.log('Share recipe:', this.recipeData.title);
     this.closeMenu();
   }

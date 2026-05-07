@@ -2,23 +2,29 @@
 
   <div class="card-header" [style.borderBottom]="'1px solid ' + currentTheme.divider">
     <div class="author-row">
-      @if (authorProfilePictureURL && authorProfilePictureURL !== '') {
-        <img class="author-avatar" [src]="imageUrl + authorProfilePictureURL" alt="" (click)="navigateToProfile()">
+      @if (recipeData.author?.profilePicturePath) {
+        <img class="author-avatar" [src]="imageUrl + recipeData.author?.profilePicturePath" alt="" (click)="navigateToProfile()">
       } @else {
         <div class="author-avatar-placeholder" [style.backgroundColor]="currentTheme.primary" (click)="navigateToProfile()"></div>
       }
-      <span class="author-name" (click)="navigateToProfile()">{{authorUsername}}</span>
+      <span class="author-name" (click)="navigateToProfile()">{{recipeData.author?.username}}</span>
       <div class="menu-container">
         <button class="menu-button" (click)="toggleMenu($event)" [style.color]="currentTheme.menuIcon" [style.--hover-bg]="currentTheme.hoverBg">
           <mat-icon>more_vert</mat-icon>
         </button>
         @if (showMenu) {
           <div class="dropdown-menu" [style.backgroundColor]="currentTheme.card" [style.border]="'1px solid ' + currentTheme.divider">
-            <button class="menu-option" (click)="saveRecipe()" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
-              <mat-icon [style.color]="currentTheme.menuIcon">bookmark_border</mat-icon>
-              <span>Guardar receta</span>
+            <button class="menu-option" (click)="saveRecipe($event)" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
+              @if (recipeData.isSaved) {
+                <mat-icon [style.color]="currentTheme.menuIcon">bookmark</mat-icon>
+                <span>Eliminar de favoritos</span>
+              }
+              @else {
+                <mat-icon [style.color]="currentTheme.menuIcon">bookmark_border</mat-icon>
+                <span>Añadir a favoritos</span>
+              }
             </button>
-            <button class="menu-option" (click)="shareRecipe()" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
+            <button class="menu-option" (click)="shareRecipe($event)" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
               <mat-icon [style.color]="currentTheme.menuIcon">share</mat-icon>
               <span>Compartir</span>
             </button>
@@ -29,11 +35,11 @@
 
   <div class="tags-row">
     <span class="cuisine-tag" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
-      {{cuisineName}}
+      {{recipeData.cuisine}}
     </span>
     <span class="tag-divider" [style.backgroundColor]="currentTheme.divider"></span>
     <div class="scrollable-tags" [class.dragging]="isTagDragging" (mousedown)="startDrag($event)" (mousemove)="onDrag($event)" (mouseup)="endDrag()" (mouseleave)="endDrag()">
-      <span class="tag" *ngFor="let tag of tagList" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.tagBg" [style.color]="currentTheme.text">
+      <span class="tag" *ngFor="let tag of recipeData.tags" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.tagBg" [style.color]="currentTheme.text">
         {{tag.name}}
       </span>
     </div>
@@ -41,15 +47,15 @@
   </div>
 
   <div class="card-body">
-    @if (imageURL && imageURL !== '') {
+    @if (recipeData.imageURL && recipeData.imageURL !== '') {
       <div class="image-container">
-        <img class="recipe-image" [src]="imageURL" alt="" (error)="onImageError($event)">
+        <img class="recipe-image" [src]="imageUrl + recipeData.imageURL" alt="" (error)="onImageError($event)">
       </div>
     }
 
     <div class="content-section">
-      <h2 class="recipe-title">{{recipeTitle}}</h2>
-      <p class="recipe-description">{{recipeDescription}}</p>
+      <h2 class="recipe-title">{{recipeData.title}}</h2>
+      <p class="recipe-description">{{recipeData.description}}</p>
 
       <div class="meta-row">
         <div class="rating">
@@ -65,12 +71,12 @@
         <div class="times">
           <span class="time-item">
             <mat-icon class="time-icon">schedule</mat-icon>
-            Prep: {{recipePrepTime}}m
+            Prep: {{recipeData.prepTime}}m
           </span>
           <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
           <span class="time-item">
             <mat-icon class="time-icon">local_fire_department</mat-icon>
-            Coc: {{recipeCookTime}}m
+            Coc: {{recipeData.cookTime}}m
           </span>
           <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
           <span class="time-item total">

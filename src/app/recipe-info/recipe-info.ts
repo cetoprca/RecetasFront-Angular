@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { ThemeService, Theme } from '../services/theme.service';
 import { environment } from '../../environments/environment';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-recipe-info',
@@ -14,7 +15,8 @@ import { environment } from '../../environments/environment';
 export class RecipeInfo implements OnInit, OnDestroy, OnChanges {
   constructor(
     private router: Router,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private userService: UserService
   ) {}
 
   @Input() recipeData!: RecipeCardDTO;
@@ -117,7 +119,8 @@ export class RecipeInfo implements OnInit, OnDestroy, OnChanges {
   }
 
   saveRecipe() {
-    console.log('Save recipe:', this.recipeData.title);
+    console.log('Save recipe:', this.recipeData.title, this.recipeData.id);
+    this.userService.saveRecipe(this.recipeData.id);
     this.closeMenu();
   }
 

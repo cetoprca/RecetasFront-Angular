@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { UserDTO } from "../../model/user/user-dto";
 import { CredentialsDTO } from "../../model/auth/credentials-dto";
 import { environment } from "../../environments/environment";
+import { RecipeCardDTO } from "../../model/recipe/recipe-card-dto";
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,13 @@ export class UserService {
 
   getCurrentUser(): Observable<UserDTO> {
     return this.http.get<UserDTO>(`${this.baseUrl}/logged`, { withCredentials: true });
+  }
+
+  saveRecipe(recipeID: number): Observable<UserDTO>{
+    return this.http.post<UserDTO>(`${this.baseUrl}/save/${recipeID}`, {}, {withCredentials: true});
+  }
+
+  getSavedRecipes(): Observable<RecipeCardDTO[]> {
+    return this.http.get<RecipeCardDTO[]>(`${this.baseUrl}/savedRecipes`, { withCredentials: true });
   }
 }
