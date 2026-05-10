@@ -18,14 +18,13 @@ import { environment } from '../../environments/environment';
   styleUrl: './profile-view.css',
 })
 export class ProfileView implements OnInit {
-  username: string = "";
-  userHandle: string = "";
+  displayName: string = "";
+  handle: string = "";
   bio: string = "";
   profilePicture: string = "";
   followers: number = 0;
   following: number = 0;
   recipesCount: number = 0;
-  userId: number = 0;
 
   recipes: RecipeCardDTO[] = [];
   currentPage: number = 0;
@@ -51,7 +50,7 @@ export class ProfileView implements OnInit {
   }
 
   get isOwnProfile(): boolean {
-    return !this.route.snapshot.paramMap.get('userId');
+    return !this.route.snapshot.paramMap.get('handle');
   }
 
   navigateToOwnProfile() {
@@ -64,7 +63,7 @@ export class ProfileView implements OnInit {
     this.loading = true;
     this.currentPage++;
 
-    this.recipeService.getRecipesByUser(this.userId, new PaginationDTO(this.currentPage, environment.defaultPageSize)).subscribe({
+    this.recipeService.getRecipesByUser(this.handle, new PaginationDTO(this.currentPage, environment.defaultPageSize)).subscribe({
       next: (page) => {
         this.recipes = [...this.recipes, ...page.content];
         this.hasMore = !page.last;
@@ -78,15 +77,14 @@ export class ProfileView implements OnInit {
   }
 
   private setUserData(user: UserDTO) {
-    this.userId = user.id;
-    this.username = user.username;
-    this.userHandle = user.username;
+    this.handle = user.id;
+    this.displayName = user.displayName;
     this.bio = user.biography || "";
     this.profilePicture = user.profilePicturePath || "";
     this.followers = 0;
     this.following = 0;
 
-    this.filterService.setAuthor(this.userId);
+    this.filterService.setAuthor(this.handle);
   }
 
 }

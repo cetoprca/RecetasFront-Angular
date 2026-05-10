@@ -67,7 +67,7 @@ export class RecipeInfo implements OnInit, OnDestroy, OnChanges {
   }
 
   get authorUsername(): string {
-    return this.recipeData.author?.username || '';
+    return this.recipeData.author?.displayName || '';
   }
 
   get authorProfilePictureURL(): string {

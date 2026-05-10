@@ -20,6 +20,7 @@ import { SavedHeader } from './saved-header/saved-header';
 import { SettingsView } from './settings-view/settings-view';
 import { FullView } from './full-view/full-view';
 import { LoginView } from './login-view/login-view';
+import { RegisterView } from './register-view/register-view';
 import { AuthInterceptor } from './services/auth.interceptor';
 
 @NgModule({
@@ -38,7 +39,8 @@ import { AuthInterceptor } from './services/auth.interceptor';
     SavedHeader,
     SettingsView,
     FullView,
-    LoginView
+    LoginView,
+    RegisterView
   ],
   imports: [
     BrowserModule,

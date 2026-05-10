@@ -30,9 +30,23 @@
   object-fit: cover;
 }
 
+.author-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  cursor: pointer;
+}
+
 .author-name {
   font-weight: 600;
   font-size: clamp(0.9rem, 1.5vw, 1rem);
+  line-height: 1.2;
+}
+
+.author-handle {
+  font-size: clamp(0.75rem, 1vw, 0.85rem);
+  opacity: 0.7;
+  line-height: 1.2;
 }
 
 .menu-button {

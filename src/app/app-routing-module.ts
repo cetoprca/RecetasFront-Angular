@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginView } from './login-view/login-view';
+import { RegisterView } from './register-view/register-view';
 import { FullView } from './full-view/full-view';
 import { FeedView } from './feed-view/feed-view';
 import { ProfileView } from './profile-view/profile-view';
@@ -15,6 +16,7 @@ import { RecipeDetailResolver } from './services/recipe-detail.resolver';
 
 const routes: Routes = [
   { path: 'login', component: LoginView },
+  { path: 'register', component: RegisterView },
   {
     path: '',
     component: FullView,
@@ -22,7 +24,7 @@ const routes: Routes = [
     children: [
       { path: '', component: FeedView, resolve: { recipes: FeedRecipesResolver } },
       { path: 'profile', component: ProfileView, resolve: { user: UserResolver } },
-      { path: 'profile/:userId', component: ProfileView, resolve: { user: UserResolver } },
+      { path: 'profile/:handle', component: ProfileView, resolve: { user: UserResolver } },
       { path: 'saved', component: SavedView, resolve: { recipes: SavedRecipesResolver } },
       { path: 'settings', component: SettingsView },
       { path: 'recipe/:recipeId', component: RecipeDetail, resolve: { recipeData: RecipeDetailResolver } },

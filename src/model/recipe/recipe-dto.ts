@@ -8,7 +8,7 @@ export class RecipeDTO {
   totalTime: number = 0;
   isPublic: boolean = false;
   creationDate: string = "";
-  author: number = 0;
+  author: string = "";
   cuisine: number = 0;
   ratings: number[] = [];
   steps: number[] = [];

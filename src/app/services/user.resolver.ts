@@ -25,8 +25,8 @@ export class UserResolver implements Resolve<UserWithRecipes> {
   ) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<UserWithRecipes> {
-    const userId = route.paramMap.get('userId');
-    const userObs = userId ? this.userService.getUserById(+userId) : this.userService.getCurrentUser();
+    const userId = route.paramMap.get('handle');
+    const userObs = userId ? this.userService.getUserById(userId) : this.userService.getCurrentUser();
     
     return userObs.pipe(
       switchMap(user => {

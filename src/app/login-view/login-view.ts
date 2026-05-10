@@ -16,7 +16,7 @@ import { ThemeService, Theme } from '../services/theme.service';
   styleUrl: './login-view.css',
 })
 export class LoginView implements OnInit, OnDestroy {
-  username: string = '';
+  handle: string = '';
   password: string = '';
   errorMessage: string = '';
   currentTheme!: Theme;
@@ -51,12 +51,12 @@ export class LoginView implements OnInit, OnDestroy {
   }
 
   onLogin() {
-    if (!this.username || !this.password) {
-      this.errorMessage = 'Please enter username and password';
+    if (!this.handle || !this.password) {
+      this.errorMessage = 'Please enter handle and password';
       return;
     }
 
-    const credentials = new CredentialsDTO(this.username, this.password);
+    const credentials = new CredentialsDTO(this.handle, this.password);
     this.authService.login(credentials).subscribe({
       next: () => {
         this.router.navigate(['/']);
@@ -69,7 +69,6 @@ export class LoginView implements OnInit, OnDestroy {
   }
 
   onRegister() {
-    // TODO: Switch to registration form (not implemented yet)
-    console.log('Switch to registration form');
+    this.router.navigate(['/register']);
   }
 }

@@ -16,20 +16,24 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getUserById(userId: number): Observable<UserDTO> {
-    return this.http.get<UserDTO>(`${this.baseUrl}/${userId}`, { withCredentials: true });
+  getUserById(handle: string): Observable<UserDTO> {
+    return this.http.get<UserDTO>(`${this.baseUrl}/${handle}`, { withCredentials: true });
   }
 
   register(credentials: CredentialsDTO): Observable<UserDTO> {
-    return this.http.post<UserDTO>(`${this.baseUrl}/register`, credentials, { withCredentials: true });
+    return this.http.post<UserDTO>(`${this.baseUrl}/register`, {
+      handle: credentials.handle,
+      password: credentials.password,
+      displayName: credentials.displayName
+    }, { withCredentials: true });
   }
 
   updateUser(user: UserDTO): Observable<UserDTO> {
     return this.http.patch<UserDTO>(`${this.baseUrl}`, user, { withCredentials: true });
   }
 
-  deleteUser(userId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${userId}`, { withCredentials: true });
+  deleteUser(handle: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${handle}`, { withCredentials: true });
   }
 
   getCurrentUser(): Observable<UserDTO> {

@@ -7,7 +7,10 @@
       } @else {
         <img class="author-avatar" [src]="imageUrl + 'placeholder.png'" alt="" (click)="navigateToProfile($event)">
       }
-      <span class="author-name" (click)="navigateToProfile($event)">{{recipeData.author?.username}}</span>
+      <div class="author-text" (click)="navigateToProfile($event)">
+        <span class="author-name">{{recipeData.author?.displayName}}</span>
+        <span class="author-handle">@{{recipeData.author?.id}}</span>
+      </div>
       <div class="menu-container">
         <button class="menu-button" (click)="toggleMenu($event)" [style.color]="currentTheme.menuIcon" [style.--hover-bg]="currentTheme.hoverBg">
           <mat-icon>more_vert</mat-icon>

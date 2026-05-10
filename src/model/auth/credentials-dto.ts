@@ -1,9 +1,11 @@
 export class CredentialsDTO {
-  username: string;
+  handle: string;
   password: string;
+  displayName: string;
 
-  constructor(username: string = "", password: string = "") {
-    this.username = username;
+  constructor(handle: string = "", password: string = "", displayName: string = "") {
+    this.handle = handle;
     this.password = password;
+    this.displayName = displayName;
   }
 }

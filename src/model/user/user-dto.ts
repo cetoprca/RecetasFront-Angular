@@ -1,6 +1,6 @@
 export class UserDTO {
-  id: number = 0;
-  username: string = "";
+  id: string = "";
+  displayName: string = "";
   biography: string = "";
   profilePicturePath: string = "";
   recipes: number[] = [];
@@ -13,7 +13,7 @@ export class UserDTO {
     return this.profilePicturePath || '';
   }
 
-  get authorUsername(): string {
-    return this.username || '';
+  get authorDisplayName(): string {
+    return this.displayName || '';
   }
 }

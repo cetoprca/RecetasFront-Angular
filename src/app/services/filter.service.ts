@@ -40,7 +40,7 @@ export class FilterService {
     this.filterSubject.next(filter);
   }
 
-  setAuthor(authorId: number): void {
+  setAuthor(authorId: string): void {
     this.updateFilter({ author: authorId });
   }
 

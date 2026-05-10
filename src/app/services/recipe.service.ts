@@ -21,8 +21,8 @@ export class RecipeService {
     return this.http.post<PageResponse<RecipeCardDTO>>(`${this.baseUrl}/filter`, request, { withCredentials: true });
   }
 
-  getRecipesByUser(userId: number, pagination: PaginationDTO): Observable<PageResponse<RecipeCardDTO>> {
-    return this.http.post<PageResponse<RecipeCardDTO>>(`${this.baseUrl}/byUser/${userId}`, pagination, { withCredentials: true });
+  getRecipesByUser(handle: string, pagination: PaginationDTO): Observable<PageResponse<RecipeCardDTO>> {
+    return this.http.post<PageResponse<RecipeCardDTO>>(`${this.baseUrl}/byUser/${handle}`, pagination, { withCredentials: true });
   }
 
   getRecipeById(id: number): Observable<RecipeCardDTO> {

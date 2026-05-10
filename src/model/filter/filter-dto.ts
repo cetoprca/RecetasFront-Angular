@@ -1,7 +1,7 @@
 export class FilterDTO {
   tags: number[] | null;
   ingredients: number[] | null;
-  author: number | null;
+  author: string | null;
   cuisine: number | null;
   rating: number | null;
   exactRating: boolean | null;
@@ -16,7 +16,7 @@ export class FilterDTO {
   constructor(
     tags: number[] | null = null,
     ingredients: number[] | null = null,
-    author: number | null = null,
+    author: string | null = null,
     cuisine: number | null = null,
     rating: number | null = null,
     exactRating: boolean | null = null,

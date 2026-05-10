@@ -3,7 +3,7 @@ export class RatingDTO {
   title: string;
   description: string;
   stars: number;
-  author: number;
+  author: string;
   recipe: number;
 
   constructor(
@@ -11,7 +11,7 @@ export class RatingDTO {
     title: string = "",
     description: string = "",
     stars: number = 0,
-    author: number = 0,
+    author: string = "",
     recipe: number = 0
   ) {
     this.id = id;

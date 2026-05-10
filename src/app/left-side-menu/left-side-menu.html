@@ -8,7 +8,10 @@
           <img [src]="imageUrl + 'placeholder.png'" alt="Profile">
         }
       </div>
-      <span class="username">{{ currentUser?.username }}</span>
+      <div class="profile-text">
+        <span class="username">{{ currentUser?.displayName }}</span>
+        <span class="user-handle">@{{ currentUser?.id }}</span>
+      </div>
     </div>
 
     <div class="menu-buttons">
