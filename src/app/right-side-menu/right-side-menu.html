@@ -12,11 +12,9 @@
               <button class="remove-chip" (click)="removeTag(tag)">×</button>
             </span>
           }
-          @if (availableTags.length > selectedTags.length) {
-            <button class="add-chip-button" (click)="toggleTagDropdown()">
-              <mat-icon>add</mat-icon>
-            </button>
-          }
+          <button class="add-chip-button" (click)="toggleTagDropdown()">
+            <mat-icon>add</mat-icon>
+          </button>
         </div>
         @if (showTagDropdown) {
           <div class="chip-dropdown" [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder">
@@ -44,11 +42,9 @@
               <button class="remove-chip" (click)="removeIngredient(ingredient)">×</button>
             </span>
           }
-          @if (availableIngredients.length > selectedIngredients.length) {
-            <button class="add-chip-button" (click)="toggleIngredientDropdown()">
-              <mat-icon>add</mat-icon>
-            </button>
-          }
+          <button class="add-chip-button" (click)="toggleIngredientDropdown()">
+            <mat-icon>add</mat-icon>
+          </button>
         </div>
         @if (showIngredientDropdown) {
           <div class="chip-dropdown" [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder">

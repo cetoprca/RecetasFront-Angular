@@ -30,12 +30,6 @@
   object-fit: cover;
 }
 
-.author-avatar-placeholder {
-  width: clamp(2rem, 4vw, 2.5rem);
-  height: clamp(2rem, 4vw, 2.5rem);
-  border-radius: 50%;
-}
-
 .author-name {
   font-weight: 600;
   font-size: clamp(0.9rem, 1.5vw, 1rem);

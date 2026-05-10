@@ -3,11 +3,11 @@
   <div class="card-header" [style.borderBottom]="'1px solid ' + currentTheme.divider">
     <div class="author-row">
       @if (recipeData.author?.profilePicturePath) {
-        <img class="author-avatar" [src]="imageUrl + recipeData.author?.profilePicturePath" alt="" (click)="navigateToProfile()">
+        <img class="author-avatar" [src]="imageUrl + recipeData.author?.profilePicturePath" alt="" (click)="navigateToProfile($event)">
       } @else {
-        <div class="author-avatar-placeholder" [style.backgroundColor]="currentTheme.primary" (click)="navigateToProfile()"></div>
+        <img class="author-avatar" [src]="imageUrl + 'placeholder.png'" alt="" (click)="navigateToProfile($event)">
       }
-      <span class="author-name" (click)="navigateToProfile()">{{recipeData.author?.username}}</span>
+      <span class="author-name" (click)="navigateToProfile($event)">{{recipeData.author?.username}}</span>
       <div class="menu-container">
         <button class="menu-button" (click)="toggleMenu($event)" [style.color]="currentTheme.menuIcon" [style.--hover-bg]="currentTheme.hoverBg">
           <mat-icon>more_vert</mat-icon>

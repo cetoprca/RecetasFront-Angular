@@ -1,7 +1,11 @@
 <div class="profile-header" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
   <div class="profile-banner"></div>
   <div class="profile-info">
-    <img class="profile-picture" [src]="imageUrl + profilePicture" alt="Profile" (click)="navigateToProfile()">
+    @if (profilePicture) {
+      <img class="profile-picture" [src]="imageUrl + profilePicture" alt="Profile" (click)="navigateToProfile()">
+    } @else {
+      <img class="profile-picture" [src]="imageUrl + 'placeholder.png'" alt="Profile" (click)="navigateToProfile()">
+    }
     <div class="user-details">
       <h2 class="username">{{ username }}</h2>
       <p class="user-handle">@{{ userHandle }}</p>

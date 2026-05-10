@@ -129,6 +129,13 @@ export class RecipeInfo implements OnInit, OnDestroy, OnChanges {
     this.closeMenu();
   }
 
+  navigateToProfile(event: Event) {
+    event.stopPropagation();
+    if (this.recipeData.author?.id) {
+      this.router.navigate(['/profile', this.recipeData.author.id]);
+    }
+  }
+
   onTagClick(event: MouseEvent) {
     console.log('Abrir enlace');
     this.router.navigate(['/tag']);

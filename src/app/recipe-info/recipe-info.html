@@ -2,8 +2,12 @@
 
   <div class="card-header" [style.borderBottom]="'1px solid ' + currentTheme.divider">
   <div class="author-row">
-    <img class="author-avatar" [src]="imageFileUrl + authorProfilePictureURL" alt="">
-    <span class="author-name">{{authorUsername}}</span>
+    @if (recipeData.author?.profilePicturePath) {
+      <img class="author-avatar" [src]="imageFileUrl + authorProfilePictureURL" alt="" (click)="navigateToProfile($event)">
+    } @else {
+      <img class="author-avatar" [src]="imageFileUrl + 'placeholder.png'" alt="" (click)="navigateToProfile($event)">
+    }
+    <span class="author-name" (click)="navigateToProfile($event)">{{authorUsername}}</span>
       <div class="menu-container">
         <button class="menu-button" (click)="toggleMenu($event)" [style.color]="currentTheme.menuIcon" [style.--hover-bg]="currentTheme.hoverBg">
           <mat-icon>more_vert</mat-icon>

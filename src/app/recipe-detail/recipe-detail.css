@@ -60,12 +60,6 @@
   object-fit: cover;
 }
 
-.author-avatar-placeholder {
-  width: clamp(2.5rem, 5vw, 3.5rem);
-  height: clamp(2.5rem, 5vw, 3.5rem);
-  border-radius: 50%;
-}
-
 .author-info {
   display: flex;
   flex-direction: column;

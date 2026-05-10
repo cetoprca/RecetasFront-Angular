@@ -71,7 +71,8 @@ export class RecipeCard implements OnInit, OnDestroy {
     }
   }
 
-  navigateToProfile() {
+  navigateToProfile(event: Event) {
+    event.stopPropagation();
     if (this.recipeData.author?.id) {
       this.router.navigate(['/profile', this.recipeData.author.id]);
     }
