@@ -12,6 +12,7 @@ import { PageResponse } from "../../model/page-response";
   providedIn: 'root'
 })
 export class UserService {
+  
   private baseUrl = `${environment.apiUrl}/user`;
 
   constructor(private http: HttpClient) {}
@@ -46,5 +47,9 @@ export class UserService {
 
   getSavedRecipes(pagination: PaginationDTO): Observable<PageResponse<RecipeCardDTO>> {
     return this.http.post<PageResponse<RecipeCardDTO>>(`${this.baseUrl}/savedRecipes`, pagination, { withCredentials: true });
+  }
+
+  toggleFollow(userHandle: string): Observable<UserDTO> {
+    return this.http.post<UserDTO>(`${this.baseUrl}/follow/${userHandle}`, {}, { withCredentials: true });
   }
 }

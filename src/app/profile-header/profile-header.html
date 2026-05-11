@@ -12,18 +12,27 @@
       <p class="user-bio">{{ bio }}</p>
     </div>
   </div>
-  <div class="profile-stats">
-    <div class="stat">
-      <span class="stat-value">{{ followers }}</span>
-      <span class="stat-label">Seguidores</span>
+  <div>
+    <div class="follow-section">
+      <button class="follow-button" (click)="toggleFollow()">
+        {{ isFollowing ? 'Dejar de Seguir' : 'Seguir' }}
+      </button>
     </div>
-    <div class="stat">
-      <span class="stat-value">{{ following }}</span>
-      <span class="stat-label">Siguiendo</span>
+
+    <div class="profile-stats">
+      <div class="stat">
+        <span class="stat-value">{{ followers }}</span>
+        <span class="stat-label">Seguidores</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ following }}</span>
+        <span class="stat-label">Siguiendo</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ recipesCount }}</span>
+        <span class="stat-label">Recetas</span>
+      </div>
     </div>
-    <div class="stat">
-      <span class="stat-value">{{ recipesCount }}</span>
-      <span class="stat-label">Recetas</span>
-    </div>
+
   </div>
 </div>
