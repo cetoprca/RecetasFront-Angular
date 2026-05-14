@@ -73,7 +73,11 @@
               "buildTarget": "RecetasFront-Angular:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "host": "0.0.0.0",
+            "allowedHosts": ["localhost","frontend"]
+          }
         },
         "test": {
           "builder": "@angular/build:unit-test"
