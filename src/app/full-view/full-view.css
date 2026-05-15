@@ -42,3 +42,11 @@
   border-radius: 12px;
   height: 100%;
 }
+
+.side-menu {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+  padding: 1rem;
+}

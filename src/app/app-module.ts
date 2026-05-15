@@ -22,6 +22,8 @@ import { FullView } from './full-view/full-view';
 import { LoginView } from './login-view/login-view';
 import { RegisterView } from './register-view/register-view';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { RatingView } from './rating-view/rating-view';
+import { RatingCard } from './rating-card/rating-card';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { AuthInterceptor } from './services/auth.interceptor';
     SettingsView,
     FullView,
     LoginView,
-    RegisterView
+    RegisterView,
+    RatingView,
+    RatingCard
   ],
   imports: [
     BrowserModule,

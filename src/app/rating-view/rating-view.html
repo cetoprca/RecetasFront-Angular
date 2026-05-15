@@ -1,0 +1,7 @@
+<div class="rating-view">
+    <div class="ratings-container">
+        @for (item of ratings; track $index) {
+            <app-rating-card [rating]="item"></app-rating-card>
+        }
+    </div>
+</div>

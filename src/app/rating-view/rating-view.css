@@ -1,0 +1,24 @@
+.rating-view {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.ratings-container{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+
+    width: 200px;
+    height: 100vh;
+
+    
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+.ratings-container::-webkit-scrollbar {
+  display: none;
+}
