@@ -1,6 +1,9 @@
 <div class="rating-view">
+    @if (ratings.length > 0) {
+      <h3 class="rating-header" [style.color]="currentTheme.text">Valoraciones</h3>
+    }
     <div class="ratings-container">
-        @for (item of ratings; track $index) {
+        @for (item of ratings; track item.id) {
             <app-rating-card [rating]="item"></app-rating-card>
         }
     </div>

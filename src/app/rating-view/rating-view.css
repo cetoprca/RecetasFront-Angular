@@ -1,24 +1,27 @@
 .rating-view {
     display: flex;
-    justify-content: center;
-    padding: 1rem;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.rating-header {
+    margin: 0 0 0.75rem;
+    font-size: clamp(0.9rem, 1.4vw, 1rem);
+    font-weight: 700;
+    flex-shrink: 0;
 }
 
 .ratings-container{
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-
-    width: 200px;
-    height: 100vh;
-
-    
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none;
+    gap: 0.75rem;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
 }
 
 .ratings-container::-webkit-scrollbar {
-  display: none;
+    display: none;
 }

@@ -1,6 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Subscription, forkJoin, of } from 'rxjs';
+import { filter, map, catchError, startWith, switchMap } from 'rxjs/operators';
+import { RatingCardDTO } from '../../model/rating/rating-card-dto';
 import { RatingDTO } from '../../model/rating/rating-dto';
 import { RatingService } from '../services/rating.service';
+import { UserService } from '../services/user.service';
+import { Theme, ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-rating-view',
@@ -8,17 +14,55 @@ import { RatingService } from '../services/rating.service';
   templateUrl: './rating-view.html',
   styleUrl: './rating-view.css',
 })
-export class RatingView {
-  ratings: RatingDTO[] = [];
-  
-  constructor(ratingService: RatingService) {
-    // create 5 sample RatingDTO objects and initialize ratings
-    const r1 = new RatingDTO(1, 'Great recipe', 'I loved it', 5, 'alice', 101);
-    const r2 = new RatingDTO(2, 'Good', 'Tasty and simple', 4, 'bob', 102);
-    const r3 = new RatingDTO(3, 'Okay', 'Needs more salt', 3, 'carol', 103);
-    const r4 = new RatingDTO(4, 'Not great', 'Too spicy for me', 2, 'dave', 104);
-    const r5 = new RatingDTO(5, 'Terrible', 'Burnt the dish', 1, 'eve', 105);
+export class RatingView implements OnInit, OnDestroy {
+  ratings: RatingCardDTO[] = [];
+  currentTheme!: Theme;
+  private themeSubscription!: Subscription;
+  private routeSubscription!: Subscription;
 
-    this.ratings = [r1, r2, r3, r4, r5];
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private ratingService: RatingService,
+    private userService: UserService,
+    private themeService: ThemeService
+  ) {}
+
+  ngOnInit() {
+    this.currentTheme = this.themeService.getCurrentTheme();
+    this.themeSubscription = this.themeService.currentTheme$.subscribe(
+      (theme) => { this.currentTheme = theme; }
+    );
+
+    this.routeSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      startWith(null),
+      map(() => {
+        let child = this.route;
+        while (child.firstChild) { child = child.firstChild; }
+        return child.snapshot.params['recipeId'];
+      }),
+      switchMap(recipeId => {
+        if (!recipeId) { return of([] as RatingCardDTO[]); }
+        return this.ratingService.getRatingsByRecipeId(Number(recipeId)).pipe(
+          switchMap((ratings: RatingDTO[]) => {
+            if (ratings.length === 0) { return of([] as RatingCardDTO[]); }
+            const observables = ratings.map(r =>
+              this.userService.getUserById(r.author).pipe(
+                map(user => new RatingCardDTO(r.id, r.title, r.description, r.stars, user, r.recipe)),
+                catchError(() => of(new RatingCardDTO(r.id, r.title, r.description, r.stars, null, r.recipe)))
+              )
+            );
+            return forkJoin(observables);
+          }),
+          catchError(() => of([] as RatingCardDTO[]))
+        );
+      })
+    ).subscribe(cards => { this.ratings = cards; });
+  }
+
+  ngOnDestroy() {
+    if (this.themeSubscription) { this.themeSubscription.unsubscribe(); }
+    if (this.routeSubscription) { this.routeSubscription.unsubscribe(); }
   }
 }

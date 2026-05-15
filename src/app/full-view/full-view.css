@@ -49,4 +49,11 @@
   height: 100%;
   gap: 1rem;
   padding: 1rem;
+  overflow: hidden;
+}
+
+.side-menu > app-rating-view {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
