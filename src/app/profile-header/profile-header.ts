@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ThemeService, Theme } from '../services/theme.service';
 import { UserService } from '../services/user.service';
+import { AuthService } from '../services/auth.service';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -21,13 +22,13 @@ export class ProfileHeader implements OnInit, OnDestroy {
   @Input() following: number = 342;
   @Input() recipesCount: number = 28;
   @Input() isOwnProfile: boolean = true;
+  @Input() isFollowing: boolean = false;
 
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
   imageUrl = `${environment.apiUrl}/image/file/`;
-  isFollowing: any;
 
-  constructor(private themeService: ThemeService, private router: Router, private userService: UserService) {}
+  constructor(private themeService: ThemeService, private router: Router, private userService: UserService, private authService: AuthService) {}
 
   ngOnInit() {
     this.currentTheme = this.themeService.getCurrentTheme();
@@ -54,6 +55,8 @@ export class ProfileHeader implements OnInit, OnDestroy {
     this.userService.toggleFollow(this.userHandle).subscribe({
       next: (updatedUser) => {
         this.isFollowing = !this.isFollowing;
+        this.followers += this.isFollowing ? 1 : -1;
+        this.authService.currentUser$.next(updatedUser);
       },
       error: (err) => console.error('Error toggling follow status:', err)
     });

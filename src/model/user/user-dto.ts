@@ -6,6 +6,8 @@ export class UserDTO {
   recipes: number[] = [];
   savedRecipes: number[] = [];
   ratings: number[] = [];
+  following: string[] = [];
+  followers: string[] = [];
 
   constructor() {}
 

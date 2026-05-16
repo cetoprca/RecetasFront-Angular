@@ -13,11 +13,16 @@
     </div>
   </div>
   <div>
-    <div class="follow-section">
-      <button class="follow-button" (click)="toggleFollow()">
-        {{ isFollowing ? 'Dejar de Seguir' : 'Seguir' }}
-      </button>
-    </div>
+    @if (!isOwnProfile) {
+      <div class="follow-section">
+        <button class="follow-button" (click)="toggleFollow()"
+          [style.backgroundColor]="isFollowing ? 'transparent' : currentTheme.primary"
+          [style.color]="isFollowing ? currentTheme.text : currentTheme.buttonText"
+          [style.borderColor]="isFollowing ? currentTheme.divider : 'transparent'">
+          {{ isFollowing ? 'Dejar de Seguir' : 'Seguir' }}
+        </button>
+      </div>
+    }
 
     <div class="profile-stats">
       <div class="stat">

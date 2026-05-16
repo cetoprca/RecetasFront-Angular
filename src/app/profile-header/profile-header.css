@@ -72,6 +72,28 @@
   color: inherit;
 }
 
+.follow-section {
+  display: flex;
+  justify-content: center;
+  margin: 0.75rem 0 0.5rem;
+}
+
+.follow-button {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.6rem 0;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-size: clamp(0.9rem, 1.4vw, 1rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.follow-button:hover {
+  opacity: 0.85;
+}
+
 .profile-stats {
   display: flex;
   justify-content: center;

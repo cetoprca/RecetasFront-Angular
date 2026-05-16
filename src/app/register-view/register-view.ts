@@ -20,6 +20,7 @@ export class RegisterView implements OnInit, OnDestroy {
   errorMessage: string = '';
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
+  private authSubscription!: Subscription;
 
   constructor(
     private userService: UserService,
@@ -36,7 +37,7 @@ export class RegisterView implements OnInit, OnDestroy {
       }
     );
 
-    this.authService.isAuthenticated$.subscribe(isAuth => {
+    this.authSubscription = this.authService.isAuthenticated$.subscribe(isAuth => {
       if (isAuth) {
         this.router.navigate(['/']);
       }
@@ -46,6 +47,9 @@ export class RegisterView implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.themeSubscription) {
       this.themeSubscription.unsubscribe();
+    }
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
     }
   }
 
