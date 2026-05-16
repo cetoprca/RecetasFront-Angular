@@ -1,9 +1,12 @@
 <div class="content-area">
     <div class="center-container">
-        <app-left-side-menu/>
+        <div class="side-menu">
+          <app-left-side-menu></app-left-side-menu>
+          <app-rating-view></app-rating-view>
+        </div>
         <div class="main-content">
             <router-outlet/>
         </div>
-        <app-right-side-menu/>
+      <app-right-side-menu></app-right-side-menu>
     </div>
 </div>

@@ -1,0 +1,38 @@
+<div class="rating-card" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text" [style.border]="'1px solid ' + currentTheme.divider">
+
+  <div class="author-row">
+    @if (rating?.author?.profilePicturePath) {
+      <img class="author-avatar" [src]="imageUrl + rating?.author?.profilePicturePath" alt="" (click)="navigateToProfile($event)">
+    } @else {
+      <img class="author-avatar" [src]="imageUrl + 'placeholder.png'" alt="" (click)="navigateToProfile($event)">
+    }
+    <div class="author-text" (click)="navigateToProfile($event)">
+      <span class="author-name">{{rating?.author?.displayName || rating?.author?.id}}</span>
+      <span class="author-handle">@{{rating?.author?.id}}</span>
+    </div>
+  </div>
+
+  <div class="rating-body">
+    @if (rating?.title) {
+      <h3 class="rating-title">{{rating?.title}}</h3>
+    }
+    @if (rating?.description) {
+      <p class="rating-description">{{rating?.description}}</p>
+    }
+  </div>
+
+  <div class="rating-footer">
+    <div class="star-row">
+      @for (star of stars; track $index) {
+        <div class="star-container">
+          <div class="star-background" [style.backgroundColor]="currentTheme.starBg">
+            <mat-icon class="star-icon" [style.color]="star ? currentTheme.starActive : currentTheme.starInactive">
+              {{star ? 'star' : 'star_border'}}
+            </mat-icon>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+</div>
