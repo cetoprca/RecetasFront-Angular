@@ -36,8 +36,11 @@ export class RatingView implements OnInit, OnDestroy {
     this.routeSubscription = child.params.pipe(
       map(params => params['recipeId']),
       switchMap(recipeId => {
-        if (!recipeId) { return of([] as RatingCardDTO[]); }
-        return this.ratingService.getRatingCardsByRecipeId(Number(recipeId));
+        if (!recipeId) {
+          this.ratingService.setCurrentRatings([]);
+          return of([] as RatingCardDTO[]);
+        }
+        return this.ratingService.currentRatings$;
       })
     ).subscribe(cards => { this.ratings = cards; });
   }

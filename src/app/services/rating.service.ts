@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { RatingDTO } from "../../model/rating/rating-dto";
 import { RatingCardDTO } from "../../model/rating/rating-card-dto";
 import { environment } from "../../environments/environment";
@@ -11,7 +11,14 @@ import { environment } from "../../environments/environment";
 export class RatingService {
   private baseUrl = `${environment.apiUrl}/recipe`;
 
+  private currentRatingsSubject = new BehaviorSubject<RatingCardDTO[]>([]);
+  currentRatings$ = this.currentRatingsSubject.asObservable();
+
   constructor(private http: HttpClient) {}
+
+  setCurrentRatings(ratings: RatingCardDTO[]): void {
+    this.currentRatingsSubject.next(ratings);
+  }
 
   getRatingsByRecipeId(recipeId: number): Observable<RatingDTO[]> {
     return this.http.get<RatingDTO[]>(`${this.baseUrl}/${recipeId}/rating`, { withCredentials: true });
