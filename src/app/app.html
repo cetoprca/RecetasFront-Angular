@@ -3,9 +3,13 @@
     <span>Rataouille.net</span>
     <div class="header-buttons">
       @if (isAuthenticated$ | async) {
-        <button (click)="logout()">Cerrar sesión</button>
+        <button class="icon-btn" (click)="logout()" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+          <mat-icon>logout</mat-icon>
+        </button>
       } @else {
-        <button (click)="navigateToLogin()">Iniciar sesión</button>
+        <button class="icon-btn" (click)="navigateToLogin()" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+          <mat-icon>login</mat-icon>
+        </button>
       }
     </div>
   </header>
