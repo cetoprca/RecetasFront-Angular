@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Subscription, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { filter, map, startWith, switchMap } from 'rxjs/operators';
 import { RatingCardDTO } from '../../model/rating/rating-card-dto';
 import { RatingService } from '../services/rating.service';
 import { Theme, ThemeService } from '../services/theme.service';
@@ -20,6 +20,7 @@ export class RatingView implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private ratingService: RatingService,
     private themeService: ThemeService
   ) {}
@@ -30,11 +31,14 @@ export class RatingView implements OnInit, OnDestroy {
       (theme) => { this.currentTheme = theme; }
     );
 
-    let child = this.route;
-    while (child.firstChild) { child = child.firstChild; }
-
-    this.routeSubscription = child.params.pipe(
-      map(params => params['recipeId']),
+    this.routeSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      startWith(null),
+      map(() => {
+        let child = this.route;
+        while (child.firstChild) { child = child.firstChild; }
+        return child.snapshot.params['recipeId'];
+      }),
       switchMap(recipeId => {
         if (!recipeId) {
           this.ratingService.setCurrentRatings([]);
