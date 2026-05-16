@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { PageResponse } from '../../model/page-response';
 import { RecipeScroll } from '../recipe-scroll/recipe-scroll';
 import { ProfileHeader } from '../profile-header/profile-header';
 import { RecipeService } from '../services/recipe.service';
 import { FilterService } from '../services/filter.service';
+import { AuthService } from '../services/auth.service';
 import { UserDTO } from '../../model/user/user-dto';
 import { UserWithRecipes } from '../services/user.resolver';
 import { PaginationDTO } from '../../model/pagination/pagination-dto';
@@ -17,7 +19,7 @@ import { environment } from '../../environments/environment';
   templateUrl: './profile-view.html',
   styleUrl: './profile-view.css',
 })
-export class ProfileView implements OnInit {
+export class ProfileView implements OnInit, OnDestroy {
   displayName: string = "";
   handle: string = "";
   bio: string = "";
@@ -25,15 +27,19 @@ export class ProfileView implements OnInit {
   followers: number = 0;
   following: number = 0;
   recipesCount: number = 0;
+  isFollowing: boolean = false;
 
   recipes: RecipeCardDTO[] = [];
   currentPage: number = 0;
   hasMore: boolean = false;
   loading: boolean = false;
 
+  private authSubscription!: Subscription;
+
   constructor(
     private recipeService: RecipeService,
     private filterService: FilterService,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -47,6 +53,16 @@ export class ProfileView implements OnInit {
     this.hasMore = !resolvedData.recipes.last;
     this.currentPage = 0;
     this.recipesCount = resolvedData.recipes.totalElements;
+
+    this.authSubscription = this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.isFollowing = user.following?.includes(this.handle) ?? false;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.authSubscription) { this.authSubscription.unsubscribe(); }
   }
 
   get isOwnProfile(): boolean {
@@ -81,8 +97,8 @@ export class ProfileView implements OnInit {
     this.displayName = user.displayName;
     this.bio = user.biography || "";
     this.profilePicture = user.profilePicturePath || "";
-    this.followers = 0;
-    this.following = 0;
+    this.followers = user.followers?.length || 0;
+    this.following = user.following?.length || 0;
 
     this.filterService.setAuthor(this.handle);
   }
