@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { RatingDTO } from "../../model/rating/rating-dto";
+import { RatingCardDTO } from "../../model/rating/rating-card-dto";
 import { environment } from "../../environments/environment";
 
 @Injectable({
@@ -14,6 +15,10 @@ export class RatingService {
 
   getRatingsByRecipeId(recipeId: number): Observable<RatingDTO[]> {
     return this.http.get<RatingDTO[]>(`${this.baseUrl}/${recipeId}/rating`, { withCredentials: true });
+  }
+
+  getRatingCardsByRecipeId(recipeId: number): Observable<RatingCardDTO[]> {
+    return this.http.get<RatingCardDTO[]>(`${this.baseUrl}/${recipeId}/rating/card`, { withCredentials: true });
   }
 
   getRatingById(recipeId: number, ratingId: number): Observable<RatingDTO> {
