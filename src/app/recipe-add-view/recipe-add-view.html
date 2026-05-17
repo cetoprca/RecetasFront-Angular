@@ -67,14 +67,28 @@
     <div class="edit-row">
       <div class="row-label">Cocina</div>
       <div class="row-content">
-        <select class="text-input" [(ngModel)]="selectedCuisine"
-          [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
-          [style.borderColor]="currentTheme.divider">
-          <option [ngValue]="null" disabled>Seleccionar cocina</option>
-          @for (cuisine of cuisines; track cuisine.id) {
-            <option [ngValue]="cuisine">{{ cuisine.name }}</option>
+        <div class="dropdown-group" (click)="$event.stopPropagation()">
+          <button class="text-input selector-btn" type="button" (click)="toggleCuisineDropdown()"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+            <span>{{ selectedCuisine ? selectedCuisine.name : 'Seleccionar cocina' }}</span>
+            <mat-icon class="dropdown-arrow">expand_more</mat-icon>
+          </button>
+          @if (showCuisineDropdown) {
+            <div class="select-dropdown" [style.backgroundColor]="currentTheme.secondary"
+              [style.borderColor]="currentTheme.divider">
+              <input class="dropdown-search" type="text" [(ngModel)]="cuisineSearchText" placeholder="Buscar..."
+                [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder"
+                [style.color]="currentTheme.inputText" (click)="$event.stopPropagation()">
+              @for (cuisine of filteredCuisines; track cuisine.id) {
+                <div class="select-option" (click)="selectCuisine(cuisine)" [style.color]="currentTheme.text"
+                  [style.borderBottomColor]="currentTheme.divider">
+                  {{ cuisine.name }}
+                </div>
+              }
+            </div>
           }
-        </select>
+        </div>
       </div>
     </div>
 
@@ -89,21 +103,28 @@
             </span>
           }
         </div>
-        <button class="add-chip-button" (click)="toggleTagDropdown()" type="button"
-          [style.color]="currentTheme.text" [style.borderColor]="currentTheme.text">
-          <mat-icon>add</mat-icon>
-        </button>
-        @if (showTagDropdown) {
-          <div class="chip-dropdown" [style.backgroundColor]="currentTheme.secondary"
+        <div class="dropdown-group" (click)="$event.stopPropagation()">
+          <button class="text-input selector-btn" type="button" (click)="toggleTagDropdown()"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
             [style.borderColor]="currentTheme.divider">
-            @for (tag of allTags; track tag.id) {
-              <div class="chip-option" (click)="addTag(tag)" [style.color]="currentTheme.text"
-                [style.borderBottomColor]="currentTheme.divider">
-                {{ tag.name }}
-              </div>
-            }
-          </div>
-        }
+            <span>Añadir etiqueta...</span>
+            <mat-icon class="dropdown-arrow">expand_more</mat-icon>
+          </button>
+          @if (showTagDropdown) {
+            <div class="select-dropdown" [style.backgroundColor]="currentTheme.secondary"
+              [style.borderColor]="currentTheme.divider">
+              <input class="dropdown-search" type="text" [(ngModel)]="tagSearchText" placeholder="Buscar..."
+                [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder"
+                [style.color]="currentTheme.inputText" (click)="$event.stopPropagation()">
+              @for (tag of filteredTags; track tag.id) {
+                <div class="select-option" (click)="addTag(tag)" [style.color]="currentTheme.text"
+                  [style.borderBottomColor]="currentTheme.divider">
+                  {{ tag.name }}
+                </div>
+              }
+            </div>
+          }
+        </div>
         <div class="inline-add">
           <input class="text-input" type="text" [(ngModel)]="newTagName" placeholder="Nueva etiqueta"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
@@ -127,21 +148,28 @@
             </span>
           }
         </div>
-        <button class="add-chip-button" (click)="toggleIngredientDropdown()" type="button"
-          [style.color]="currentTheme.text" [style.borderColor]="currentTheme.text">
-          <mat-icon>add</mat-icon>
-        </button>
-        @if (showIngredientDropdown) {
-          <div class="chip-dropdown" [style.backgroundColor]="currentTheme.secondary"
+        <div class="dropdown-group" (click)="$event.stopPropagation()">
+          <button class="text-input selector-btn" type="button" (click)="toggleIngredientDropdown()"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
             [style.borderColor]="currentTheme.divider">
-            @for (ingredient of allIngredients; track ingredient.id) {
-              <div class="chip-option" (click)="addIngredient(ingredient)" [style.color]="currentTheme.text"
-                [style.borderBottomColor]="currentTheme.divider">
-                {{ ingredient.name }}
-              </div>
-            }
-          </div>
-        }
+            <span>Añadir ingrediente...</span>
+            <mat-icon class="dropdown-arrow">expand_more</mat-icon>
+          </button>
+          @if (showIngredientDropdown) {
+            <div class="select-dropdown" [style.backgroundColor]="currentTheme.secondary"
+              [style.borderColor]="currentTheme.divider">
+              <input class="dropdown-search" type="text" [(ngModel)]="ingredientSearchText" placeholder="Buscar..."
+                [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder"
+                [style.color]="currentTheme.inputText" (click)="$event.stopPropagation()">
+              @for (ingredient of filteredIngredients; track ingredient.id) {
+                <div class="select-option" (click)="addIngredient(ingredient)" [style.color]="currentTheme.text"
+                  [style.borderBottomColor]="currentTheme.divider">
+                  {{ ingredient.name }}
+                </div>
+              }
+            </div>
+          }
+        </div>
         <div class="inline-add">
           <input class="text-input" type="text" [(ngModel)]="newIngredientName" placeholder="Nuevo ingrediente"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"

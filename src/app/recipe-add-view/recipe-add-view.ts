@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Theme, ThemeService } from '../services/theme.service';
@@ -48,16 +48,37 @@ export class RecipeAddView implements OnInit, OnDestroy {
 
   cuisines: CuisineDTO[] = [];
   selectedCuisine: CuisineDTO | null = null;
+  showCuisineDropdown: boolean = false;
+  cuisineSearchText: string = "";
+
+  get filteredCuisines(): CuisineDTO[] {
+    const q = this.cuisineSearchText.toLowerCase().trim();
+    return q ? this.cuisines.filter(c => c.name.toLowerCase().includes(q)) : this.cuisines;
+  }
 
   allTags: TagDTO[] = [];
   selectedTags: TagDTO[] = [];
   newTagName: string = "";
   showTagDropdown: boolean = false;
+  tagSearchText: string = "";
+
+  get filteredTags(): TagDTO[] {
+    const q = this.tagSearchText.toLowerCase().trim();
+    let list = this.allTags.filter(t => !this.selectedTags.includes(t));
+    return q ? list.filter(t => t.name.toLowerCase().includes(q)) : list;
+  }
 
   allIngredients: IngredientDTO[] = [];
   selectedIngredients: IngredientDTO[] = [];
   newIngredientName: string = "";
   showIngredientDropdown: boolean = false;
+  ingredientSearchText: string = "";
+
+  get filteredIngredients(): IngredientDTO[] {
+    const q = this.ingredientSearchText.toLowerCase().trim();
+    let list = this.allIngredients.filter(i => !this.selectedIngredients.includes(i));
+    return q ? list.filter(i => i.name.toLowerCase().includes(q)) : list;
+  }
 
   steps: StepForm[] = [{ title: "", description: "", imageFile: null, imagePreview: null }];
   saving: boolean = false;
@@ -130,6 +151,25 @@ export class RecipeAddView implements OnInit, OnDestroy {
     this.steps.splice(index, 1);
   }
 
+  @HostListener('document:click')
+  closeAllDropdowns() {
+    this.showCuisineDropdown = false;
+    this.showTagDropdown = false;
+    this.showIngredientDropdown = false;
+  }
+
+  toggleCuisineDropdown() {
+    this.showCuisineDropdown = !this.showCuisineDropdown;
+    this.showTagDropdown = false;
+    this.showIngredientDropdown = false;
+    this.cuisineSearchText = "";
+  }
+
+  selectCuisine(cuisine: CuisineDTO) {
+    this.selectedCuisine = cuisine;
+    this.showCuisineDropdown = false;
+  }
+
   addTag(tag: TagDTO) {
     if (!this.selectedTags.includes(tag)) {
       this.selectedTags.push(tag);
@@ -146,7 +186,9 @@ export class RecipeAddView implements OnInit, OnDestroy {
 
   toggleTagDropdown() {
     this.showTagDropdown = !this.showTagDropdown;
+    this.showCuisineDropdown = false;
     this.showIngredientDropdown = false;
+    this.tagSearchText = "";
   }
 
   addNewTag() {
@@ -180,7 +222,9 @@ export class RecipeAddView implements OnInit, OnDestroy {
 
   toggleIngredientDropdown() {
     this.showIngredientDropdown = !this.showIngredientDropdown;
+    this.showCuisineDropdown = false;
     this.showTagDropdown = false;
+    this.ingredientSearchText = "";
   }
 
   addNewIngredient() {
