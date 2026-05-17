@@ -51,6 +51,10 @@ export class ProfileHeader implements OnInit, OnDestroy {
     }
   }
 
+  navigateToEditProfile() {
+    this.router.navigate(['/profile/edit']);
+  }
+
   toggleFollow() {
     this.userService.toggleFollow(this.userHandle).subscribe({
       next: (updatedUser) => {

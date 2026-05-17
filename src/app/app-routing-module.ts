@@ -5,6 +5,7 @@ import { RegisterView } from './register-view/register-view';
 import { FullView } from './full-view/full-view';
 import { FeedView } from './feed-view/feed-view';
 import { ProfileView } from './profile-view/profile-view';
+import { ProfileEditView } from './profile-edit-view/profile-edit-view';
 import { SavedView } from './saved-view/saved-view';
 import { SettingsView } from './settings-view/settings-view';
 import { RecipeDetail } from './recipe-detail/recipe-detail';
@@ -24,6 +25,7 @@ const routes: Routes = [
     children: [
       { path: '', component: FeedView, resolve: { recipes: FeedRecipesResolver } },
       { path: 'profile', component: ProfileView, resolve: { user: UserResolver } },
+      { path: 'profile/edit', component: ProfileEditView },
       { path: 'profile/:handle', component: ProfileView, resolve: { user: UserResolver } },
       { path: 'saved', component: SavedView, resolve: { recipes: SavedRecipesResolver } },
       { path: 'settings', component: SettingsView },

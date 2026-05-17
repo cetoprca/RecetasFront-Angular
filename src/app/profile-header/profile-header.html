@@ -22,6 +22,14 @@
           {{ isFollowing ? 'Dejar de Seguir' : 'Seguir' }}
         </button>
       </div>
+    } @else {
+      <div class="follow-section">
+        <button class="edit-profile-btn" (click)="navigateToEditProfile()"
+          [style.backgroundColor]="currentTheme.buttonBg"
+          [style.color]="currentTheme.buttonText">
+          Editar Perfil
+        </button>
+      </div>
     }
 
     <div class="profile-stats">

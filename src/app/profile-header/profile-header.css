@@ -94,6 +94,20 @@
   opacity: 0.85;
 }
 
+.edit-profile-btn {
+  padding: 0.6rem 1.5rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.edit-profile-btn:hover {
+  opacity: 0.85;
+}
+
 .profile-stats {
   display: flex;
   justify-content: center;
