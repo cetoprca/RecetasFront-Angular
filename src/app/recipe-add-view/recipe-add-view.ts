@@ -53,17 +53,9 @@ export class RecipeAddView implements OnInit, OnDestroy {
   selectedTags: TagDTO[] = [];
   newTagName: string = "";
 
-  get dropdownTags(): TagDTO[] {
-    return this.allTags.slice(0, 10);
-  }
-
   allIngredients: IngredientDTO[] = [];
   selectedIngredients: IngredientDTO[] = [];
   newIngredientName: string = "";
-
-  get dropdownIngredients(): IngredientDTO[] {
-    return this.allIngredients.slice(0, 10);
-  }
 
   steps: StepForm[] = [{ title: "", description: "", imageFile: null, imagePreview: null }];
   saving: boolean = false;
@@ -136,23 +128,16 @@ export class RecipeAddView implements OnInit, OnDestroy {
     this.steps.splice(index, 1);
   }
 
-  onTagSelect(event: Event) {
-    const select = event.target as HTMLSelectElement;
-    const id = Number(select.value);
-    select.value = "";
-    if (!id) return;
-    const tag = this.allTags.find(t => t.id === id);
-    if (tag && !this.selectedTags.includes(tag)) {
+  addTag(tag: TagDTO) {
+    if (!this.selectedTags.includes(tag)) {
       this.selectedTags.push(tag);
     }
   }
 
-  toggleTag(tag: TagDTO) {
+  removeTag(tag: TagDTO) {
     const idx = this.selectedTags.indexOf(tag);
     if (idx >= 0) {
       this.selectedTags.splice(idx, 1);
-    } else {
-      this.selectedTags.push(tag);
     }
   }
 
@@ -171,23 +156,16 @@ export class RecipeAddView implements OnInit, OnDestroy {
     });
   }
 
-  onIngredientSelect(event: Event) {
-    const select = event.target as HTMLSelectElement;
-    const id = Number(select.value);
-    select.value = "";
-    if (!id) return;
-    const ingredient = this.allIngredients.find(i => i.id === id);
-    if (ingredient && !this.selectedIngredients.includes(ingredient)) {
+  addIngredient(ingredient: IngredientDTO) {
+    if (!this.selectedIngredients.includes(ingredient)) {
       this.selectedIngredients.push(ingredient);
     }
   }
 
-  toggleIngredient(ingredient: IngredientDTO) {
+  removeIngredient(ingredient: IngredientDTO) {
     const idx = this.selectedIngredients.indexOf(ingredient);
     if (idx >= 0) {
       this.selectedIngredients.splice(idx, 1);
-    } else {
-      this.selectedIngredients.push(ingredient);
     }
   }
 

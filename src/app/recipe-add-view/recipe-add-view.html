@@ -85,21 +85,19 @@
           @for (tag of selectedTags; track tag.id) {
             <span class="chip" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
               {{ tag.name }}
-              <button class="chip-remove" (click)="toggleTag(tag)" type="button">&times;</button>
+              <button class="chip-remove" (click)="removeTag(tag)" type="button">&times;</button>
             </span>
           }
         </div>
-        <select class="text-input" (change)="onTagSelect($event)"
-          [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+        <div class="chip-dropdown" [style.backgroundColor]="currentTheme.secondary"
           [style.borderColor]="currentTheme.divider">
-          <option value="" disabled selected>Añadir etiqueta...</option>
-          @for (tag of dropdownTags; track tag.id) {
-            <option [value]="tag.id">{{ tag.name }}</option>
+          @for (tag of allTags; track tag.id) {
+            <div class="chip-option" (click)="addTag(tag)" [style.color]="currentTheme.text"
+              [style.borderBottomColor]="currentTheme.divider">
+              {{ tag.name }}
+            </div>
           }
-          @if (allTags.length > 10) {
-            <option disabled>...</option>
-          }
-        </select>
+        </div>
         <div class="inline-add">
           <input class="text-input" type="text" [(ngModel)]="newTagName" placeholder="Nueva etiqueta"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
@@ -119,21 +117,19 @@
           @for (ingredient of selectedIngredients; track ingredient.id) {
             <span class="chip" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
               {{ ingredient.name }}
-              <button class="chip-remove" (click)="toggleIngredient(ingredient)" type="button">&times;</button>
+              <button class="chip-remove" (click)="removeIngredient(ingredient)" type="button">&times;</button>
             </span>
           }
         </div>
-        <select class="text-input" (change)="onIngredientSelect($event)"
-          [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+        <div class="chip-dropdown" [style.backgroundColor]="currentTheme.secondary"
           [style.borderColor]="currentTheme.divider">
-          <option value="" disabled selected>Añadir ingrediente...</option>
-          @for (ingredient of dropdownIngredients; track ingredient.id) {
-            <option [value]="ingredient.id">{{ ingredient.name }}</option>
+          @for (ingredient of allIngredients; track ingredient.id) {
+            <div class="chip-option" (click)="addIngredient(ingredient)" [style.color]="currentTheme.text"
+              [style.borderBottomColor]="currentTheme.divider">
+              {{ ingredient.name }}
+            </div>
           }
-          @if (allIngredients.length > 10) {
-            <option disabled>...</option>
-          }
-        </select>
+        </div>
         <div class="inline-add">
           <input class="text-input" type="text" [(ngModel)]="newIngredientName" placeholder="Nuevo ingrediente"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"

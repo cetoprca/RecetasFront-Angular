@@ -159,6 +159,29 @@
   opacity: 1;
 }
 
+.chip-dropdown {
+  border: 1px solid;
+  border-radius: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-bottom: 0.5rem;
+}
+
+.chip-option {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-bottom: 1px solid transparent;
+}
+
+.chip-option:last-child {
+  border-bottom: none;
+}
+
+.chip-option:hover {
+  opacity: 0.75;
+}
+
 .computed-time {
   display: flex;
   align-items: center;
