@@ -1,0 +1,214 @@
+<div class="edit-container">
+  <div class="edit-card" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
+    <h2 class="edit-title" [style.borderColor]="currentTheme.divider">Nueva Receta</h2>
+
+    <div class="edit-row">
+      <div class="row-label">Título</div>
+      <div class="row-content">
+        <input class="text-input" type="text" [(ngModel)]="title"
+          [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+          [style.borderColor]="currentTheme.divider">
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">Descripción</div>
+      <div class="row-content">
+        <textarea class="text-input textarea" [(ngModel)]="description" rows="3"
+          [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+          [style.borderColor]="currentTheme.divider"></textarea>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">Imagen</div>
+      <div class="row-content">
+        <div class="image-section">
+          @if (imagePreview) {
+            <img class="image-preview" [src]="imagePreview" alt="">
+          } @else {
+            <div class="image-placeholder" [style.backgroundColor]="currentTheme.secondary">
+              <mat-icon class="placeholder-icon">image</mat-icon>
+            </div>
+          }
+          <button type="button" class="upload-btn" (click)="imageInput.click()"
+            [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+            Subir imagen
+          </button>
+          <input #imageInput type="file" accept="image/*" (change)="onImageSelected($event)" hidden>
+        </div>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">Tiempos (min)</div>
+      <div class="row-content times-row">
+        <div class="time-field">
+          <label class="time-label">Preparación</label>
+          <input class="text-input time-input" type="number" min="0" [(ngModel)]="prepTime"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+        </div>
+        <div class="time-field">
+          <label class="time-label">Cocción</label>
+          <input class="text-input time-input" type="number" min="0" [(ngModel)]="cookTime"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+        </div>
+        <div class="time-field">
+          <label class="time-label">Total</label>
+          <input class="text-input time-input" type="number" min="0" [(ngModel)]="totalTime"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+        </div>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">Cocina</div>
+      <div class="row-content">
+        <select class="text-input" [(ngModel)]="selectedCuisine"
+          [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+          [style.borderColor]="currentTheme.divider">
+          <option [ngValue]="null" disabled>Seleccionar cocina</option>
+          @for (cuisine of cuisines; track cuisine.id) {
+            <option [ngValue]="cuisine">{{ cuisine.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">Etiquetas</div>
+      <div class="row-content">
+        <div class="chip-row">
+          @for (tag of selectedTags; track tag.id) {
+            <span class="chip" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+              {{ tag.name }}
+              <button class="chip-remove" (click)="toggleTag(tag)" type="button">&times;</button>
+            </span>
+          }
+        </div>
+        <div class="select-grid">
+          @for (tag of allTags; track tag.id) {
+            <button class="select-option" (click)="toggleTag(tag)" type="button"
+              [style.backgroundColor]="selectedTags.includes(tag) ? currentTheme.primary : currentTheme.secondary"
+              [style.color]="selectedTags.includes(tag) ? currentTheme.buttonText : currentTheme.text">
+              {{ tag.name }}
+            </button>
+          }
+        </div>
+        <div class="inline-add">
+          <input class="text-input" type="text" [(ngModel)]="newTagName" placeholder="Nueva etiqueta"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+          <button class="small-btn" (click)="addNewTag()" type="button"
+            [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+            Añadir
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">Ingredientes</div>
+      <div class="row-content">
+        <div class="chip-row">
+          @for (ingredient of selectedIngredients; track ingredient.id) {
+            <span class="chip" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+              {{ ingredient.name }}
+              <button class="chip-remove" (click)="toggleIngredient(ingredient)" type="button">&times;</button>
+            </span>
+          }
+        </div>
+        <div class="select-grid">
+          @for (ingredient of allIngredients; track ingredient.id) {
+            <button class="select-option" (click)="toggleIngredient(ingredient)" type="button"
+              [style.backgroundColor]="selectedIngredients.includes(ingredient) ? currentTheme.primary : currentTheme.secondary"
+              [style.color]="selectedIngredients.includes(ingredient) ? currentTheme.buttonText : currentTheme.text">
+              {{ ingredient.name }}
+            </button>
+          }
+        </div>
+        <div class="inline-add">
+          <input class="text-input" type="text" [(ngModel)]="newIngredientName" placeholder="Nuevo ingrediente"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+          <button class="small-btn" (click)="addNewIngredient()" type="button"
+            [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+            Añadir
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">Público</div>
+      <div class="row-content">
+        <button class="toggle-btn" (click)="isPublic = !isPublic" type="button"
+          [style.backgroundColor]="isPublic ? currentTheme.primary : currentTheme.secondary"
+          [style.color]="isPublic ? currentTheme.buttonText : currentTheme.text">
+          <mat-icon>{{ isPublic ? 'visibility' : 'visibility_off' }}</mat-icon>
+          <span>{{ isPublic ? 'Público' : 'Privado' }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="section-divider" [style.borderColor]="currentTheme.divider"></div>
+    <h3 class="section-title">Pasos</h3>
+
+    <div class="steps-list">
+      @for (step of steps; track $index) {
+        <div class="step-card" [style.borderColor]="currentTheme.divider">
+          <div class="step-header">
+            <span class="step-number">Paso {{ $index + 1 }}</span>
+            @if (steps.length > 1) {
+              <button class="step-remove-btn" (click)="removeStep($index)" type="button"
+                [style.color]="currentTheme.text">&times;</button>
+            }
+          </div>
+          <div class="step-field">
+            <input class="text-input" type="text" placeholder="Título del paso" [(ngModel)]="step.title"
+              [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+              [style.borderColor]="currentTheme.divider">
+          </div>
+          <div class="step-field">
+            <textarea class="text-input textarea" placeholder="Descripción del paso" [(ngModel)]="step.description" rows="2"
+              [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+              [style.borderColor]="currentTheme.divider"></textarea>
+          </div>
+          <div class="step-field">
+            <div class="image-section">
+              @if (step.imagePreview) {
+                <img class="step-image-preview" [src]="step.imagePreview" alt="">
+              }
+              <button type="button" class="upload-btn small-btn" (click)="stepImageInput.click()"
+                [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+                Subir imagen
+              </button>
+              <input #stepImageInput type="file" accept="image/*" (change)="onStepImageSelected($event, $index)" hidden>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <button class="add-step-btn" (click)="addStep()" type="button"
+      [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.text"
+      [style.borderColor]="currentTheme.divider">
+      <mat-icon>add</mat-icon>
+      Añadir paso
+    </button>
+
+    <div class="edit-actions">
+      <button class="action-btn save-btn" (click)="save()" [disabled]="saving"
+        [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+        {{ saving ? 'Guardando...' : 'Guardar' }}
+      </button>
+      <button class="action-btn cancel-btn" (click)="cancel()"
+        [style]="'background: transparent; color: ' + currentTheme.text + '; border: 1px solid ' + currentTheme.divider">
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>
