@@ -159,24 +159,12 @@
   opacity: 1;
 }
 
-.select-grid {
+.computed-time {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-bottom: 0.5rem;
-}
-
-.select-option {
-  padding: 0.3rem 0.6rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  transition: opacity 0.15s;
-}
-
-.select-option:hover {
-  opacity: 0.8;
+  align-items: center;
+  opacity: 0.7;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .inline-add {

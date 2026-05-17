@@ -15,6 +15,7 @@ import { UserResolver } from './services/user.resolver';
 import { FeedRecipesResolver } from './services/feed-recipes.resolver';
 import { SavedRecipesResolver } from './services/saved-recipes.resolver';
 import { RecipeDetailResolver } from './services/recipe-detail.resolver';
+import { RecipeFormResolver } from './services/recipe-form.resolver';
 
 const routes: Routes = [
   { path: 'login', component: LoginView },
@@ -30,7 +31,7 @@ const routes: Routes = [
       { path: 'profile/:handle', component: ProfileView, resolve: { user: UserResolver } },
       { path: 'saved', component: SavedView, resolve: { recipes: SavedRecipesResolver } },
       { path: 'settings', component: SettingsView },
-      { path: 'recipe/new', component: RecipeAddView },
+      { path: 'recipe/new', component: RecipeAddView, resolve: { formData: RecipeFormResolver } },
       { path: 'recipe/:recipeId', component: RecipeDetail, resolve: { recipeData: RecipeDetailResolver } },
     ]
   },

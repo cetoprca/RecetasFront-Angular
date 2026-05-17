@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Theme, ThemeService } from '../services/theme.service';
 import { AuthService } from '../services/auth.service';
 import { RecipeService } from '../services/recipe.service';
-import { CuisineService } from '../services/cuisine.service';
 import { TagService } from '../services/tag.service';
 import { IngredientService } from '../services/ingredient.service';
 import { ImageService } from '../services/image.service';
@@ -14,6 +13,7 @@ import { CuisineDTO } from '../../model/cuisine/cuisine-dto';
 import { TagDTO } from '../../model/tag/tag-dto';
 import { IngredientDTO } from '../../model/ingredient/ingredient-dto';
 import { StepDTO } from '../../model/step/step-dto';
+import { RecipeFormData } from '../services/recipe-form.resolver';
 import { environment } from '../../environments/environment';
 
 interface StepForm {
@@ -37,8 +37,11 @@ export class RecipeAddView implements OnInit, OnDestroy {
   description: string = "";
   prepTime: number = 0;
   cookTime: number = 0;
-  totalTime: number = 0;
   isPublic: boolean = true;
+
+  get totalTime(): number {
+    return this.prepTime + this.cookTime;
+  }
 
   imageFile: File | null = null;
   imagePreview: string | null = null;
@@ -60,10 +63,10 @@ export class RecipeAddView implements OnInit, OnDestroy {
   imageUrl = `${environment.apiUrl}/image/file/`;
 
   constructor(
+    private route: ActivatedRoute,
     private themeService: ThemeService,
     private authService: AuthService,
     private recipeService: RecipeService,
-    private cuisineService: CuisineService,
     private tagService: TagService,
     private ingredientService: IngredientService,
     private imageService: ImageService,
@@ -77,20 +80,10 @@ export class RecipeAddView implements OnInit, OnDestroy {
       (theme) => { this.currentTheme = theme; }
     );
 
-    this.cuisineService.getAllCuisines().subscribe({
-      next: (cuisines) => this.cuisines = cuisines,
-      error: (err) => console.error('Error loading cuisines:', err)
-    });
-
-    this.tagService.getAllTags().subscribe({
-      next: (tags) => this.allTags = tags,
-      error: (err) => console.error('Error loading tags:', err)
-    });
-
-    this.ingredientService.getAllIngredients().subscribe({
-      next: (ingredients) => this.allIngredients = ingredients,
-      error: (err) => console.error('Error loading ingredients:', err)
-    });
+    const data = this.route.snapshot.data['formData'] as RecipeFormData;
+    this.cuisines = data.cuisines;
+    this.allTags = data.tags;
+    this.allIngredients = data.ingredients;
   }
 
   ngOnDestroy() {
@@ -118,6 +111,13 @@ export class RecipeAddView implements OnInit, OnDestroy {
     }
   }
 
+  removeStepImage(index: number) {
+    const step = this.steps[index];
+    if (step.imagePreview) { URL.revokeObjectURL(step.imagePreview); }
+    step.imageFile = null;
+    step.imagePreview = null;
+  }
+
   addStep() {
     this.steps.push({ title: "", description: "", imageFile: null, imagePreview: null });
   }
@@ -128,21 +128,23 @@ export class RecipeAddView implements OnInit, OnDestroy {
     this.steps.splice(index, 1);
   }
 
+  onTagSelect(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    const id = Number(select.value);
+    select.value = "";
+    if (!id) return;
+    const tag = this.allTags.find(t => t.id === id);
+    if (tag && !this.selectedTags.includes(tag)) {
+      this.selectedTags.push(tag);
+    }
+  }
+
   toggleTag(tag: TagDTO) {
     const idx = this.selectedTags.indexOf(tag);
     if (idx >= 0) {
       this.selectedTags.splice(idx, 1);
     } else {
       this.selectedTags.push(tag);
-    }
-  }
-
-  toggleIngredient(ingredient: IngredientDTO) {
-    const idx = this.selectedIngredients.indexOf(ingredient);
-    if (idx >= 0) {
-      this.selectedIngredients.splice(idx, 1);
-    } else {
-      this.selectedIngredients.push(ingredient);
     }
   }
 
@@ -159,6 +161,26 @@ export class RecipeAddView implements OnInit, OnDestroy {
       },
       error: (err) => console.error('Error creating tag:', err)
     });
+  }
+
+  onIngredientSelect(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    const id = Number(select.value);
+    select.value = "";
+    if (!id) return;
+    const ingredient = this.allIngredients.find(i => i.id === id);
+    if (ingredient && !this.selectedIngredients.includes(ingredient)) {
+      this.selectedIngredients.push(ingredient);
+    }
+  }
+
+  toggleIngredient(ingredient: IngredientDTO) {
+    const idx = this.selectedIngredients.indexOf(ingredient);
+    if (idx >= 0) {
+      this.selectedIngredients.splice(idx, 1);
+    } else {
+      this.selectedIngredients.push(ingredient);
+    }
   }
 
   addNewIngredient() {

@@ -57,9 +57,9 @@
         </div>
         <div class="time-field">
           <label class="time-label">Total</label>
-          <input class="text-input time-input" type="number" min="0" [(ngModel)]="totalTime"
-            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
-            [style.borderColor]="currentTheme.divider">
+          <span class="text-input computed-time" [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text">
+            {{ totalTime }} min
+          </span>
         </div>
       </div>
     </div>
@@ -89,15 +89,14 @@
             </span>
           }
         </div>
-        <div class="select-grid">
+        <select class="text-input" (change)="onTagSelect($event)"
+          [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+          [style.borderColor]="currentTheme.divider">
+          <option value="" disabled selected>Añadir etiqueta...</option>
           @for (tag of allTags; track tag.id) {
-            <button class="select-option" (click)="toggleTag(tag)" type="button"
-              [style.backgroundColor]="selectedTags.includes(tag) ? currentTheme.primary : currentTheme.secondary"
-              [style.color]="selectedTags.includes(tag) ? currentTheme.buttonText : currentTheme.text">
-              {{ tag.name }}
-            </button>
+            <option [value]="tag.id">{{ tag.name }}</option>
           }
-        </div>
+        </select>
         <div class="inline-add">
           <input class="text-input" type="text" [(ngModel)]="newTagName" placeholder="Nueva etiqueta"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
@@ -121,15 +120,14 @@
             </span>
           }
         </div>
-        <div class="select-grid">
+        <select class="text-input" (change)="onIngredientSelect($event)"
+          [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+          [style.borderColor]="currentTheme.divider">
+          <option value="" disabled selected>Añadir ingrediente...</option>
           @for (ingredient of allIngredients; track ingredient.id) {
-            <button class="select-option" (click)="toggleIngredient(ingredient)" type="button"
-              [style.backgroundColor]="selectedIngredients.includes(ingredient) ? currentTheme.primary : currentTheme.secondary"
-              [style.color]="selectedIngredients.includes(ingredient) ? currentTheme.buttonText : currentTheme.text">
-              {{ ingredient.name }}
-            </button>
+            <option [value]="ingredient.id">{{ ingredient.name }}</option>
           }
-        </div>
+        </select>
         <div class="inline-add">
           <input class="text-input" type="text" [(ngModel)]="newIngredientName" placeholder="Nuevo ingrediente"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
@@ -181,11 +179,16 @@
             <div class="image-section">
               @if (step.imagePreview) {
                 <img class="step-image-preview" [src]="step.imagePreview" alt="">
+                <button type="button" class="upload-btn small-btn" (click)="removeStepImage($index)"
+                  [style]="'background: transparent; color: ' + currentTheme.text + '; border: 1px solid ' + currentTheme.divider">
+                  Eliminar imagen
+                </button>
+              } @else {
+                <button type="button" class="upload-btn small-btn" (click)="stepImageInput.click()"
+                  [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+                  Subir imagen
+                </button>
               }
-              <button type="button" class="upload-btn small-btn" (click)="stepImageInput.click()"
-                [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
-                Subir imagen
-              </button>
               <input #stepImageInput type="file" accept="image/*" (change)="onStepImageSelected($event, $index)" hidden>
             </div>
           </div>
