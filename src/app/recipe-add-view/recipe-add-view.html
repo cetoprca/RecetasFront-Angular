@@ -93,8 +93,11 @@
           [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
           [style.borderColor]="currentTheme.divider">
           <option value="" disabled selected>Añadir etiqueta...</option>
-          @for (tag of allTags; track tag.id) {
+          @for (tag of dropdownTags; track tag.id) {
             <option [value]="tag.id">{{ tag.name }}</option>
+          }
+          @if (allTags.length > 10) {
+            <option disabled>...</option>
           }
         </select>
         <div class="inline-add">
@@ -124,8 +127,11 @@
           [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
           [style.borderColor]="currentTheme.divider">
           <option value="" disabled selected>Añadir ingrediente...</option>
-          @for (ingredient of allIngredients; track ingredient.id) {
+          @for (ingredient of dropdownIngredients; track ingredient.id) {
             <option [value]="ingredient.id">{{ ingredient.name }}</option>
+          }
+          @if (allIngredients.length > 10) {
+            <option disabled>...</option>
           }
         </select>
         <div class="inline-add">

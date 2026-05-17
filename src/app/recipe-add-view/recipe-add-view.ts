@@ -53,9 +53,17 @@ export class RecipeAddView implements OnInit, OnDestroy {
   selectedTags: TagDTO[] = [];
   newTagName: string = "";
 
+  get dropdownTags(): TagDTO[] {
+    return this.allTags.slice(0, 10);
+  }
+
   allIngredients: IngredientDTO[] = [];
   selectedIngredients: IngredientDTO[] = [];
   newIngredientName: string = "";
+
+  get dropdownIngredients(): IngredientDTO[] {
+    return this.allIngredients.slice(0, 10);
+  }
 
   steps: StepForm[] = [{ title: "", description: "", imageFile: null, imagePreview: null }];
   saving: boolean = false;
