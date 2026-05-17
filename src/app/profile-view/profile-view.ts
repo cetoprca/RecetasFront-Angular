@@ -48,6 +48,13 @@ export class ProfileView implements OnInit, OnDestroy {
     console.log('ProfileView: Initializing with resolved user and recipes');
 
     const resolvedData = this.route.snapshot.data['user'] as UserWithRecipes;
+
+    const urlHandle = this.route.snapshot.paramMap.get('handle');
+    if (urlHandle && resolvedData.user.id === this.authService.currentUser$.value?.id) {
+      this.router.navigate(['/profile'], { replaceUrl: true });
+      return;
+    }
+
     this.setUserData(resolvedData.user);
     this.recipes = resolvedData.recipes.content;
     this.hasMore = !resolvedData.recipes.last;
