@@ -26,6 +26,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
 import { RatingView } from './rating-view/rating-view';
 import { RatingCard } from './rating-card/rating-card';
 import { ProfileEditView } from './profile-edit-view/profile-edit-view';
+import { RatingModal } from './rating-modal/rating-modal';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { ProfileEditView } from './profile-edit-view/profile-edit-view';
     RegisterView,
     RatingView,
     RatingCard,
-    ProfileEditView
+    ProfileEditView,
+    RatingModal
   ],
   imports: [
     BrowserModule,

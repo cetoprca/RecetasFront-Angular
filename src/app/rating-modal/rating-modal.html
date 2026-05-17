@@ -1,0 +1,42 @@
+<div class="modal-card" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
+  <div class="modal-header">
+    <h2 class="modal-title">Nueva reseña</h2>
+    <button class="close-btn" (click)="close()" [style.color]="currentTheme.text" type="button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="form-group">
+      <input class="text-input" type="text" placeholder="Título" [(ngModel)]="title"
+        [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+        [style.borderColor]="currentTheme.divider">
+    </div>
+
+    <div class="form-group">
+      <textarea class="text-input textarea" placeholder="Descripción" [(ngModel)]="description" rows="4"
+        [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+        [style.borderColor]="currentTheme.divider"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="star-label">Puntuación</label>
+      <div class="star-selector">
+        @for (star of [1,2,3,4,5]; track star) {
+          <button class="star-btn" (click)="setRating(star)" type="button">
+            <mat-icon [style.color]="star <= rating ? currentTheme.starActive : currentTheme.starInactive">
+              {{ star <= rating ? 'star' : 'star_border' }}
+            </mat-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="save-btn" (click)="save()" [disabled]="saving || rating === 0 || !title || !description"
+      [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+      {{ saving ? 'Guardando...' : 'Guardar' }}
+    </button>
+  </div>
+</div>
