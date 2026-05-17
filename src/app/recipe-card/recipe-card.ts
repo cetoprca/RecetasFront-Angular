@@ -9,6 +9,7 @@ import { CuisineService } from '../services/cuisine.service';
 import { environment } from '../../environments/environment';
 import { RecipeService } from '../services/recipe.service';
 import { UserService } from '../services/user.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-recipe-card',
@@ -22,7 +23,9 @@ export class RecipeCard implements OnInit, OnDestroy {
     private themeService: ThemeService,
     private filterService: FilterService,
     private cuisineService: CuisineService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService,
+    private recipeService: RecipeService
   ) {}
 
   @Input() recipeData!: RecipeCardDTO;
@@ -112,6 +115,21 @@ export class RecipeCard implements OnInit, OnDestroy {
   shareRecipe(event: Event) {
     event.stopPropagation();
     console.log('Share recipe:', this.recipeData.title);
+    this.closeMenu();
+  }
+
+  get isAuthor(): boolean {
+    return this.recipeData.author?.id === this.authService.currentUser$.value?.id;
+  }
+
+  deleteRecipe(event: Event) {
+    event.stopPropagation();
+    const id = this.recipeData.id;
+    if (!id) return;
+    this.recipeService.deleteRecipe(id).subscribe({
+      next: () => this.router.navigate(['/']),
+      error: (err) => console.error('Error deleting recipe:', err)
+    });
     this.closeMenu();
   }
 

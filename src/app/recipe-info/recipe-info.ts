@@ -5,6 +5,8 @@ import { RecipeCardDTO } from '../../model/recipe/recipe-card-dto';
 import { ThemeService, Theme } from '../services/theme.service';
 import { environment } from '../../environments/environment';
 import { UserService } from '../services/user.service';
+import { AuthService } from '../services/auth.service';
+import { RecipeService } from '../services/recipe.service';
 
 @Component({
   selector: 'app-recipe-info',
@@ -16,7 +18,9 @@ export class RecipeInfo implements OnInit, OnDestroy, OnChanges {
   constructor(
     private router: Router,
     private themeService: ThemeService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService,
+    private recipeService: RecipeService
   ) {}
 
   @Input() recipeData!: RecipeCardDTO;
@@ -126,6 +130,20 @@ export class RecipeInfo implements OnInit, OnDestroy, OnChanges {
 
   shareRecipe() {
     console.log('Share recipe:', this.recipeData.title);
+    this.closeMenu();
+  }
+
+  get isAuthor(): boolean {
+    return this.recipeData.author?.id === this.authService.currentUser$.value?.id;
+  }
+
+  deleteRecipe() {
+    const id = this.recipeData.id;
+    if (!id) return;
+    this.recipeService.deleteRecipe(id).subscribe({
+      next: () => this.router.navigate(['/']),
+      error: (err) => console.error('Error deleting recipe:', err)
+    });
     this.closeMenu();
   }
 
