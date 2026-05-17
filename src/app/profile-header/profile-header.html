@@ -1,5 +1,9 @@
 <div class="profile-header" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
-  <div class="profile-banner"></div>
+  @if (bannerPath) {
+    <img class="profile-banner" [src]="imageUrl + bannerPath" alt="Banner">
+  } @else {
+    <div class="profile-banner"></div>
+  }
   <div class="profile-info">
     @if (profilePicture) {
       <img class="profile-picture" [src]="imageUrl + profilePicture" alt="Profile" (click)="navigateToProfile()">

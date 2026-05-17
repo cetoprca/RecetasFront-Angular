@@ -24,6 +24,7 @@ export class ProfileView implements OnInit, OnDestroy {
   handle: string = "";
   bio: string = "";
   profilePicture: string = "";
+  bannerPath: string = "";
   followers: number = 0;
   following: number = 0;
   recipesCount: number = 0;
@@ -104,6 +105,7 @@ export class ProfileView implements OnInit, OnDestroy {
     this.displayName = user.displayName;
     this.bio = user.biography || "";
     this.profilePicture = user.profilePicturePath || "";
+    this.bannerPath = user.bannerPath || "";
     this.followers = user.followers?.length || 0;
     this.following = user.following?.length || 0;
 
