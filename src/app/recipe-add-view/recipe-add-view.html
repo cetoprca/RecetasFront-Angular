@@ -45,13 +45,13 @@
       <div class="row-content times-row">
         <div class="time-field">
           <label class="time-label">Preparación</label>
-          <input class="text-input time-input" type="number" min="0" [(ngModel)]="prepTime"
+          <input class="text-input time-input" type="number" min="0" [(ngModel)]="prepTime" (keydown)="onlyDigits($event)"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
             [style.borderColor]="currentTheme.divider">
         </div>
         <div class="time-field">
           <label class="time-label">Cocción</label>
-          <input class="text-input time-input" type="number" min="0" [(ngModel)]="cookTime"
+          <input class="text-input time-input" type="number" min="0" [(ngModel)]="cookTime" (keydown)="onlyDigits($event)"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
             [style.borderColor]="currentTheme.divider">
         </div>

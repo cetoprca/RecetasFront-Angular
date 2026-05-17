@@ -145,6 +145,15 @@ export class RecipeAddView implements OnInit, OnDestroy {
     this.steps.push({ title: "", description: "", imageFile: null, imagePreview: null });
   }
 
+  onlyDigits(event: KeyboardEvent) {
+    if (!/^[0-9]$/.test(event.key) && !event.ctrlKey && !event.altKey && !event.metaKey) {
+      const allowed = ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+      if (!allowed.includes(event.key)) {
+        event.preventDefault();
+      }
+    }
+  }
+
   removeStep(index: number) {
     const step = this.steps[index];
     if (step.imagePreview) { URL.revokeObjectURL(step.imagePreview); }
