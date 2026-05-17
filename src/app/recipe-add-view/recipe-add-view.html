@@ -89,15 +89,21 @@
             </span>
           }
         </div>
-        <div class="chip-dropdown" [style.backgroundColor]="currentTheme.secondary"
-          [style.borderColor]="currentTheme.divider">
-          @for (tag of allTags; track tag.id) {
-            <div class="chip-option" (click)="addTag(tag)" [style.color]="currentTheme.text"
-              [style.borderBottomColor]="currentTheme.divider">
-              {{ tag.name }}
-            </div>
-          }
-        </div>
+        <button class="add-chip-button" (click)="toggleTagDropdown()" type="button"
+          [style.color]="currentTheme.text" [style.borderColor]="currentTheme.text">
+          <mat-icon>add</mat-icon>
+        </button>
+        @if (showTagDropdown) {
+          <div class="chip-dropdown" [style.backgroundColor]="currentTheme.secondary"
+            [style.borderColor]="currentTheme.divider">
+            @for (tag of allTags; track tag.id) {
+              <div class="chip-option" (click)="addTag(tag)" [style.color]="currentTheme.text"
+                [style.borderBottomColor]="currentTheme.divider">
+                {{ tag.name }}
+              </div>
+            }
+          </div>
+        }
         <div class="inline-add">
           <input class="text-input" type="text" [(ngModel)]="newTagName" placeholder="Nueva etiqueta"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
@@ -121,15 +127,21 @@
             </span>
           }
         </div>
-        <div class="chip-dropdown" [style.backgroundColor]="currentTheme.secondary"
-          [style.borderColor]="currentTheme.divider">
-          @for (ingredient of allIngredients; track ingredient.id) {
-            <div class="chip-option" (click)="addIngredient(ingredient)" [style.color]="currentTheme.text"
-              [style.borderBottomColor]="currentTheme.divider">
-              {{ ingredient.name }}
-            </div>
-          }
-        </div>
+        <button class="add-chip-button" (click)="toggleIngredientDropdown()" type="button"
+          [style.color]="currentTheme.text" [style.borderColor]="currentTheme.text">
+          <mat-icon>add</mat-icon>
+        </button>
+        @if (showIngredientDropdown) {
+          <div class="chip-dropdown" [style.backgroundColor]="currentTheme.secondary"
+            [style.borderColor]="currentTheme.divider">
+            @for (ingredient of allIngredients; track ingredient.id) {
+              <div class="chip-option" (click)="addIngredient(ingredient)" [style.color]="currentTheme.text"
+                [style.borderBottomColor]="currentTheme.divider">
+                {{ ingredient.name }}
+              </div>
+            }
+          </div>
+        }
         <div class="inline-add">
           <input class="text-input" type="text" [(ngModel)]="newIngredientName" placeholder="Nuevo ingrediente"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"

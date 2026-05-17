@@ -52,10 +52,12 @@ export class RecipeAddView implements OnInit, OnDestroy {
   allTags: TagDTO[] = [];
   selectedTags: TagDTO[] = [];
   newTagName: string = "";
+  showTagDropdown: boolean = false;
 
   allIngredients: IngredientDTO[] = [];
   selectedIngredients: IngredientDTO[] = [];
   newIngredientName: string = "";
+  showIngredientDropdown: boolean = false;
 
   steps: StepForm[] = [{ title: "", description: "", imageFile: null, imagePreview: null }];
   saving: boolean = false;
@@ -132,6 +134,7 @@ export class RecipeAddView implements OnInit, OnDestroy {
     if (!this.selectedTags.includes(tag)) {
       this.selectedTags.push(tag);
     }
+    this.showTagDropdown = false;
   }
 
   removeTag(tag: TagDTO) {
@@ -139,6 +142,11 @@ export class RecipeAddView implements OnInit, OnDestroy {
     if (idx >= 0) {
       this.selectedTags.splice(idx, 1);
     }
+  }
+
+  toggleTagDropdown() {
+    this.showTagDropdown = !this.showTagDropdown;
+    this.showIngredientDropdown = false;
   }
 
   addNewTag() {
@@ -160,6 +168,7 @@ export class RecipeAddView implements OnInit, OnDestroy {
     if (!this.selectedIngredients.includes(ingredient)) {
       this.selectedIngredients.push(ingredient);
     }
+    this.showIngredientDropdown = false;
   }
 
   removeIngredient(ingredient: IngredientDTO) {
@@ -167,6 +176,11 @@ export class RecipeAddView implements OnInit, OnDestroy {
     if (idx >= 0) {
       this.selectedIngredients.splice(idx, 1);
     }
+  }
+
+  toggleIngredientDropdown() {
+    this.showIngredientDropdown = !this.showIngredientDropdown;
+    this.showTagDropdown = false;
   }
 
   addNewIngredient() {
