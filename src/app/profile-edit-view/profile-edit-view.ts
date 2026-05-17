@@ -59,6 +59,7 @@ export class ProfileEditView implements OnInit, OnDestroy {
     if (this.themeSubscription) { this.themeSubscription.unsubscribe(); }
     if (this.authSubscription) { this.authSubscription.unsubscribe(); }
     if (this.profilePicPreview) { URL.revokeObjectURL(this.profilePicPreview); }
+    if (this.bannerPreview) { URL.revokeObjectURL(this.bannerPreview); }
   }
 
   onProfilePicSelected(event: Event) {
@@ -77,7 +78,6 @@ export class ProfileEditView implements OnInit, OnDestroy {
       if (this.bannerPreview) { URL.revokeObjectURL(this.bannerPreview); }
       this.bannerPreview = URL.createObjectURL(this.selectedBannerFile);
     }
-  }
   }
 
   saveProfile() {
