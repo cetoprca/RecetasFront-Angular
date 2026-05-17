@@ -38,8 +38,8 @@ export class RatingModal {
     const dto = new RatingDTO(0, this.title, this.description, this.rating, "", 0);
 
     this.ratingService.createRating(this.data.recipeId, dto).subscribe({
-      next: () => {
-        this.dialogRef.close(true);
+      next: (response) => {
+        this.dialogRef.close(response);
       },
       error: (err) => {
         console.error('Error creating rating:', err);
