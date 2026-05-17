@@ -10,6 +10,21 @@
       <span class="author-name">{{rating?.author?.displayName || rating?.author?.id}}</span>
       <span class="author-handle">@{{rating?.author?.id}}</span>
     </div>
+    @if (isOwnRating) {
+      <div class="menu-container" [style.--hover-bg]="currentTheme.hoverBg">
+        <button class="menu-button" (click)="toggleMenu($event)" [style.color]="currentTheme.menuIcon">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        @if (showMenu) {
+          <div class="dropdown-menu" [style.backgroundColor]="currentTheme.card" [style.border]="'1px solid ' + currentTheme.divider">
+            <button class="menu-option" (click)="deleteRating($event)" [style.color]="currentTheme.text">
+              <mat-icon [style.color]="currentTheme.menuIcon">delete</mat-icon>
+              <span>Eliminar</span>
+            </button>
+          </div>
+        }
+      </div>
+    }
   </div>
 
   <div class="rating-body">

@@ -7,7 +7,7 @@
     </button>
     <div class="ratings-container">
       @for (item of ratings; track item.id) {
-        <app-rating-card [rating]="item"></app-rating-card>
+        <app-rating-card [rating]="item" (deleted)="refreshRatings()"></app-rating-card>
       } @empty {
         <p class="no-ratings" [style.color]="currentTheme.text">Todavía no hay reseñas</p>
       }

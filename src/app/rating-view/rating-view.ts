@@ -60,6 +60,14 @@ export class RatingView implements OnInit, OnDestroy {
     if (this.routeSubscription) { this.routeSubscription.unsubscribe(); }
   }
 
+  refreshRatings() {
+    if (!this.currentRecipeId) return;
+    this.ratingService.getRatingCardsByRecipeId(this.currentRecipeId).subscribe({
+      next: (cards) => this.ratingService.setCurrentRatings(cards),
+      error: (err) => console.error('Error refreshing ratings:', err)
+    });
+  }
+
   openRatingModal() {
     if (!this.currentRecipeId) return;
 
