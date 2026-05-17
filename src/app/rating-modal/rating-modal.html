@@ -34,7 +34,7 @@
   </div>
 
   <div class="modal-footer">
-    <button class="save-btn" (click)="save()" [disabled]="saving || rating === 0"
+    <button class="save-btn" (click)="save()" [disabled]="saving || rating === 0 || !title || !description"
       [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
       {{ saving ? 'Guardando...' : 'Guardar' }}
     </button>

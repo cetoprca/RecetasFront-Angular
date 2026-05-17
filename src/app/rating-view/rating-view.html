@@ -1,14 +1,16 @@
-<div class="rating-view">
-  <h3 class="rating-header" [style.color]="currentTheme.text">Valoraciones</h3>
-  <button class="add-rating-btn" (click)="openRatingModal()"
-    [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
-    Escribe una reseña
-  </button>
-  <div class="ratings-container">
-    @for (item of ratings; track item.id) {
-      <app-rating-card [rating]="item"></app-rating-card>
-    } @empty {
-      <p class="no-ratings" [style.color]="currentTheme.text">Todavía no hay reseñas</p>
-    }
+@if (currentRecipeId) {
+  <div class="rating-view">
+    <h3 class="rating-header" [style.color]="currentTheme.text">Valoraciones</h3>
+    <button class="add-rating-btn" (click)="openRatingModal()"
+      [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+      Escribe una reseña
+    </button>
+    <div class="ratings-container">
+      @for (item of ratings; track item.id) {
+        <app-rating-card [rating]="item"></app-rating-card>
+      } @empty {
+        <p class="no-ratings" [style.color]="currentTheme.text">Todavía no hay reseñas</p>
+      }
+    </div>
   </div>
-</div>
+}

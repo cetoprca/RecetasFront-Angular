@@ -32,6 +32,7 @@ export class RatingModal {
 
   save() {
     if (this.saving || this.rating === 0) return;
+    if (!this.title.trim() || !this.description.trim()) return;
     this.saving = true;
 
     const dto = new RatingDTO(0, this.title, this.description, this.rating, "", 0);
