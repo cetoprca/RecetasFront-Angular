@@ -299,7 +299,6 @@ export class RecipeAddView implements OnInit, OnDestroy {
 
           this.steps.forEach((step, i) => {
             const stepDTO = new StepDTO(
-              0,
               step.title,
               step.description,
               i + 1,
