@@ -6,11 +6,19 @@
       <div class="row-label">Banner</div>
       <div class="row-content">
         <div class="banner-preview" [style.backgroundColor]="currentTheme.secondary">
-          <mat-icon class="banner-placeholder-icon">image</mat-icon>
+          @if (bannerPreview) {
+            <img class="banner-img" [src]="bannerPreview" alt="">
+          } @else if (bannerPath) {
+            <img class="banner-img" [src]="imageUrl + bannerPath" alt="">
+          } @else {
+            <mat-icon class="banner-placeholder-icon">image</mat-icon>
+          }
         </div>
-        <button class="upload-btn" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+        <button type="button" class="upload-btn" (click)="bannerInput.click()"
+          [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
           Subir banner
         </button>
+        <input #bannerInput type="file" accept="image/*" (change)="onBannerSelected($event)" hidden>
       </div>
     </div>
 

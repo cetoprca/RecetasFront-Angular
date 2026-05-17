@@ -22,8 +22,11 @@ export class ProfileEditView implements OnInit, OnDestroy {
   currentUser: UserDTO | null = null;
   displayName: string = "";
   profilePicturePath: string = "";
+  bannerPath: string = "";
   selectedProfilePicFile: File | null = null;
+  selectedBannerFile: File | null = null;
   profilePicPreview: string | null = null;
+  bannerPreview: string | null = null;
   saving: boolean = false;
 
   imageUrl = `${environment.apiUrl}/image/file/`;
@@ -47,6 +50,7 @@ export class ProfileEditView implements OnInit, OnDestroy {
         this.currentUser = user;
         this.displayName = user.displayName;
         this.profilePicturePath = user.profilePicturePath;
+        this.bannerPath = user.bannerPath || "";
       }
     });
   }
@@ -66,37 +70,61 @@ export class ProfileEditView implements OnInit, OnDestroy {
     }
   }
 
+  onBannerSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedBannerFile = input.files[0];
+      if (this.bannerPreview) { URL.revokeObjectURL(this.bannerPreview); }
+      this.bannerPreview = URL.createObjectURL(this.selectedBannerFile);
+    }
+  }
+  }
+
   saveProfile() {
     if (this.saving) return;
     this.saving = true;
 
     const updateDisplayName = this.displayName !== this.currentUser?.displayName;
     const updateProfilePic = this.selectedProfilePicFile !== null;
+    const updateBanner = this.selectedBannerFile !== null;
 
-    if (!updateDisplayName && !updateProfilePic) {
+    if (!updateDisplayName && !updateProfilePic && !updateBanner) {
       this.saving = false;
       this.router.navigate(['/profile']);
       return;
     }
 
-    const handleImageUpload = (): Promise<string | null> => {
-      if (this.selectedProfilePicFile) {
-        return new Promise((resolve, reject) => {
-          this.imageService.uploadImage(this.selectedProfilePicFile!).subscribe({
-            next: (image) => resolve(image.url),
-            error: (err) => reject(err)
-          });
+    const uploadFile = (file: File): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        this.imageService.uploadImage(file).subscribe({
+          next: (image) => resolve(image.url),
+          error: (err) => reject(err)
         });
-      }
-      return Promise.resolve(null);
+      });
     };
 
-    handleImageUpload().then(newProfilePicUrl => {
+    const tasks: Promise<void>[] = [];
+    let newProfilePicUrl: string | null = null;
+    let newBannerUrl: string | null = null;
+
+    if (this.selectedProfilePicFile) {
+      tasks.push(
+        uploadFile(this.selectedProfilePicFile).then(url => { newProfilePicUrl = url; })
+      );
+    }
+    if (this.selectedBannerFile) {
+      tasks.push(
+        uploadFile(this.selectedBannerFile).then(url => { newBannerUrl = url; })
+      );
+    }
+
+    Promise.all(tasks).then(() => {
       const updatedUser = new UserDTO();
       updatedUser.id = this.currentUser!.id;
       updatedUser.displayName = this.displayName;
       updatedUser.biography = this.currentUser!.biography;
       updatedUser.profilePicturePath = newProfilePicUrl || this.profilePicturePath;
+      updatedUser.bannerPath = newBannerUrl || this.bannerPath;
       updatedUser.following = this.currentUser!.following;
       updatedUser.followers = this.currentUser!.followers;
 
@@ -112,7 +140,7 @@ export class ProfileEditView implements OnInit, OnDestroy {
         }
       });
     }).catch(err => {
-      console.error('Error uploading image:', err);
+      console.error('Error uploading images:', err);
       this.saving = false;
     });
   }
