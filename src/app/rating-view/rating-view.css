@@ -6,10 +6,34 @@
 }
 
 .rating-header {
-    margin: 0 0 0.75rem;
+    margin: 0;
     font-size: clamp(0.9rem, 1.4vw, 1rem);
     font-weight: 700;
     flex-shrink: 0;
+}
+
+.add-rating-btn {
+    width: 100%;
+    padding: 0.55rem 0;
+    border: none;
+    border-radius: 999px;
+    font-size: clamp(0.85rem, 1.3vw, 0.9rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin: 0.6rem 0 0.75rem;
+    flex-shrink: 0;
+}
+
+.add-rating-btn:hover {
+    opacity: 0.85;
+}
+
+.no-ratings {
+    text-align: center;
+    opacity: 0.6;
+    font-size: 0.9rem;
+    margin: 2rem 0;
 }
 
 .ratings-container{

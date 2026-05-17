@@ -2,9 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Subscription, of } from 'rxjs';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
 import { RatingCardDTO } from '../../model/rating/rating-card-dto';
 import { RatingService } from '../services/rating.service';
 import { Theme, ThemeService } from '../services/theme.service';
+import { RatingModal } from '../rating-modal/rating-modal';
 
 @Component({
   selector: 'app-rating-view',
@@ -15,6 +17,7 @@ import { Theme, ThemeService } from '../services/theme.service';
 export class RatingView implements OnInit, OnDestroy {
   ratings: RatingCardDTO[] = [];
   currentTheme!: Theme;
+  currentRecipeId: number | null = null;
   private themeSubscription!: Subscription;
   private routeSubscription!: Subscription;
 
@@ -22,7 +25,8 @@ export class RatingView implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private ratingService: RatingService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -37,7 +41,9 @@ export class RatingView implements OnInit, OnDestroy {
       map(() => {
         let child = this.route;
         while (child.firstChild) { child = child.firstChild; }
-        return child.snapshot.params['recipeId'];
+        const recipeId = child.snapshot.params['recipeId'];
+        this.currentRecipeId = recipeId ? Number(recipeId) : null;
+        return this.currentRecipeId;
       }),
       switchMap(recipeId => {
         if (!recipeId) {
@@ -52,5 +58,23 @@ export class RatingView implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.themeSubscription) { this.themeSubscription.unsubscribe(); }
     if (this.routeSubscription) { this.routeSubscription.unsubscribe(); }
+  }
+
+  openRatingModal() {
+    if (!this.currentRecipeId) return;
+
+    const dialogRef = this.dialog.open(RatingModal, {
+      data: { recipeId: this.currentRecipeId },
+      width: '450px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.ratingService.getRatingCardsByRecipeId(this.currentRecipeId!).subscribe({
+          next: (cards) => this.ratingService.setCurrentRatings(cards),
+          error: (err) => console.error('Error refreshing ratings:', err)
+        });
+      }
+    });
   }
 }
