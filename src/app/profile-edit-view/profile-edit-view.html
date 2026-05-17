@@ -1,5 +1,55 @@
 <div class="edit-container">
   <div class="edit-card" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
     <h2 class="edit-title" [style.borderColor]="currentTheme.divider">Editar Perfil</h2>
+
+    <div class="edit-row">
+      <div class="row-label">Banner</div>
+      <div class="row-content">
+        <div class="banner-preview" [style.backgroundColor]="currentTheme.secondary">
+          <mat-icon class="banner-placeholder-icon">image</mat-icon>
+        </div>
+        <button class="upload-btn" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+          Subir banner
+        </button>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">Foto de perfil</div>
+      <div class="row-content">
+        <div class="avatar-section">
+          @if (profilePicPreview) {
+            <img class="avatar-preview" [src]="profilePicPreview" alt="">
+          } @else {
+            <img class="avatar-preview" [src]="imageUrl + profilePicturePath" alt="">
+          }
+          <button type="button" class="upload-btn" (click)="profilePicInput.click()"
+            [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+            Subir foto
+          </button>
+          <input #profilePicInput type="file" accept="image/*" (change)="onProfilePicSelected($event)" hidden>
+        </div>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">Nombre de usuario</div>
+      <div class="row-content">
+        <input class="text-input" type="text" [(ngModel)]="displayName"
+          [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+          [style.borderColor]="currentTheme.divider">
+      </div>
+    </div>
+
+    <div class="edit-actions">
+      <button class="action-btn save-btn" (click)="saveProfile()" [disabled]="saving"
+        [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+        {{ saving ? 'Guardando...' : 'Guardar cambios' }}
+      </button>
+      <button class="action-btn cancel-btn" (click)="cancel()"
+        [style]="'background: transparent; color: ' + currentTheme.text + '; border: 1px solid ' + currentTheme.divider">
+        Cancelar
+      </button>
+    </div>
   </div>
 </div>
