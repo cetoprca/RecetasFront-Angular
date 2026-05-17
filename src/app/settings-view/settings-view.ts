@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ThemeService, Theme } from '../services/theme.service';
 
@@ -15,7 +16,7 @@ export class SettingsView implements OnInit, OnDestroy {
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
 
-  constructor(private themeService: ThemeService) {}
+  constructor(private themeService: ThemeService, private router: Router) {}
 
   ngOnInit() {
     this.currentTheme = this.themeService.getCurrentTheme();
@@ -41,5 +42,9 @@ export class SettingsView implements OnInit, OnDestroy {
   resetTheme() {
     this.themeService.resetTheme();
     this.selectedTheme = 'light';
+  }
+
+  navigateToEditProfile() {
+    this.router.navigate(['/profile/edit']);
   }
 }

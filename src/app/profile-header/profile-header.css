@@ -13,6 +13,13 @@
   animation: gradientShift 15s ease infinite;
 }
 
+.profile-header img.profile-banner {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+}
+
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -91,6 +98,20 @@
 }
 
 .follow-button:hover {
+  opacity: 0.85;
+}
+
+.edit-profile-btn {
+  padding: 0.6rem 1.5rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.edit-profile-btn:hover {
   opacity: 0.85;
 }
 

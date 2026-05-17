@@ -1,5 +1,6 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing-module';
@@ -24,6 +25,7 @@ import { RegisterView } from './register-view/register-view';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { RatingView } from './rating-view/rating-view';
 import { RatingCard } from './rating-card/rating-card';
+import { ProfileEditView } from './profile-edit-view/profile-edit-view';
 
 @NgModule({
   declarations: [
@@ -44,10 +46,12 @@ import { RatingCard } from './rating-card/rating-card';
     LoginView,
     RegisterView,
     RatingView,
-    RatingCard
+    RatingCard,
+    ProfileEditView
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     MaterialModule
   ],

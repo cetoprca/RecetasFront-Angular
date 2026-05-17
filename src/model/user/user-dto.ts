@@ -3,6 +3,7 @@ export class UserDTO {
   displayName: string = "";
   biography: string = "";
   profilePicturePath: string = "";
+  bannerPath: string = "";
   recipes: number[] = [];
   savedRecipes: number[] = [];
   ratings: number[] = [];

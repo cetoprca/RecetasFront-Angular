@@ -24,6 +24,7 @@ export class ProfileView implements OnInit, OnDestroy {
   handle: string = "";
   bio: string = "";
   profilePicture: string = "";
+  bannerPath: string = "";
   followers: number = 0;
   following: number = 0;
   recipesCount: number = 0;
@@ -48,6 +49,13 @@ export class ProfileView implements OnInit, OnDestroy {
     console.log('ProfileView: Initializing with resolved user and recipes');
 
     const resolvedData = this.route.snapshot.data['user'] as UserWithRecipes;
+
+    const urlHandle = this.route.snapshot.paramMap.get('handle');
+    if (urlHandle && resolvedData.user.id === this.authService.currentUser$.value?.id) {
+      this.router.navigate(['/profile'], { replaceUrl: true });
+      return;
+    }
+
     this.setUserData(resolvedData.user);
     this.recipes = resolvedData.recipes.content;
     this.hasMore = !resolvedData.recipes.last;
@@ -97,6 +105,7 @@ export class ProfileView implements OnInit, OnDestroy {
     this.displayName = user.displayName;
     this.bio = user.biography || "";
     this.profilePicture = user.profilePicturePath || "";
+    this.bannerPath = user.bannerPath || "";
     this.followers = user.followers?.length || 0;
     this.following = user.following?.length || 0;
 

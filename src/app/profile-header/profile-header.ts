@@ -18,6 +18,7 @@ export class ProfileHeader implements OnInit, OnDestroy {
   @Input() userHandle: string = "chefmaria";
   @Input() bio: string = "Amante de la cocina mediterránea. Compartiendo mis recetas favoritas 🍳";
   @Input() profilePicture: string = "https://randomuser.me/api/portraits/women/44.jpg";
+  @Input() bannerPath: string = "";
   @Input() followers: number = 1250;
   @Input() following: number = 342;
   @Input() recipesCount: number = 28;
@@ -49,6 +50,10 @@ export class ProfileHeader implements OnInit, OnDestroy {
     if (this.isOwnProfile) {
       this.router.navigate(['/profile']);
     }
+  }
+
+  navigateToEditProfile() {
+    this.router.navigate(['/profile/edit']);
   }
 
   toggleFollow() {

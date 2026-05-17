@@ -76,7 +76,7 @@ export class RegisterView implements OnInit, OnDestroy {
       next: () => {
         this.authService.login(credentials).subscribe({
           next: () => {
-            this.router.navigate(['/']);
+            this.router.navigate(['/profile/edit']);
           },
           error: () => {
             this.router.navigate(['/login']);

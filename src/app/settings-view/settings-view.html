@@ -24,5 +24,15 @@
         Restablecer tema
       </button>
     </div>
+
+    <div class="settings-section settings-divider" [style.borderColor]="currentTheme.divider"></div>
+
+    <div class="settings-section">
+      <button class="settings-edit-btn" (click)="navigateToEditProfile()"
+        [style.backgroundColor]="currentTheme.buttonBg"
+        [style.color]="currentTheme.buttonText">
+        Editar Perfil
+      </button>
+    </div>
   </div>
 </div>
