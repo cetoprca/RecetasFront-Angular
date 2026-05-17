@@ -3,11 +3,9 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Subscription, of } from 'rxjs';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { RatingDTO } from '../../model/rating/rating-dto';
 import { RatingCardDTO } from '../../model/rating/rating-card-dto';
 import { RatingService } from '../services/rating.service';
 import { Theme, ThemeService } from '../services/theme.service';
-import { AuthService } from '../services/auth.service';
 import { RatingModal } from '../rating-modal/rating-modal';
 
 @Component({
@@ -28,7 +26,6 @@ export class RatingView implements OnInit, OnDestroy {
     private router: Router,
     private ratingService: RatingService,
     private themeService: ThemeService,
-    private authService: AuthService,
     private dialog: MatDialog
   ) {}
 
@@ -76,18 +73,14 @@ export class RatingView implements OnInit, OnDestroy {
       width: '450px'
     });
 
-    dialogRef.afterClosed().subscribe((result: RatingDTO | false) => {
-      if (result) {
-        const card = new RatingCardDTO(
-          result.id,
-          result.title,
-          result.description,
-          result.stars,
-          this.authService.currentUser$.value,
-          result.recipe
-        );
-        this.ratings = [card, ...this.ratings];
-        this.ratingService.setCurrentRatings(this.ratings);
+    dialogRef.afterClosed().subscribe({
+      next: (result) => {
+        if (result) {
+          this.ratingService.getRatingCardsByRecipeId(this.currentRecipeId!).subscribe({
+            next: (cards) => this.ratingService.setCurrentRatings(cards),
+            error: (err) => console.error('Error refreshing ratings:', err)
+          });
+        }
       }
     });
   }
