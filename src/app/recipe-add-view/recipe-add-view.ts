@@ -196,6 +196,7 @@ export class RecipeAddView implements OnInit, OnDestroy {
     if (!name) return;
     const tagDto = new TagDTO();
     tagDto.name = name;
+    (tagDto as any).id = undefined;
     this.tagService.createTag(tagDto).subscribe({
       next: (tag) => {
         this.allTags.push(tag);
@@ -230,7 +231,9 @@ export class RecipeAddView implements OnInit, OnDestroy {
   addNewIngredient() {
     const name = this.newIngredientName.trim();
     if (!name) return;
-    this.ingredientService.createIngredient(new IngredientDTO(0, name, [])).subscribe({
+    const dto = new IngredientDTO(0, name, []);
+    (dto as any).id = undefined;
+    this.ingredientService.createIngredient(dto).subscribe({
       next: (ingredient) => {
         this.allIngredients.push(ingredient);
         this.selectedIngredients.push(ingredient);
@@ -287,6 +290,7 @@ export class RecipeAddView implements OnInit, OnDestroy {
       recipeDTO.steps = [];
       recipeDTO.author = this.authService.currentUser$.value?.id || "";
       (recipeDTO as any).creationDate = undefined;
+      (recipeDTO as any).id = undefined;
 
       this.recipeService.saveRecipe(recipeDTO).subscribe({
         next: (savedRecipe) => {
