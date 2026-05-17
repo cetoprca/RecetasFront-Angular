@@ -89,6 +89,15 @@
             </div>
           }
         </div>
+        <div class="inline-add">
+          <input class="text-input" type="text" [(ngModel)]="newCuisineName" placeholder="Nueva cocina"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+          <button class="small-btn" (click)="addNewCuisine()" type="button"
+            [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+            Añadir
+          </button>
+        </div>
       </div>
     </div>
 

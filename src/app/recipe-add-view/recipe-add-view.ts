@@ -14,6 +14,7 @@ import { TagDTO } from '../../model/tag/tag-dto';
 import { IngredientDTO } from '../../model/ingredient/ingredient-dto';
 import { StepDTO } from '../../model/step/step-dto';
 import { RecipeFormData } from '../services/recipe-form.resolver';
+import { CuisineService } from '../services/cuisine.service';
 import { environment } from '../../environments/environment';
 
 interface StepForm {
@@ -73,6 +74,7 @@ export class RecipeAddView implements OnInit, OnDestroy {
   newIngredientName: string = "";
   showIngredientDropdown: boolean = false;
   ingredientSearchText: string = "";
+  newCuisineName: string = "";
 
   get filteredIngredients(): IngredientDTO[] {
     const q = this.ingredientSearchText.toLowerCase().trim();
@@ -94,6 +96,7 @@ export class RecipeAddView implements OnInit, OnDestroy {
     private ingredientService: IngredientService,
     private imageService: ImageService,
     private stepService: StepService,
+    private cuisineService: CuisineService,
     private router: Router
   ) {}
 
@@ -249,6 +252,22 @@ export class RecipeAddView implements OnInit, OnDestroy {
         this.newIngredientName = "";
       },
       error: (err) => console.error('Error creating ingredient:', err)
+    });
+  }
+
+  addNewCuisine() {
+    const name = this.newCuisineName.trim();
+    if (!name) return;
+    const dto = new CuisineDTO(0, name, []);
+    (dto as any).id = undefined;
+    this.cuisineService.createCuisine(dto).subscribe({
+      next: (cuisine) => {
+        this.cuisines.push(cuisine);
+        this.selectedCuisine = cuisine;
+        this.newCuisineName = "";
+        this.showCuisineDropdown = false;
+      },
+      error: (err) => console.error('Error creating cuisine:', err)
     });
   }
 
