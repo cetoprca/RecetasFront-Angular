@@ -52,7 +52,7 @@
   <div class="card-body">
     @if (imageURL && imageURL !== '') {
       <div class="image-container">
-        <img class="recipe-image" [src]="imageURL" alt="">
+        <img class="recipe-image" [src]="imageFileUrl + imageURL" alt="">
       </div>
     }
 
