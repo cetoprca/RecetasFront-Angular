@@ -1,5 +1,5 @@
 export class StepDTO {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   position: number;
@@ -7,14 +7,12 @@ export class StepDTO {
   recipe: number;
 
   constructor(
-    id: number = 0,
     title: string = "",
     description: string = "",
     position: number = 0,
     image: string = "",
     recipe: number = 0
   ) {
-    this.id = id;
     this.title = title;
     this.description = description;
     this.position = position;

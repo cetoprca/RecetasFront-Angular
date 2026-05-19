@@ -9,11 +9,13 @@ import { ProfileEditView } from './profile-edit-view/profile-edit-view';
 import { SavedView } from './saved-view/saved-view';
 import { SettingsView } from './settings-view/settings-view';
 import { RecipeDetail } from './recipe-detail/recipe-detail';
+import { RecipeAddView } from './recipe-add-view/recipe-add-view';
 import { AuthGuard } from './services/auth.guard';
 import { UserResolver } from './services/user.resolver';
 import { FeedRecipesResolver } from './services/feed-recipes.resolver';
 import { SavedRecipesResolver } from './services/saved-recipes.resolver';
 import { RecipeDetailResolver } from './services/recipe-detail.resolver';
+import { RecipeFormResolver } from './services/recipe-form.resolver';
 
 const routes: Routes = [
   { path: 'login', component: LoginView },
@@ -29,6 +31,7 @@ const routes: Routes = [
       { path: 'profile/:handle', component: ProfileView, resolve: { user: UserResolver } },
       { path: 'saved', component: SavedView, resolve: { recipes: SavedRecipesResolver } },
       { path: 'settings', component: SettingsView },
+      { path: 'recipe/new', component: RecipeAddView, resolve: { formData: RecipeFormResolver } },
       { path: 'recipe/:recipeId', component: RecipeDetail, resolve: { recipeData: RecipeDetailResolver } },
     ]
   },

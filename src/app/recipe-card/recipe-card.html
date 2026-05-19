@@ -27,6 +27,12 @@
                 <span>Añadir a favoritos</span>
               }
             </button>
+            @if (isAuthor) {
+              <button class="menu-option" (click)="deleteRecipe($event)" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
+                <mat-icon style="color: rgb(220, 50, 50)">delete</mat-icon>
+                <span style="color: rgb(220, 50, 50)">Eliminar</span>
+              </button>
+            }
             <button class="menu-option" (click)="shareRecipe($event)" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
               <mat-icon [style.color]="currentTheme.menuIcon">share</mat-icon>
               <span>Compartir</span>

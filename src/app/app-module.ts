@@ -27,6 +27,7 @@ import { RatingView } from './rating-view/rating-view';
 import { RatingCard } from './rating-card/rating-card';
 import { ProfileEditView } from './profile-edit-view/profile-edit-view';
 import { RatingModal } from './rating-modal/rating-modal';
+import { RecipeAddView } from './recipe-add-view/recipe-add-view';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { RatingModal } from './rating-modal/rating-modal';
     RatingView,
     RatingCard,
     ProfileEditView,
-    RatingModal
+    RatingModal,
+    RecipeAddView
   ],
   imports: [
     BrowserModule,
