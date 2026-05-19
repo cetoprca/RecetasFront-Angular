@@ -8,6 +8,7 @@
 
 .login-card {
   min-width: 400px;
+  max-width: 20vw;
   padding: 20px;
 }
 
