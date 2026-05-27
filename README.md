@@ -27,4 +27,4 @@ cd RecetasDeploy-DOCKER
 docker compose -f compose.prod.yml up
 ```
 
-Memoria: https://drive.google.com/file/d/16NNJV3bZRk-NpuJ6Ur482yWolnVd6Dtm/view?usp=drive_link
+Memoria: https://drive.google.com/file/d/15Nng71Sbz7vqwplNdlQJdKne_hKmav5l/view?usp=sharing
