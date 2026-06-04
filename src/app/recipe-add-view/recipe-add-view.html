@@ -1,22 +1,28 @@
 <div class="edit-container">
-  <div class="edit-card" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
+  <div class="edit-card" [formGroup]="recipeForm" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
     <h2 class="edit-title" [style.borderColor]="currentTheme.divider">Nueva Receta</h2>
 
     <div class="edit-row">
       <div class="row-label">Título</div>
       <div class="row-content">
-        <input class="text-input" type="text" [(ngModel)]="title"
+        <input class="text-input" type="text" formControlName="title"
           [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
           [style.borderColor]="currentTheme.divider">
+        @if (getErrorMessage('title')) {
+          <div class="error-message">{{ getErrorMessage('title') }}</div>
+        }
       </div>
     </div>
 
     <div class="edit-row">
       <div class="row-label">Descripción</div>
       <div class="row-content">
-        <textarea class="text-input textarea" [(ngModel)]="description" rows="3"
+        <textarea class="text-input textarea" formControlName="description" rows="3"
           [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
           [style.borderColor]="currentTheme.divider"></textarea>
+        @if (getErrorMessage('description')) {
+          <div class="error-message">{{ getErrorMessage('description') }}</div>
+        }
       </div>
     </div>
 
@@ -45,15 +51,21 @@
       <div class="row-content times-row">
         <div class="time-field">
           <label class="time-label">Preparación</label>
-          <input class="text-input time-input" type="number" min="0" [(ngModel)]="prepTime" (keydown)="onlyDigits($event)"
+          <input class="text-input time-input" type="number" min="0" formControlName="prepTime" (keydown)="onlyDigits($event)"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
             [style.borderColor]="currentTheme.divider">
+          @if (getErrorMessage('prepTime')) {
+            <div class="error-message">{{ getErrorMessage('prepTime') }}</div>
+          }
         </div>
         <div class="time-field">
           <label class="time-label">Cocción</label>
-          <input class="text-input time-input" type="number" min="0" [(ngModel)]="cookTime" (keydown)="onlyDigits($event)"
+          <input class="text-input time-input" type="number" min="0" formControlName="cookTime" (keydown)="onlyDigits($event)"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
             [style.borderColor]="currentTheme.divider">
+          @if (getErrorMessage('cookTime')) {
+            <div class="error-message">{{ getErrorMessage('cookTime') }}</div>
+          }
         </div>
         <div class="time-field">
           <label class="time-label">Total</label>
@@ -77,7 +89,7 @@
           @if (showCuisineDropdown) {
             <div class="select-dropdown" [style.backgroundColor]="currentTheme.secondary"
               [style.borderColor]="currentTheme.divider">
-              <input class="dropdown-search" type="text" [(ngModel)]="cuisineSearchText" placeholder="Buscar..."
+              <input class="dropdown-search" type="text" [(ngModel)]="cuisineSearchText" [ngModelOptions]="{standalone: true}" placeholder="Buscar..."
                 [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder"
                 [style.color]="currentTheme.inputText" (click)="$event.stopPropagation()">
               @for (cuisine of filteredCuisines; track cuisine.id) {
@@ -90,7 +102,7 @@
           }
         </div>
         <div class="inline-add">
-          <input class="text-input" type="text" [(ngModel)]="newCuisineName" placeholder="Nueva cocina"
+          <input class="text-input" type="text" [(ngModel)]="newCuisineName" [ngModelOptions]="{standalone: true}" placeholder="Nueva cocina"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
             [style.borderColor]="currentTheme.divider">
           <button class="small-btn" (click)="addNewCuisine()" type="button"
@@ -98,6 +110,9 @@
             Añadir
           </button>
         </div>
+        @if (getErrorMessage('cuisine')) {
+          <div class="error-message">{{ getErrorMessage('cuisine') }}</div>
+        }
       </div>
     </div>
 
@@ -122,7 +137,7 @@
           @if (showTagDropdown) {
             <div class="select-dropdown" [style.backgroundColor]="currentTheme.secondary"
               [style.borderColor]="currentTheme.divider">
-              <input class="dropdown-search" type="text" [(ngModel)]="tagSearchText" placeholder="Buscar..."
+              <input class="dropdown-search" type="text" [(ngModel)]="tagSearchText" [ngModelOptions]="{standalone: true}" placeholder="Buscar..."
                 [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder"
                 [style.color]="currentTheme.inputText" (click)="$event.stopPropagation()">
               @for (tag of filteredTags; track tag.id) {
@@ -135,7 +150,7 @@
           }
         </div>
         <div class="inline-add">
-          <input class="text-input" type="text" [(ngModel)]="newTagName" placeholder="Nueva etiqueta"
+          <input class="text-input" type="text" [(ngModel)]="newTagName" [ngModelOptions]="{standalone: true}" placeholder="Nueva etiqueta"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
             [style.borderColor]="currentTheme.divider">
           <button class="small-btn" (click)="addNewTag()" type="button"
@@ -143,6 +158,9 @@
             Añadir
           </button>
         </div>
+        @if (getErrorMessage('tags')) {
+          <div class="error-message">{{ getErrorMessage('tags') }}</div>
+        }
       </div>
     </div>
 
@@ -167,7 +185,7 @@
           @if (showIngredientDropdown) {
             <div class="select-dropdown" [style.backgroundColor]="currentTheme.secondary"
               [style.borderColor]="currentTheme.divider">
-              <input class="dropdown-search" type="text" [(ngModel)]="ingredientSearchText" placeholder="Buscar..."
+              <input class="dropdown-search" type="text" [(ngModel)]="ingredientSearchText" [ngModelOptions]="{standalone: true}" placeholder="Buscar..."
                 [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder"
                 [style.color]="currentTheme.inputText" (click)="$event.stopPropagation()">
               @for (ingredient of filteredIngredients; track ingredient.id) {
@@ -180,7 +198,7 @@
           }
         </div>
         <div class="inline-add">
-          <input class="text-input" type="text" [(ngModel)]="newIngredientName" placeholder="Nuevo ingrediente"
+          <input class="text-input" type="text" [(ngModel)]="newIngredientName" [ngModelOptions]="{standalone: true}" placeholder="Nuevo ingrediente"
             [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
             [style.borderColor]="currentTheme.divider">
           <button class="small-btn" (click)="addNewIngredient()" type="button"
@@ -188,17 +206,21 @@
             Añadir
           </button>
         </div>
+        @if (getErrorMessage('ingredients')) {
+          <div class="error-message">{{ getErrorMessage('ingredients') }}</div>
+        }
       </div>
     </div>
 
     <div class="edit-row">
       <div class="row-label">Público</div>
       <div class="row-content">
-        <button class="toggle-btn" (click)="isPublic = !isPublic" type="button"
-          [style.backgroundColor]="isPublic ? currentTheme.primary : currentTheme.secondary"
-          [style.color]="isPublic ? currentTheme.buttonText : currentTheme.text">
-          <mat-icon>{{ isPublic ? 'visibility' : 'visibility_off' }}</mat-icon>
-          <span>{{ isPublic ? 'Público' : 'Privado' }}</span>
+        <button class="toggle-btn" type="button"
+          (click)="recipeForm.get('isPublic')?.setValue(!recipeForm.get('isPublic')?.value)"
+          [style.backgroundColor]="(recipeForm.get('isPublic')?.value ?? true) ? currentTheme.primary : currentTheme.secondary"
+          [style.color]="(recipeForm.get('isPublic')?.value ?? true) ? currentTheme.buttonText : currentTheme.text">
+          <mat-icon>{{ (recipeForm.get('isPublic')?.value ?? true) ? 'visibility' : 'visibility_off' }}</mat-icon>
+          <span>{{ (recipeForm.get('isPublic')?.value ?? true) ? 'Público' : 'Privado' }}</span>
         </button>
       </div>
     </div>
@@ -206,9 +228,9 @@
     <div class="section-divider" [style.borderColor]="currentTheme.divider"></div>
     <h3 class="section-title">Pasos</h3>
 
-    <div class="steps-list">
+    <div class="steps-list" formArrayName="steps">
       @for (step of steps; track $index) {
-        <div class="step-card" [style.borderColor]="currentTheme.divider">
+        <div class="step-card" [formGroupName]="$index" [style.borderColor]="currentTheme.divider">
           <div class="step-header">
             <span class="step-number">Paso {{ $index + 1 }}</span>
             @if (steps.length > 1) {
@@ -217,14 +239,20 @@
             }
           </div>
           <div class="step-field">
-            <input class="text-input" type="text" placeholder="Título del paso" [(ngModel)]="step.title"
+            <input class="text-input" type="text" placeholder="Título del paso" formControlName="title"
               [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
               [style.borderColor]="currentTheme.divider">
+            @if (getErrorMessage('title', $index)) {
+              <div class="error-message">{{ getErrorMessage('title', $index) }}</div>
+            }
           </div>
           <div class="step-field">
-            <textarea class="text-input textarea" placeholder="Descripción del paso" [(ngModel)]="step.description" rows="2"
+            <textarea class="text-input textarea" placeholder="Descripción del paso" formControlName="description" rows="2"
               [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
               [style.borderColor]="currentTheme.divider"></textarea>
+            @if (getErrorMessage('description', $index)) {
+              <div class="error-message">{{ getErrorMessage('description', $index) }}</div>
+            }
           </div>
           <div class="step-field">
             <div class="image-section">

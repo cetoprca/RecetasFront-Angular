@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { FormControl, FormGroup, FormArray, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Theme, ThemeService } from '../services/theme.service';
@@ -24,6 +25,47 @@ interface StepForm {
   imagePreview: string | null;
 }
 
+interface RecipeForm {
+  title: FormControl<string | null>;
+  description: FormControl<string | null>;
+  prepTime: FormControl<number | null>;
+  cookTime: FormControl<number | null>;
+  isPublic: FormControl<boolean | null>;
+  cuisine: FormControl<number | null>;
+  tags: FormControl<number[] | null>;
+  ingredients: FormControl<number[] | null>;
+  steps: FormArray<FormGroup<StepFormGroup>>;
+}
+
+interface StepFormGroup {
+  title: FormControl<string | null>;
+  description: FormControl<string | null>;
+}
+
+export function recipeFormValidator(): ValidatorFn {
+  return (group: AbstractControl): ValidationErrors | null => {
+    const title = (group.get('title')?.value || '').toString().trim();
+    const description = (group.get('description')?.value || '').toString().trim();
+    const prepTime = group.get('prepTime')?.value;
+    const cookTime = group.get('cookTime')?.value;
+    const cuisine = group.get('cuisine')?.value;
+    const tags = group.get('tags')?.value;
+    const ingredients = group.get('ingredients')?.value;
+    const steps = group.get('steps') as FormArray;
+
+    const errors: ValidationErrors = {};
+    if (!title) errors['titleEmpty'] = true;
+    if (!description) errors['descriptionEmpty'] = true;
+    if (prepTime === null || prepTime === undefined) errors['prepTimeEmpty'] = true;
+    if (cookTime === null || cookTime === undefined) errors['cookTimeEmpty'] = true;
+    if (!cuisine) errors['cuisineEmpty'] = true;
+    if (!tags || !Array.isArray(tags) || tags.length === 0) errors['tagsEmpty'] = true;
+    if (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) errors['ingredientsEmpty'] = true;
+    if (steps.length === 0) errors['stepsEmpty'] = true;
+    return Object.keys(errors).length > 0 ? errors : null;
+  };
+}
+
 @Component({
   selector: 'app-recipe-add-view',
   standalone: false,
@@ -34,14 +76,8 @@ export class RecipeAddView implements OnInit, OnDestroy {
   currentTheme!: Theme;
   private themeSubscription!: Subscription;
 
-  title: string = "";
-  description: string = "";
-  prepTime: number = 0;
-  cookTime: number = 0;
-  isPublic: boolean = true;
-
   get totalTime(): number {
-    return this.prepTime + this.cookTime;
+    return (this.recipeForm.get('prepTime')?.value ?? 0) + (this.recipeForm.get('cookTime')?.value ?? 0);
   }
 
   imageFile: File | null = null;
@@ -84,6 +120,30 @@ export class RecipeAddView implements OnInit, OnDestroy {
 
   steps: StepForm[] = [{ title: "", description: "", imageFile: null, imagePreview: null }];
   saving: boolean = false;
+  submitted: boolean = false;
+
+  recipeForm = new FormGroup<RecipeForm>({
+    title: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required),
+    prepTime: new FormControl(0, [Validators.required, Validators.min(0)]),
+    cookTime: new FormControl(0, [Validators.required, Validators.min(0)]),
+    isPublic: new FormControl(true),
+    cuisine: new FormControl<number | null>(null),
+    tags: new FormControl<number[] | null>([]),
+    ingredients: new FormControl<number[] | null>([]),
+    steps: new FormArray<FormGroup<StepFormGroup>>([this.createStepGroup()]),
+  }, { validators: recipeFormValidator() });
+
+  get stepsFormArray(): FormArray<FormGroup<StepFormGroup>> {
+    return this.recipeForm.get('steps') as FormArray<FormGroup<StepFormGroup>>;
+  }
+
+  createStepGroup(): FormGroup<StepFormGroup> {
+    return new FormGroup<StepFormGroup>({
+      title: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+    });
+  }
 
   imageUrl = `${environment.apiUrl}/image/file/`;
 
@@ -145,7 +205,9 @@ export class RecipeAddView implements OnInit, OnDestroy {
   }
 
   addStep() {
+    this.stepsFormArray.push(this.createStepGroup());
     this.steps.push({ title: "", description: "", imageFile: null, imagePreview: null });
+    this.recipeForm.get('steps')?.markAsTouched();
   }
 
   onlyDigits(event: KeyboardEvent) {
@@ -161,6 +223,36 @@ export class RecipeAddView implements OnInit, OnDestroy {
     const step = this.steps[index];
     if (step.imagePreview) { URL.revokeObjectURL(step.imagePreview); }
     this.steps.splice(index, 1);
+    this.stepsFormArray.removeAt(index);
+    this.recipeForm.get('steps')?.markAsTouched();
+  }
+
+  getErrorMessage(field: string, stepIndex?: number): string {
+    if (stepIndex !== undefined) {
+      const stepGroup = this.stepsFormArray.at(stepIndex);
+      const control = stepGroup.get(field);
+      if (!control || !control.touched) return '';
+      if (control.hasError('required')) return `Step ${stepIndex + 1} ${field === 'title' ? 'title' : 'description'} is required`;
+      return '';
+    }
+
+    const control = this.recipeForm.get(field);
+
+    if (control && control.touched) {
+      if (control.hasError('required')) {
+        const labels: Record<string, string> = { title: 'Title', description: 'Description', prepTime: 'Preparation time', cookTime: 'Cook time' };
+        return `${labels[field] || field} is required`;
+      }
+      if (control.hasError('min')) return 'Value must be 0 or greater';
+    }
+
+    if (this.submitted) {
+      if (this.recipeForm.hasError('cuisineEmpty') && field === 'cuisine') return 'Please select a cuisine';
+      if (this.recipeForm.hasError('tagsEmpty') && field === 'tags') return 'Please add at least one tag';
+      if (this.recipeForm.hasError('ingredientsEmpty') && field === 'ingredients') return 'Please add at least one ingredient';
+      if (this.recipeForm.hasError('stepsEmpty') && field === 'steps') return 'Please add at least one step';
+    }
+    return '';
   }
 
   @HostListener('document:click')
@@ -179,6 +271,8 @@ export class RecipeAddView implements OnInit, OnDestroy {
 
   selectCuisine(cuisine: CuisineDTO) {
     this.selectedCuisine = cuisine;
+    this.recipeForm.get('cuisine')?.setValue(cuisine.id);
+    this.recipeForm.get('cuisine')?.markAsTouched();
     this.showCuisineDropdown = false;
   }
 
@@ -186,6 +280,8 @@ export class RecipeAddView implements OnInit, OnDestroy {
     if (!this.selectedTags.includes(tag)) {
       this.selectedTags.push(tag);
     }
+    this.recipeForm.get('tags')?.setValue(this.selectedTags.map(t => t.id));
+    this.recipeForm.get('tags')?.markAsTouched();
     this.showTagDropdown = false;
   }
 
@@ -194,6 +290,8 @@ export class RecipeAddView implements OnInit, OnDestroy {
     if (idx >= 0) {
       this.selectedTags.splice(idx, 1);
     }
+    this.recipeForm.get('tags')?.setValue(this.selectedTags.map(t => t.id));
+    this.recipeForm.get('tags')?.markAsTouched();
   }
 
   toggleTagDropdown() {
@@ -214,6 +312,8 @@ export class RecipeAddView implements OnInit, OnDestroy {
         this.allTags.push(tag);
         this.selectedTags.push(tag);
         this.newTagName = "";
+        this.recipeForm.get('tags')?.setValue(this.selectedTags.map(t => t.id));
+        this.recipeForm.get('tags')?.markAsTouched();
       },
       error: (err) => console.error('Error creating tag:', err)
     });
@@ -223,6 +323,8 @@ export class RecipeAddView implements OnInit, OnDestroy {
     if (!this.selectedIngredients.includes(ingredient)) {
       this.selectedIngredients.push(ingredient);
     }
+    this.recipeForm.get('ingredients')?.setValue(this.selectedIngredients.map(i => i.id));
+    this.recipeForm.get('ingredients')?.markAsTouched();
     this.showIngredientDropdown = false;
   }
 
@@ -231,6 +333,8 @@ export class RecipeAddView implements OnInit, OnDestroy {
     if (idx >= 0) {
       this.selectedIngredients.splice(idx, 1);
     }
+    this.recipeForm.get('ingredients')?.setValue(this.selectedIngredients.map(i => i.id));
+    this.recipeForm.get('ingredients')?.markAsTouched();
   }
 
   toggleIngredientDropdown() {
@@ -250,6 +354,8 @@ export class RecipeAddView implements OnInit, OnDestroy {
         this.allIngredients.push(ingredient);
         this.selectedIngredients.push(ingredient);
         this.newIngredientName = "";
+        this.recipeForm.get('ingredients')?.setValue(this.selectedIngredients.map(i => i.id));
+        this.recipeForm.get('ingredients')?.markAsTouched();
       },
       error: (err) => console.error('Error creating ingredient:', err)
     });
@@ -264,6 +370,8 @@ export class RecipeAddView implements OnInit, OnDestroy {
       next: (cuisine) => {
         this.cuisines.push(cuisine);
         this.selectedCuisine = cuisine;
+        this.recipeForm.get('cuisine')?.setValue(cuisine.id);
+        this.recipeForm.get('cuisine')?.markAsTouched();
         this.newCuisineName = "";
         this.showCuisineDropdown = false;
       },
@@ -273,6 +381,9 @@ export class RecipeAddView implements OnInit, OnDestroy {
 
   save() {
     if (this.saving) return;
+    this.submitted = true;
+    this.recipeForm.markAllAsTouched();
+    if (this.recipeForm.invalid) return;
     this.saving = true;
 
     const uploadFile = (file: File): Promise<string> => {
@@ -304,14 +415,15 @@ export class RecipeAddView implements OnInit, OnDestroy {
     });
 
     Promise.all(uploadTasks).then(() => {
+      const formValue = this.recipeForm.value;
       const recipeDTO = new RecipeDTO();
-      recipeDTO.title = this.title;
-      recipeDTO.description = this.description;
+      recipeDTO.title = formValue.title || '';
+      recipeDTO.description = formValue.description || '';
       recipeDTO.image = imageUrl || "";
-      recipeDTO.prepTime = this.prepTime;
-      recipeDTO.cookTime = this.cookTime;
+      recipeDTO.prepTime = formValue.prepTime || 0;
+      recipeDTO.cookTime = formValue.cookTime || 0;
       recipeDTO.totalTime = this.totalTime;
-      recipeDTO.isPublic = this.isPublic;
+      recipeDTO.isPublic = formValue.isPublic ?? true;
       recipeDTO.cuisine = this.selectedCuisine?.id || 0;
       recipeDTO.tags = this.selectedTags.map(t => t.id);
       recipeDTO.ingredients = this.selectedIngredients.map(i => i.id);
@@ -325,10 +437,10 @@ export class RecipeAddView implements OnInit, OnDestroy {
           const newId = savedRecipe.id;
           const stepTasks: Promise<void>[] = [];
 
-          this.steps.forEach((step, i) => {
+          this.stepsFormArray.controls.forEach((stepGroup, i) => {
             const stepDTO = new StepDTO(
-              step.title,
-              step.description,
+              stepGroup.value.title || '',
+              stepGroup.value.description || '',
               i + 1,
               stepImageUrls[i] || "",
               newId
