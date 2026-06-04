@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Theme, ThemeService } from '../services/theme.service';
@@ -7,6 +8,17 @@ import { UserService } from '../services/user.service';
 import { ImageService } from '../services/image.service';
 import { UserDTO } from '../../model/user/user-dto';
 import { environment } from '../../environments/environment';
+
+interface ProfileEditForm {
+  displayName: FormControl<string | null>;
+}
+
+export function profileEditFormValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value: string = control.value || '';
+    return value.trim().length === 0 ? { displayNameEmpty: true } : null;
+  };
+}
 
 @Component({
   selector: 'app-profile-edit-view',
@@ -20,7 +32,6 @@ export class ProfileEditView implements OnInit, OnDestroy {
   private authSubscription!: Subscription;
 
   currentUser: UserDTO | null = null;
-  displayName: string = "";
   profilePicturePath: string = "";
   bannerPath: string = "";
   selectedProfilePicFile: File | null = null;
@@ -30,6 +41,10 @@ export class ProfileEditView implements OnInit, OnDestroy {
   saving: boolean = false;
 
   imageUrl = `${environment.apiUrl}/image/file/`;
+
+  profileForm = new FormGroup<ProfileEditForm>({
+    displayName: new FormControl('', [Validators.required, profileEditFormValidator()]),
+  });
 
   constructor(
     private themeService: ThemeService,
@@ -48,7 +63,7 @@ export class ProfileEditView implements OnInit, OnDestroy {
     this.authSubscription = this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.currentUser = user;
-        this.displayName = user.displayName;
+        this.profileForm.patchValue({ displayName: user.displayName });
         this.profilePicturePath = user.profilePicturePath;
         this.bannerPath = user.bannerPath || "";
       }
@@ -80,11 +95,20 @@ export class ProfileEditView implements OnInit, OnDestroy {
     }
   }
 
+  getErrorMessage(): string {
+    const control = this.profileForm.get('displayName');
+    if (!control || !control.errors || !control.touched) return '';
+    if (control.hasError('required')) return 'Display name is required';
+    if (control.hasError('displayNameEmpty')) return 'Display name cannot be empty';
+    return '';
+  }
+
   saveProfile() {
-    if (this.saving) return;
+    if (this.saving || this.profileForm.invalid) return;
     this.saving = true;
 
-    const updateDisplayName = this.displayName !== this.currentUser?.displayName;
+    const displayName = this.profileForm.get('displayName')?.value ?? '';
+    const updateDisplayName = displayName !== this.currentUser?.displayName;
     const updateProfilePic = this.selectedProfilePicFile !== null;
     const updateBanner = this.selectedBannerFile !== null;
 
@@ -121,7 +145,7 @@ export class ProfileEditView implements OnInit, OnDestroy {
     Promise.all(tasks).then(() => {
       const updatedUser = new UserDTO();
       updatedUser.id = this.currentUser!.id;
-      updatedUser.displayName = this.displayName;
+      updatedUser.displayName = displayName;
       updatedUser.biography = this.currentUser!.biography;
       updatedUser.profilePicturePath = newProfilePicUrl || this.profilePicturePath;
       updatedUser.bannerPath = newBannerUrl || this.bannerPath;

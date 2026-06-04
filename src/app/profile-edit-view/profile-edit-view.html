@@ -1,5 +1,5 @@
 <div class="edit-container">
-  <div class="edit-card" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
+  <div class="edit-card" [formGroup]="profileForm" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
     <h2 class="edit-title" [style.borderColor]="currentTheme.divider">Editar Perfil</h2>
 
     <div class="edit-row">
@@ -43,9 +43,12 @@
     <div class="edit-row">
       <div class="row-label">Nombre de usuario</div>
       <div class="row-content">
-        <input class="text-input" type="text" [(ngModel)]="displayName"
+        <input class="text-input" type="text" formControlName="displayName"
           [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
           [style.borderColor]="currentTheme.divider">
+        @if (getErrorMessage()) {
+          <div class="error-message">{{ getErrorMessage() }}</div>
+        }
       </div>
     </div>
 
