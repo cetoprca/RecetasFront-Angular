@@ -21,6 +21,10 @@ export class UserService {
     return this.http.get<UserDTO>(`${this.baseUrl}/${handle}`, { withCredentials: true });
   }
 
+  checkHandleAvailability(handle: string): Observable<{ available: boolean }> {
+    return this.http.get<{ available: boolean }>(`${this.baseUrl}/exists/${handle}`);
+  }
+
   register(credentials: CredentialsDTO): Observable<UserDTO> {
     return this.http.post<UserDTO>(`${this.baseUrl}/register`, {
       handle: credentials.handle,
