@@ -134,3 +134,9 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.error-message {
+  color: red;
+  margin-top: 4px;
+  font-size: 0.85rem;
+}
