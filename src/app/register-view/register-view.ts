@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { CredentialsDTO } from '../../model/auth/credentials-dto';
+import { sha256 } from '../utils/hash';
 import { ThemeService, Theme } from '../services/theme.service';
 
 @Component({
@@ -53,7 +54,7 @@ export class RegisterView implements OnInit, OnDestroy {
     }
   }
 
-  onRegister() {
+  async onRegister() {
     this.errorMessage = '';
 
     if (!this.handle || !this.displayName || !this.password || !this.confirmPassword) {
@@ -71,7 +72,8 @@ export class RegisterView implements OnInit, OnDestroy {
       return;
     }
 
-    const credentials = new CredentialsDTO(this.handle, this.password, this.displayName);
+    const hashedPassword = await sha256(this.password);
+    const credentials = new CredentialsDTO(this.handle, hashedPassword, this.displayName);
     this.userService.register(credentials).subscribe({
       next: () => {
         this.authService.login(credentials).subscribe({

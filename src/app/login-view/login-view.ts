@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { CredentialsDTO } from '../../model/auth/credentials-dto';
+import { sha256 } from '../utils/hash';
 import { ThemeService, Theme } from '../services/theme.service';
 
 @Component({
@@ -54,13 +55,14 @@ export class LoginView implements OnInit, OnDestroy {
     }
   }
 
-  onLogin() {
+  async onLogin() {
     if (!this.handle || !this.password) {
       this.errorMessage = 'Please enter handle and password';
       return;
     }
 
-    const credentials = new CredentialsDTO(this.handle, this.password);
+    const hashedPassword = await sha256(this.password);
+    const credentials = new CredentialsDTO(this.handle, hashedPassword);
     this.authService.login(credentials).subscribe({
       next: () => {
         this.router.navigate(['/']);
