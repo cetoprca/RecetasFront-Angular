@@ -1,0 +1,8 @@
+<app-recipe-scroll
+  [recipes]="recipes"
+  [hasMore]="hasMore"
+  [loading]="loading"
+  (loadMore)="onLoadMore()"
+>
+  <app-saved-header slot="header" [savedCount]="savedCount"/>
+</app-recipe-scroll>

@@ -1,0 +1,51 @@
+<div class="modal-card" [formGroup]="ratingForm" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
+  <div class="modal-header">
+    <h2 class="modal-title">{{ 'RATING.MODAL_TITLE' | translate }}</h2>
+    <button class="close-btn" (click)="close()" [style.color]="currentTheme.text" type="button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="form-group">
+      <input class="text-input" type="text" [placeholder]="'RATING.TITLE_PLACEHOLDER' | translate" formControlName="title"
+        [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+        [style.borderColor]="currentTheme.divider">
+      @if (getErrorMessage('title')) {
+        <div class="error-message">{{ getErrorMessage('title') }}</div>
+      }
+    </div>
+
+    <div class="form-group">
+      <textarea class="text-input textarea" [placeholder]="'RATING.DESC_PLACEHOLDER' | translate" formControlName="description" rows="4"
+        [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+        [style.borderColor]="currentTheme.divider"></textarea>
+      @if (getErrorMessage('description')) {
+        <div class="error-message">{{ getErrorMessage('description') }}</div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label class="star-label">{{ 'RATING.RATING_LABEL' | translate }}</label>
+      <div class="star-selector">
+        @for (star of [1,2,3,4,5]; track star) {
+          <button class="star-btn" (click)="setRating(star)" type="button">
+            <mat-icon [style.color]="star <= (ratingForm.get('rating')?.value ?? 0) ? currentTheme.starActive : currentTheme.starInactive">
+              {{ star <= (ratingForm.get('rating')?.value ?? 0) ? 'star' : 'star_border' }}
+            </mat-icon>
+          </button>
+        }
+      </div>
+      @if (getErrorMessage('rating')) {
+        <div class="error-message">{{ getErrorMessage('rating') }}</div>
+      }
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="save-btn" (click)="save()" [disabled]="saving || ratingForm.invalid"
+      [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+      {{ saving ? ('RATING.SAVING' | translate) : ('RATING.SAVE' | translate) }}
+    </button>
+  </div>
+</div>

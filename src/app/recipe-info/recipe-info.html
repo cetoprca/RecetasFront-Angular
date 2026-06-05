@@ -1,0 +1,94 @@
+<div class="recipe-info" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text" [style.border]="'1px solid ' + currentTheme.divider">
+
+  <div class="card-header" [style.borderBottom]="'1px solid ' + currentTheme.divider">
+  <div class="author-row">
+    @if (recipeData.author?.profilePicturePath) {
+      <img class="author-avatar" [src]="imageFileUrl + authorProfilePictureURL" alt="" (click)="navigateToProfile($event)">
+    } @else {
+      <img class="author-avatar" [src]="imageFileUrl + 'placeholder.png'" alt="" (click)="navigateToProfile($event)">
+    }
+    <div class="author-text" (click)="navigateToProfile($event)">
+      <span class="author-name">{{authorUsername}}</span>
+      <span class="author-handle">@{{recipeData.author?.id}}</span>
+    </div>
+      <div class="menu-container">
+        <button class="menu-button" (click)="toggleMenu($event)" [style.color]="currentTheme.menuIcon" [style.--hover-bg]="currentTheme.hoverBg">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        @if (showMenu) {
+          <div class="dropdown-menu" [style.backgroundColor]="currentTheme.card" [style.border]="'1px solid ' + currentTheme.divider">
+            <button class="menu-option" (click)="saveRecipe()" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
+              <mat-icon [style.color]="currentTheme.menuIcon">bookmark_border</mat-icon>
+              <span>{{ 'INFO.SAVE' | translate }}</span>
+            </button>
+            @if (isAuthor) {
+              <button class="menu-option" (click)="deleteRecipe()" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
+                <mat-icon style="color: rgb(220, 50, 50)">delete</mat-icon>
+                <span style="color: rgb(220, 50, 50)">{{ 'INFO.DELETE' | translate }}</span>
+              </button>
+            }
+            <button class="menu-option" (click)="shareRecipe()" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
+              <mat-icon [style.color]="currentTheme.menuIcon">share</mat-icon>
+              <span>{{ 'INFO.SHARE' | translate }}</span>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+
+  <div class="tags-row">
+    <span class="cuisine-tag" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+      {{cuisineDisplay}}
+    </span>
+    <span class="tag-divider" [style.backgroundColor]="currentTheme.divider"></span>
+    <div class="scrollable-tags">
+      <span class="tag" *ngFor="let tag of tagList" (click)="onTagClick($event)" [style.backgroundColor]="currentTheme.tagBg" [style.color]="currentTheme.text">
+        {{tag.name}}
+      </span>
+    </div>
+  </div>
+  </div>
+
+  <div class="card-body">
+    @if (imageURL && imageURL !== '') {
+      <div class="image-container">
+        <img class="recipe-image" [src]="imageFileUrl + imageURL" alt="">
+      </div>
+    }
+
+    <div class="content-section">
+      <h2 class="recipe-title">{{recipeTitle}}</h2>
+      <p class="recipe-description">{{recipeDescription}}</p>
+
+      <div class="meta-row">
+        <div class="rating">
+          <div class="star-container" *ngFor="let star of stars">
+            <div class="star-background" [style.backgroundColor]="currentTheme.starBg">
+              <mat-icon class="star-icon" [style.color]="star ? currentTheme.starActive : currentTheme.starInactive">
+                {{star ? 'star' : 'star_border'}}
+              </mat-icon>
+            </div>
+          </div>
+        </div>
+
+        <div class="times">
+          <span class="time-item">
+            <mat-icon class="time-icon">schedule</mat-icon>
+            {{ 'INFO.PREP' | translate }}{{recipePrepTime}}m
+          </span>
+          <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
+          <span class="time-item">
+            <mat-icon class="time-icon">local_fire_department</mat-icon>
+            {{ 'INFO.COOK' | translate }}{{recipeCookTime}}m
+          </span>
+          <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
+          <span class="time-item total">
+            <mat-icon class="time-icon">timer</mat-icon>
+            {{recipeData.totalTime}}m
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

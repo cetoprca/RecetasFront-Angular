@@ -1,0 +1,296 @@
+<div class="edit-container">
+  <div class="edit-card" [formGroup]="recipeForm" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
+    <h2 class="edit-title" [style.borderColor]="currentTheme.divider">{{ 'RECIPE.ADD.TITLE' | translate }}</h2>
+
+    <div class="edit-row">
+      <div class="row-label">{{ 'RECIPE.ADD.TITLE_LABEL' | translate }}</div>
+      <div class="row-content">
+        <input class="text-input" type="text" formControlName="title"
+          [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+          [style.borderColor]="currentTheme.divider">
+        @if (getErrorMessage('title')) {
+          <div class="error-message">{{ getErrorMessage('title') }}</div>
+        }
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">{{ 'RECIPE.ADD.DESCRIPTION_LABEL' | translate }}</div>
+      <div class="row-content">
+        <textarea class="text-input textarea" formControlName="description" rows="3"
+          [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+          [style.borderColor]="currentTheme.divider"></textarea>
+        @if (getErrorMessage('description')) {
+          <div class="error-message">{{ getErrorMessage('description') }}</div>
+        }
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">{{ 'RECIPE.ADD.IMAGE_LABEL' | translate }}</div>
+      <div class="row-content">
+        <div class="image-section">
+          @if (imagePreview) {
+            <img class="image-preview" [src]="imagePreview" alt="">
+          } @else {
+            <div class="image-placeholder" [style.backgroundColor]="currentTheme.secondary">
+              <mat-icon class="placeholder-icon">image</mat-icon>
+            </div>
+          }
+          <button type="button" class="upload-btn" (click)="imageInput.click()"
+            [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+            {{ 'RECIPE.ADD.UPLOAD_IMAGE' | translate }}
+          </button>
+          <input #imageInput type="file" accept="image/*" (change)="onImageSelected($event)" hidden>
+        </div>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">{{ 'RECIPE.ADD.TIMES_LABEL' | translate }}</div>
+      <div class="row-content times-row">
+        <div class="time-field">
+          <label class="time-label">{{ 'RECIPE.ADD.PREP_LABEL' | translate }}</label>
+          <input class="text-input time-input" type="number" min="0" formControlName="prepTime" (keydown)="onlyDigits($event)"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+          @if (getErrorMessage('prepTime')) {
+            <div class="error-message">{{ getErrorMessage('prepTime') }}</div>
+          }
+        </div>
+        <div class="time-field">
+          <label class="time-label">{{ 'RECIPE.ADD.COOK_LABEL' | translate }}</label>
+          <input class="text-input time-input" type="number" min="0" formControlName="cookTime" (keydown)="onlyDigits($event)"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+          @if (getErrorMessage('cookTime')) {
+            <div class="error-message">{{ getErrorMessage('cookTime') }}</div>
+          }
+        </div>
+        <div class="time-field">
+          <label class="time-label">{{ 'RECIPE.ADD.TOTAL_LABEL' | translate }}</label>
+          <span class="text-input computed-time" [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text">
+            {{ totalTime }} {{ 'FILTER.MIN' | translate }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">{{ 'RECIPE.ADD.CUISINE_LABEL' | translate }}</div>
+      <div class="row-content">
+        <div class="dropdown-group" (click)="$event.stopPropagation()">
+          <button class="text-input selector-btn" type="button" (click)="toggleCuisineDropdown()"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+            <span>{{ selectedCuisine ? selectedCuisine.name : ('RECIPE.ADD.CUISINE_PLACEHOLDER' | translate) }}</span>
+            <mat-icon class="dropdown-arrow">expand_more</mat-icon>
+          </button>
+          @if (showCuisineDropdown) {
+            <div class="select-dropdown" [style.backgroundColor]="currentTheme.secondary"
+              [style.borderColor]="currentTheme.divider">
+              <input class="dropdown-search" type="text" [(ngModel)]="cuisineSearchText" [ngModelOptions]="{standalone: true}" [placeholder]="'RECIPE.ADD.SEARCH' | translate"
+                [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder"
+                [style.color]="currentTheme.inputText" (click)="$event.stopPropagation()">
+              @for (cuisine of filteredCuisines; track cuisine.id) {
+                <div class="select-option" (click)="selectCuisine(cuisine)" [style.color]="currentTheme.text"
+                  [style.borderBottomColor]="currentTheme.divider">
+                  {{ cuisine.name }}
+                </div>
+              }
+            </div>
+          }
+        </div>
+        <div class="inline-add">
+          <input class="text-input" type="text" [(ngModel)]="newCuisineName" [ngModelOptions]="{standalone: true}" [placeholder]="'RECIPE.ADD.NEW_CUISINE' | translate"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+          <button class="small-btn" (click)="addNewCuisine()" type="button"
+            [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+            {{ 'RECIPE.ADD.ADD_BTN' | translate }}
+          </button>
+        </div>
+        @if (getErrorMessage('cuisine')) {
+          <div class="error-message">{{ getErrorMessage('cuisine') }}</div>
+        }
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">{{ 'RECIPE.ADD.TAGS_LABEL' | translate }}</div>
+      <div class="row-content">
+        <div class="chip-row">
+          @for (tag of selectedTags; track tag.id) {
+            <span class="chip" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+              {{ tag.name }}
+              <button class="chip-remove" (click)="removeTag(tag)" type="button">&times;</button>
+            </span>
+          }
+        </div>
+        <div class="dropdown-group" (click)="$event.stopPropagation()">
+          <button class="text-input selector-btn" type="button" (click)="toggleTagDropdown()"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+            <span>{{ 'RECIPE.ADD.ADD_TAG_BTN' | translate }}</span>
+            <mat-icon class="dropdown-arrow">expand_more</mat-icon>
+          </button>
+          @if (showTagDropdown) {
+            <div class="select-dropdown" [style.backgroundColor]="currentTheme.secondary"
+              [style.borderColor]="currentTheme.divider">
+              <input class="dropdown-search" type="text" [(ngModel)]="tagSearchText" [ngModelOptions]="{standalone: true}" [placeholder]="'RECIPE.ADD.SEARCH' | translate"
+                [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder"
+                [style.color]="currentTheme.inputText" (click)="$event.stopPropagation()">
+              @for (tag of filteredTags; track tag.id) {
+                <div class="select-option" (click)="addTag(tag)" [style.color]="currentTheme.text"
+                  [style.borderBottomColor]="currentTheme.divider">
+                  {{ tag.name }}
+                </div>
+              }
+            </div>
+          }
+        </div>
+        <div class="inline-add">
+          <input class="text-input" type="text" [(ngModel)]="newTagName" [ngModelOptions]="{standalone: true}" [placeholder]="'RECIPE.ADD.NEW_TAG' | translate"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+          <button class="small-btn" (click)="addNewTag()" type="button"
+            [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+            {{ 'RECIPE.ADD.ADD_BTN' | translate }}
+          </button>
+        </div>
+        @if (getErrorMessage('tags')) {
+          <div class="error-message">{{ getErrorMessage('tags') }}</div>
+        }
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">{{ 'RECIPE.ADD.INGREDIENTS_LABEL' | translate }}</div>
+      <div class="row-content">
+        <div class="chip-row">
+          @for (ingredient of selectedIngredients; track ingredient.id) {
+            <span class="chip" [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+              {{ ingredient.name }}
+              <button class="chip-remove" (click)="removeIngredient(ingredient)" type="button">&times;</button>
+            </span>
+          }
+        </div>
+        <div class="dropdown-group" (click)="$event.stopPropagation()">
+          <button class="text-input selector-btn" type="button" (click)="toggleIngredientDropdown()"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+            <span>{{ 'RECIPE.ADD.ADD_INGREDIENT_BTN' | translate }}</span>
+            <mat-icon class="dropdown-arrow">expand_more</mat-icon>
+          </button>
+          @if (showIngredientDropdown) {
+            <div class="select-dropdown" [style.backgroundColor]="currentTheme.secondary"
+              [style.borderColor]="currentTheme.divider">
+              <input class="dropdown-search" type="text" [(ngModel)]="ingredientSearchText" [ngModelOptions]="{standalone: true}" [placeholder]="'RECIPE.ADD.SEARCH' | translate"
+                [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder"
+                [style.color]="currentTheme.inputText" (click)="$event.stopPropagation()">
+              @for (ingredient of filteredIngredients; track ingredient.id) {
+                <div class="select-option" (click)="addIngredient(ingredient)" [style.color]="currentTheme.text"
+                  [style.borderBottomColor]="currentTheme.divider">
+                  {{ ingredient.name }}
+                </div>
+              }
+            </div>
+          }
+        </div>
+        <div class="inline-add">
+          <input class="text-input" type="text" [(ngModel)]="newIngredientName" [ngModelOptions]="{standalone: true}" [placeholder]="'RECIPE.ADD.NEW_INGREDIENT' | translate"
+            [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+            [style.borderColor]="currentTheme.divider">
+          <button class="small-btn" (click)="addNewIngredient()" type="button"
+            [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+            {{ 'RECIPE.ADD.ADD_BTN' | translate }}
+          </button>
+        </div>
+        @if (getErrorMessage('ingredients')) {
+          <div class="error-message">{{ getErrorMessage('ingredients') }}</div>
+        }
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">{{ 'RECIPE.ADD.PUBLIC_LABEL' | translate }}</div>
+      <div class="row-content">
+        <button class="toggle-btn" type="button"
+          (click)="recipeForm.get('isPublic')?.setValue(!recipeForm.get('isPublic')?.value)"
+          [style.backgroundColor]="(recipeForm.get('isPublic')?.value ?? true) ? currentTheme.primary : currentTheme.secondary"
+          [style.color]="(recipeForm.get('isPublic')?.value ?? true) ? currentTheme.buttonText : currentTheme.text">
+          <mat-icon>{{ (recipeForm.get('isPublic')?.value ?? true) ? 'visibility' : 'visibility_off' }}</mat-icon>
+          <span>{{ (recipeForm.get('isPublic')?.value ?? true) ? ('RECIPE.ADD.PUBLIC' | translate) : ('RECIPE.ADD.PRIVATE' | translate) }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="section-divider" [style.borderColor]="currentTheme.divider"></div>
+    <h3 class="section-title">{{ 'RECIPE.ADD.STEPS_TITLE' | translate }}</h3>
+
+    <div class="steps-list" formArrayName="steps">
+      @for (step of steps; track $index) {
+        <div class="step-card" [formGroupName]="$index" [style.borderColor]="currentTheme.divider">
+          <div class="step-header">
+            <span class="step-number">{{ 'RECIPE.ADD.STEP_NUMBER' | translate: { number: $index + 1 } }}</span>
+            @if (steps.length > 1) {
+              <button class="step-remove-btn" (click)="removeStep($index)" type="button"
+                [style.color]="currentTheme.text">&times;</button>
+            }
+          </div>
+          <div class="step-field">
+            <input class="text-input" type="text" [placeholder]="'RECIPE.ADD.STEP_TITLE_PLACEHOLDER' | translate" formControlName="title"
+              [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+              [style.borderColor]="currentTheme.divider">
+            @if (getErrorMessage('title', $index)) {
+              <div class="error-message">{{ getErrorMessage('title', $index) }}</div>
+            }
+          </div>
+          <div class="step-field">
+            <textarea class="text-input textarea" [placeholder]="'RECIPE.ADD.STEP_DESC_PLACEHOLDER' | translate" formControlName="description" rows="2"
+              [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+              [style.borderColor]="currentTheme.divider"></textarea>
+            @if (getErrorMessage('description', $index)) {
+              <div class="error-message">{{ getErrorMessage('description', $index) }}</div>
+            }
+          </div>
+          <div class="step-field">
+            <div class="image-section">
+              @if (step.imagePreview) {
+                <img class="step-image-preview" [src]="step.imagePreview" alt="">
+                <button type="button" class="upload-btn small-btn" (click)="removeStepImage($index)"
+                  [style]="'background: transparent; color: ' + currentTheme.text + '; border: 1px solid ' + currentTheme.divider">
+                  {{ 'RECIPE.ADD.REMOVE_IMAGE' | translate }}
+                </button>
+              } @else {
+                <button type="button" class="upload-btn small-btn" (click)="stepImageInput.click()"
+                  [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+                  {{ 'RECIPE.ADD.UPLOAD_STEP_IMAGE' | translate }}
+                </button>
+              }
+              <input #stepImageInput type="file" accept="image/*" (change)="onStepImageSelected($event, $index)" hidden>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <button class="add-step-btn" (click)="addStep()" type="button"
+      [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.text"
+      [style.borderColor]="currentTheme.divider">
+      <mat-icon>add</mat-icon>
+      {{ 'RECIPE.ADD.ADD_STEP' | translate }}
+    </button>
+
+    <div class="edit-actions">
+      <button class="action-btn save-btn" (click)="save()" [disabled]="saving"
+        [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+        {{ saving ? ('RECIPE.ADD.SAVING' | translate) : ('RECIPE.ADD.SAVE' | translate) }}
+      </button>
+      <button class="action-btn cancel-btn" (click)="cancel()"
+        [style]="'background: transparent; color: ' + currentTheme.text + '; border: 1px solid ' + currentTheme.divider">
+        {{ 'RECIPE.ADD.CANCEL' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,210 @@
-<p>right-side-menu works!</p>
+<div class="menu-container">
+  <div class="filter-card" [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text">
+    <h2 class="filter-title">{{ 'FILTER.TITLE' | translate }}</h2>
+
+    <div class="filter-section">
+      <label class="filter-label">{{ 'FILTER.TAGS' | translate }}</label>
+      <div class="chips-input">
+        <div class="selected-chips">
+          @for (tag of selectedTags; track tag.id) {
+            <span class="chip tag-chip">
+              {{ tag.name }}
+              <button class="remove-chip" (click)="removeTag(tag)">×</button>
+            </span>
+          }
+          <button class="add-chip-button" (click)="toggleTagDropdown()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        @if (showTagDropdown) {
+          <div class="chip-dropdown" [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder">
+            <input type="text" [(ngModel)]="tagSearchText" [placeholder]="'FILTER.SEARCH_TAGS' | translate" class="search-input"
+                   [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+            @for (tag of filteredAvailableTags; track tag.id) {
+              @if (!isTagSelected(tag.id)) {
+                <div class="chip-option" (click)="addTagById(tag.id)" [style.color]="currentTheme.inputText">
+                  {{ tag.name }}
+                </div>
+              }
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <label class="filter-label">{{ 'FILTER.INGREDIENTS' | translate }}</label>
+      <div class="chips-input">
+        <div class="selected-chips">
+          @for (ingredient of selectedIngredients; track ingredient.id) {
+            <span class="chip ingredient-chip">
+              {{ ingredient.name }}
+              <button class="remove-chip" (click)="removeIngredient(ingredient)">×</button>
+            </span>
+          }
+          <button class="add-chip-button" (click)="toggleIngredientDropdown()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        @if (showIngredientDropdown) {
+          <div class="chip-dropdown" [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder">
+            <input type="text" [(ngModel)]="ingredientSearchText" [placeholder]="'FILTER.SEARCH_INGREDIENTS' | translate" class="search-input"
+                   [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+            @for (ingredient of filteredAvailableIngredients; track ingredient.id) {
+              @if (!isIngredientSelected(ingredient.id)) {
+                <div class="chip-option" (click)="addIngredientById(ingredient.id)" [style.color]="currentTheme.inputText">
+                  {{ ingredient.name }}
+                </div>
+              }
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <label class="filter-label">{{ 'FILTER.CUISINE' | translate }}</label>
+      <div class="chips-input">
+        <div class="selected-chips">
+          @if (selectedCuisineId) {
+            <span class="chip cuisine-chip">
+              {{ getCuisineName(selectedCuisineId) }}
+              <button class="remove-chip" (click)="removeCuisine()">×</button>
+            </span>
+          }
+          @if (!selectedCuisineId) {
+            <button class="add-chip-button" (click)="toggleCuisineDropdown()">
+              <mat-icon>add</mat-icon>
+            </button>
+          }
+        </div>
+        @if (showCuisineDropdown) {
+          <div class="chip-dropdown" [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder">
+            <input type="text" [(ngModel)]="cuisineSearchText" [placeholder]="'FILTER.SEARCH_CUISINE' | translate" class="search-input"
+                   [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+            @for (cuisine of filteredAvailableCuisines; track cuisine.id) {
+              <div class="chip-option" (click)="selectCuisine(cuisine.id)" [style.color]="currentTheme.inputText">
+                {{ cuisine.name }}
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="collapsible-header" (click)="toggleSection('rating')">
+        <label class="filter-label">{{ 'FILTER.RATING' | translate }}</label>
+        <mat-icon class="expand-icon" [class.expanded]="expandedSections['rating']">expand_more</mat-icon>
+      </div>
+      @if (expandedSections['rating']) {
+        <div class="collapsible-content">
+          <label class="exact-checkbox">
+            <input type="checkbox" [(ngModel)]="exactRating">
+            <span>{{ 'FILTER.EXACT' | translate }}</span>
+          </label>
+          <div class="star-rating">
+            @for (star of [1, 2, 3, 4, 5]; track star) {
+              <button 
+                class="star-button" 
+                [class.filled]="star <= rating"
+                (click)="setRating(star)">
+                <div class="star-bg" [style.backgroundColor]="currentTheme.starBg">
+                  <mat-icon [style.color]="star <= rating ? currentTheme.starActive : currentTheme.starInactive">{{ star <= rating ? 'star' : 'star_border' }}</mat-icon>
+                </div>
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="filter-section">
+      <div class="collapsible-header" (click)="toggleSection('tiempo')">
+        <label class="filter-label">{{ 'FILTER.TIME' | translate }}</label>
+        <mat-icon class="expand-icon" [class.expanded]="expandedSections['tiempo']">expand_more</mat-icon>
+      </div>
+      @if (expandedSections['tiempo']) {
+        <div class="collapsible-content nested">
+          <div class="filter-subsection">
+            <div class="collapsible-header" (click)="toggleSection('prepTime')">
+              <label class="filter-sublabel">{{ 'FILTER.PREP_TIME' | translate }}</label>
+              <mat-icon class="expand-icon" [class.expanded]="expandedSections['prepTime']">expand_more</mat-icon>
+            </div>
+            @if (expandedSections['prepTime']) {
+              <div class="collapsible-content">
+                <label class="exact-checkbox">
+                  <input type="checkbox" [(ngModel)]="exactPrepTime">
+                  <span>{{ 'FILTER.EXACT' | translate }}</span>
+                </label>
+                <div class="slider-input-container">
+                  <input type="range" min="0" max="120" [(ngModel)]="prepTime" class="slider" [style.backgroundColor]="currentTheme.inputBorder">
+                  <input type="number" min="0" max="120" [(ngModel)]="prepTime" class="slider-input" [placeholder]="'FILTER.MIN' | translate"
+                         [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="filter-subsection">
+            <div class="collapsible-header" (click)="toggleSection('cookTime')">
+              <label class="filter-sublabel">{{ 'FILTER.COOK_TIME' | translate }}</label>
+              <mat-icon class="expand-icon" [class.expanded]="expandedSections['cookTime']">expand_more</mat-icon>
+            </div>
+            @if (expandedSections['cookTime']) {
+              <div class="collapsible-content">
+                <label class="exact-checkbox">
+                  <input type="checkbox" [(ngModel)]="exactCookTime">
+                  <span>{{ 'FILTER.EXACT' | translate }}</span>
+                </label>
+                <div class="slider-input-container">
+                  <input type="range" min="0" max="180" [(ngModel)]="cookTime" class="slider" [style.backgroundColor]="currentTheme.inputBorder">
+                  <input type="number" min="0" max="180" [(ngModel)]="cookTime" class="slider-input" [placeholder]="'FILTER.MIN' | translate"
+                         [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="filter-subsection">
+            <div class="collapsible-header" (click)="toggleSection('totalTime')">
+              <label class="filter-sublabel">{{ 'FILTER.TOTAL_TIME' | translate }}</label>
+              <mat-icon class="expand-icon" [class.expanded]="expandedSections['totalTime']">expand_more</mat-icon>
+            </div>
+            @if (expandedSections['totalTime']) {
+              <div class="collapsible-content">
+                <label class="exact-checkbox">
+                  <input type="checkbox" [(ngModel)]="exactTotalTime">
+                  <span>{{ 'FILTER.EXACT' | translate }}</span>
+                </label>
+                <div class="slider-input-container">
+                  <input type="range" min="0" max="240" [(ngModel)]="totalTime" class="slider" [style.backgroundColor]="currentTheme.inputBorder">
+                  <input type="number" min="0" max="240" [(ngModel)]="totalTime" class="slider-input" [placeholder]="'FILTER.MIN' | translate"
+                         [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="filter-section">
+      <div class="collapsible-header" (click)="toggleSection('creationDate')">
+        <label class="filter-label">{{ 'FILTER.CREATION_DATE' | translate }}</label>
+        <mat-icon class="expand-icon" [class.expanded]="expandedSections['creationDate']">expand_more</mat-icon>
+      </div>
+      @if (expandedSections['creationDate']) {
+        <div class="collapsible-content">
+          <input type="date" [(ngModel)]="creationDate" class="date-input"
+                 [style.backgroundColor]="currentTheme.inputBg" [style.borderColor]="currentTheme.inputBorder" [style.color]="currentTheme.inputText">
+        </div>
+      }
+    </div>
+
+    <div class="filter-actions">
+      <button class="apply-button" (click)="applyFilters()" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">{{ 'FILTER.APPLY' | translate }}</button>
+      <button class="clear-button" (click)="clearFilters()" [style.backgroundColor]="currentTheme.inputBg" [style.color]="currentTheme.inputText">{{ 'FILTER.CLEAR' | translate }}</button>
+    </div>
+  </div>
+</div>

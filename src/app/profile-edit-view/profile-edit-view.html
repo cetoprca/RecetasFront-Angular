@@ -1,0 +1,66 @@
+<div class="edit-container">
+  <div class="edit-card" [formGroup]="profileForm" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
+    <h2 class="edit-title" [style.borderColor]="currentTheme.divider">{{ 'PROFILE.EDIT_TITLE' | translate }}</h2>
+
+    <div class="edit-row">
+      <div class="row-label">{{ 'PROFILE.BANNER_LABEL' | translate }}</div>
+      <div class="row-content">
+        <div class="banner-preview" [style.backgroundColor]="currentTheme.secondary">
+          @if (bannerPreview) {
+            <img class="banner-img" [src]="bannerPreview" alt="">
+          } @else if (bannerPath) {
+            <img class="banner-img" [src]="imageUrl + bannerPath" alt="">
+          } @else {
+            <mat-icon class="banner-placeholder-icon">image</mat-icon>
+          }
+        </div>
+        <button type="button" class="upload-btn" (click)="bannerInput.click()"
+          [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+          {{ 'PROFILE.UPLOAD_BANNER' | translate }}
+        </button>
+        <input #bannerInput type="file" accept="image/*" (change)="onBannerSelected($event)" hidden>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">{{ 'PROFILE.PHOTO_LABEL' | translate }}</div>
+      <div class="row-content">
+        <div class="avatar-section">
+          @if (profilePicPreview) {
+            <img class="avatar-preview" [src]="profilePicPreview" alt="">
+          } @else {
+            <img class="avatar-preview" [src]="imageUrl + profilePicturePath" alt="">
+          }
+          <button type="button" class="upload-btn" (click)="profilePicInput.click()"
+            [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+            {{ 'PROFILE.UPLOAD_PHOTO' | translate }}
+          </button>
+          <input #profilePicInput type="file" accept="image/*" (change)="onProfilePicSelected($event)" hidden>
+        </div>
+      </div>
+    </div>
+
+    <div class="edit-row">
+      <div class="row-label">{{ 'PROFILE.DISPLAY_NAME_LABEL' | translate }}</div>
+      <div class="row-content">
+        <input class="text-input" type="text" formControlName="displayName"
+          [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text"
+          [style.borderColor]="currentTheme.divider">
+        @if (getErrorMessage()) {
+          <div class="error-message">{{ getErrorMessage() }}</div>
+        }
+      </div>
+    </div>
+
+    <div class="edit-actions">
+      <button class="action-btn save-btn" (click)="saveProfile()" [disabled]="saving"
+        [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+        {{ saving ? ('PROFILE.SAVING' | translate) : ('PROFILE.SAVE_CHANGES' | translate) }}
+      </button>
+      <button class="action-btn cancel-btn" (click)="cancel()"
+        [style]="'background: transparent; color: ' + currentTheme.text + '; border: 1px solid ' + currentTheme.divider">
+        {{ 'PROFILE.CANCEL' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

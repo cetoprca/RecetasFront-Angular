@@ -1,0 +1,20 @@
+<app-recipe-scroll
+  [recipes]="recipes"
+  [hasMore]="hasMore"
+  [loading]="loading"
+  (loadMore)="onLoadMore()"
+>
+  <app-profile-header
+    slot="header"
+    [username]="displayName"
+    [userHandle]="handle"
+    [bio]="bio"
+    [profilePicture]="profilePicture"
+    [bannerPath]="bannerPath"
+    [followers]="followers"
+    [following]="following"
+    [recipesCount]="recipesCount"
+    [isOwnProfile]="isOwnProfile"
+    [isFollowing]="isFollowing"
+  />
+</app-recipe-scroll>

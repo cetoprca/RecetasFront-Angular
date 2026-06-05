@@ -1,1 +1,44 @@
-<p>left-side-menu works!</p>
+<div class="menu-container">
+  <div class="profile-card" [style.backgroundColor]="currentTheme.secondary" [style.color]="currentTheme.text">
+    <div class="profile-info">
+      <div class="profile-picture">
+        @if (currentUser?.profilePicturePath) {
+          <img [src]="imageUrl + currentUser?.profilePicturePath" alt="{{ 'NAV.PROFILE' | translate }}">
+        } @else {
+          <img [src]="imageUrl + 'placeholder.png'" alt="{{ 'NAV.PROFILE' | translate }}">
+        }
+      </div>
+      <div class="profile-text">
+        <span class="username">{{ currentUser?.displayName }}</span>
+        <span class="user-handle">@{{ currentUser?.id }}</span>
+      </div>
+    </div>
+
+    <div class="menu-buttons">
+      <button class="menu-button" (click)="navigateToFeed()" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+        <mat-icon>home</mat-icon>
+        <span>{{ 'NAV.HOME' | translate }}</span>
+      </button>
+      <button class="menu-button" routerLink="/profile" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+        <mat-icon>person</mat-icon>
+        <span>{{ 'NAV.PROFILE' | translate }}</span>
+      </button>
+      <button class="menu-button" routerLink="/saved" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+        <mat-icon>bookmark</mat-icon>
+        <span>{{ 'NAV.SAVED' | translate }}</span>
+      </button>
+      <button class="menu-button" routerLink="/recipe/new" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+        <mat-icon>add_circle</mat-icon>
+        <span>{{ 'NAV.NEW_RECIPE' | translate }}</span>
+      </button>
+      <button class="menu-button" routerLink="/settings" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+        <mat-icon>settings</mat-icon>
+        <span>{{ 'NAV.SETTINGS' | translate }}</span>
+      </button>
+      <button class="menu-button" (click)="logout()" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+        <mat-icon>logout</mat-icon>
+        <span>{{ 'NAV.LOGOUT' | translate }}</span>
+      </button>
+    </div>
+  </div>
+</div>

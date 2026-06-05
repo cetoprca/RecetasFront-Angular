@@ -1,0 +1,199 @@
+{
+  "NAV": {
+    "SITE_TITLE": "Rataouille.net",
+    "HOME": "Inicio",
+    "PROFILE": "Perfil",
+    "SAVED": "Recetas guardadas",
+    "NEW_RECIPE": "Nueva receta",
+    "SETTINGS": "Configuración",
+    "LOGOUT": "Cerrar sesión"
+  },
+  "LANG": {
+    "ES": "Español",
+    "EN": "English"
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Iniciar sesión",
+      "HANDLE_LABEL": "Usuario",
+      "PASSWORD_LABEL": "Contraseña",
+      "SUBMIT": "Iniciar sesión",
+      "REGISTER_LINK": "Registrarse",
+      "ERRORS": {
+        "EMPTY_FIELDS": "Introduce usuario y contraseña",
+        "INVALID_CREDENTIALS": "Credenciales inválidas"
+      }
+    },
+    "REGISTER": {
+      "TITLE": "Registrarse",
+      "HANDLE_LABEL": "Usuario",
+      "DISPLAY_NAME_LABEL": "Nombre público",
+      "PASSWORD_LABEL": "Contraseña",
+      "CONFIRM_PASSWORD_LABEL": "Confirmar contraseña",
+      "SUBMIT": "Registrarse",
+      "LOGIN_LINK": "¿Ya tienes cuenta? Inicia sesión",
+      "ERRORS": {
+        "REQUIRED": "{{field}} es obligatorio",
+        "HANDLE_UPPERCASE": "El usuario no puede contener mayúsculas",
+        "HANDLE_INVALID_CHARS": "El usuario solo puede contener minúsculas, números y guiones bajos",
+        "HANDLE_SPACES": "El usuario no puede contener espacios",
+        "DISPLAY_NAME_EMPTY": "El nombre público no puede estar vacío",
+        "HANDLE_TAKEN": "Este usuario ya está en uso",
+        "MIN_LENGTH": "Debe tener al menos {{count}} caracteres",
+        "MAX_LENGTH": "Debe tener como máximo {{count}} caracteres",
+        "NEEDS_LOWERCASE": "Debe contener una minúscula",
+        "NEEDS_UPPERCASE": "Debe contener una mayúscula",
+        "NEEDS_SPECIAL": "Debe contener un carácter especial",
+        "PASSWORDS_MISMATCH": "Las contraseñas no coinciden",
+        "FILL_ALL_FIELDS": "Rellena todos los campos correctamente",
+        "REGISTRATION_FAILED": "Registro fallido. Es posible que el usuario ya exista."
+      }
+    }
+  },
+  "FILTER": {
+    "TITLE": "Filtros",
+    "TAGS": "Etiquetas",
+    "SEARCH_TAGS": "Buscar etiquetas...",
+    "INGREDIENTS": "Ingredientes",
+    "SEARCH_INGREDIENTS": "Buscar ingredientes...",
+    "CUISINE": "Cocina",
+    "SEARCH_CUISINE": "Buscar cocina...",
+    "RATING": "Valoración",
+    "EXACT": "Exacto",
+    "TIME": "Tiempo",
+    "PREP_TIME": "Tiempo de preparación",
+    "COOK_TIME": "Tiempo de cocinado",
+    "TOTAL_TIME": "Tiempo total",
+    "CREATION_DATE": "Fecha de creación",
+    "APPLY": "Aplicar",
+    "CLEAR": "Limpiar",
+    "MIN": "min"
+  },
+  "SETTINGS": {
+    "TITLE": "Configuración",
+    "THEME": "Tema",
+    "THEME_PREVIEW": "Aa",
+    "RESET_THEME": "Restablecer tema",
+    "EDIT_PROFILE": "Editar Perfil",
+    "LIGHT": "Claro",
+    "DARK": "Oscuro",
+    "BLUE": "Azul",
+    "GREEN": "Verde"
+  },
+  "PROFILE": {
+    "EDIT_TITLE": "Editar Perfil",
+    "BANNER_LABEL": "Banner",
+    "UPLOAD_BANNER": "Subir banner",
+    "PHOTO_LABEL": "Foto de perfil",
+    "UPLOAD_PHOTO": "Subir foto",
+    "DISPLAY_NAME_LABEL": "Nombre de usuario",
+    "SAVE_CHANGES": "Guardar cambios",
+    "UNFOLLOW": "Dejar de Seguir",
+    "FOLLOW": "Seguir",
+    "EDIT_PROFILE_BTN": "Editar Perfil",
+    "FOLLOWERS": "Seguidores",
+    "FOLLOWING": "Siguiendo",
+    "RECIPES": "Recetas",
+    "SAVING": "Guardando...",
+    "CANCEL": "Cancelar",
+    "ERRORS": {
+      "REQUIRED": "El nombre público es obligatorio",
+      "EMPTY": "El nombre público no puede estar vacío"
+    }
+  },
+  "RECIPE": {
+    "CARD": {
+      "PREP": "Prep: ",
+      "COOK": "Coc: ",
+      "SAVE": "Añadir a favoritos",
+      "UNSAVE": "Eliminar de favoritos",
+      "DELETE": "Eliminar",
+      "SHARE": "Compartir"
+    },
+    "DETAIL": {
+      "STEPS": "Pasos"
+    },
+    "ADD": {
+      "TITLE": "Nueva Receta",
+      "TITLE_LABEL": "Título",
+      "DESCRIPTION_LABEL": "Descripción",
+      "IMAGE_LABEL": "Imagen",
+      "UPLOAD_IMAGE": "Subir imagen",
+      "TIMES_LABEL": "Tiempos (min)",
+      "PREP_LABEL": "Preparación",
+      "COOK_LABEL": "Cocción",
+      "TOTAL_LABEL": "Total",
+      "CUISINE_LABEL": "Cocina",
+      "CUISINE_PLACEHOLDER": "Seleccionar cocina",
+      "SEARCH": "Buscar...",
+      "NEW_CUISINE": "Nueva cocina",
+      "TAGS_LABEL": "Etiquetas",
+      "ADD_TAG_BTN": "Añadir etiqueta...",
+      "NEW_TAG": "Nueva etiqueta",
+      "INGREDIENTS_LABEL": "Ingredientes",
+      "ADD_INGREDIENT_BTN": "Añadir ingrediente...",
+      "NEW_INGREDIENT": "Nuevo ingrediente",
+      "PUBLIC_LABEL": "Público",
+      "PUBLIC": "Público",
+      "PRIVATE": "Privado",
+      "STEPS_TITLE": "Pasos",
+      "STEP_NUMBER": "Paso {{number}}",
+      "STEP_TITLE_PLACEHOLDER": "Título del paso",
+      "STEP_DESC_PLACEHOLDER": "Descripción del paso",
+      "REMOVE_IMAGE": "Eliminar imagen",
+      "UPLOAD_STEP_IMAGE": "Subir imagen",
+      "ADD_STEP": "Añadir paso",
+      "SAVE": "Guardar",
+      "SAVING": "Guardando...",
+      "CANCEL": "Cancelar",
+      "ADD_BTN": "Añadir",
+      "ERRORS": {
+        "TITLE_REQUIRED": "El título es obligatorio",
+        "DESCRIPTION_REQUIRED": "La descripción es obligatoria",
+        "PREPTIME_REQUIRED": "El tiempo de preparación es obligatorio",
+        "COOKTIME_REQUIRED": "El tiempo de cocción es obligatorio",
+        "MIN_ERROR": "El valor debe ser 0 o mayor",
+        "SELECT_CUISINE": "Selecciona una cocina",
+        "SELECT_TAGS": "Añade al menos una etiqueta",
+        "SELECT_INGREDIENTS": "Añade al menos un ingrediente",
+        "STEPS_EMPTY": "Añade al menos un paso",
+        "STEP_TITLE_REQUIRED": "El título del paso {{number}} es obligatorio",
+        "STEP_DESC_REQUIRED": "La descripción del paso {{number}} es obligatoria"
+      }
+    }
+  },
+  "SAVED": {
+    "TITLE": "Recetas guardadas",
+    "COUNT": "{{count}} recetas en tu colección"
+  },
+  "RATING": {
+    "TITLE": "Valoraciones",
+    "WRITE_REVIEW": "Escribe una reseña",
+    "NO_REVIEWS": "Todavía no hay reseñas",
+    "DELETE": "Eliminar",
+    "MODAL_TITLE": "Nueva reseña",
+    "TITLE_PLACEHOLDER": "Título",
+    "DESC_PLACEHOLDER": "Descripción",
+    "RATING_LABEL": "Puntuación",
+    "SAVE": "Guardar",
+    "SAVING": "Guardando...",
+    "ERRORS": {
+      "TITLE_REQUIRED": "El título es obligatorio",
+      "DESC_REQUIRED": "La descripción es obligatoria",
+      "RATING_REQUIRED": "La puntuación es obligatoria",
+      "SELECT_RATING": "Selecciona una puntuación",
+      "TITLE_EMPTY": "El título no puede estar vacío",
+      "DESC_EMPTY": "La descripción no puede estar vacía"
+    }
+  },
+  "INFO": {
+    "PREP": "Prep: ",
+    "COOK": "Coc: ",
+    "SAVE": "Guardar receta",
+    "DELETE": "Eliminar",
+    "SHARE": "Compartir"
+  },
+  "FEED": {
+    "LOADING": "Cargando más recetas..."
+  }
+}

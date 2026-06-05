@@ -1,0 +1,16 @@
+@if (currentRecipeId) {
+  <div class="rating-view">
+    <h3 class="rating-header" [style.color]="currentTheme.text">{{ 'RATING.TITLE' | translate }}</h3>
+    <button class="add-rating-btn" (click)="openRatingModal()"
+      [style.backgroundColor]="currentTheme.primary" [style.color]="currentTheme.buttonText">
+      {{ 'RATING.WRITE_REVIEW' | translate }}
+    </button>
+    <div class="ratings-container">
+      @for (item of ratings; track item.id) {
+        <app-rating-card [rating]="item" (deleted)="onRatingDeleted(item.id)"></app-rating-card>
+      } @empty {
+        <p class="no-ratings" [style.color]="currentTheme.text">{{ 'RATING.NO_REVIEWS' | translate }}</p>
+      }
+    </div>
+  </div>
+}

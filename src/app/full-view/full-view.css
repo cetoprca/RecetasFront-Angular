@@ -1,0 +1,54 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.content-area {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.center-container {
+  display: flex;
+  flex-direction: row;
+  gap:1rem;
+  height: 100%;
+  width: 100%;
+  max-width: 1240px;
+}
+
+.center-container > .main-content {
+  max-width: 750px;
+  width: 100%;
+  flex-shrink: 0;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.center-container > app-right-side-menu {
+  width: 290px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  height: 100%;
+}
+
+.side-menu {
+  width: 220px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.side-menu > app-rating-view {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
