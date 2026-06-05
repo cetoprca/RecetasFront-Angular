@@ -1,0 +1,199 @@
+{
+  "NAV": {
+    "SITE_TITLE": "Rataouille.net",
+    "HOME": "Home",
+    "PROFILE": "Profile",
+    "SAVED": "Saved recipes",
+    "NEW_RECIPE": "New recipe",
+    "SETTINGS": "Settings",
+    "LOGOUT": "Log out"
+  },
+  "LANG": {
+    "ES": "Spanish",
+    "EN": "English"
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Log In",
+      "HANDLE_LABEL": "Handle",
+      "PASSWORD_LABEL": "Password",
+      "SUBMIT": "Log In",
+      "REGISTER_LINK": "Register",
+      "ERRORS": {
+        "EMPTY_FIELDS": "Please enter handle and password",
+        "INVALID_CREDENTIALS": "Invalid credentials"
+      }
+    },
+    "REGISTER": {
+      "TITLE": "Register",
+      "HANDLE_LABEL": "Handle",
+      "DISPLAY_NAME_LABEL": "Display Name",
+      "PASSWORD_LABEL": "Password",
+      "CONFIRM_PASSWORD_LABEL": "Confirm Password",
+      "SUBMIT": "Register",
+      "LOGIN_LINK": "Already have an account? Log In",
+      "ERRORS": {
+        "REQUIRED": "{{field}} is required",
+        "HANDLE_UPPERCASE": "Handle cannot contain uppercase letters",
+        "HANDLE_INVALID_CHARS": "Handle can only contain lowercase letters, numbers, and underscores",
+        "HANDLE_SPACES": "Handle cannot contain spaces",
+        "DISPLAY_NAME_EMPTY": "Display name cannot be empty",
+        "HANDLE_TAKEN": "This handle is already taken",
+        "MIN_LENGTH": "Must be at least {{count}} characters",
+        "MAX_LENGTH": "Must be at most {{count}} characters",
+        "NEEDS_LOWERCASE": "Must contain a lowercase letter",
+        "NEEDS_UPPERCASE": "Must contain an uppercase letter",
+        "NEEDS_SPECIAL": "Must contain a special character",
+        "PASSWORDS_MISMATCH": "Passwords do not match",
+        "FILL_ALL_FIELDS": "Please fill in all fields correctly",
+        "REGISTRATION_FAILED": "Registration failed. The handle may already be taken."
+      }
+    }
+  },
+  "FILTER": {
+    "TITLE": "Filters",
+    "TAGS": "Tags",
+    "SEARCH_TAGS": "Search tags...",
+    "INGREDIENTS": "Ingredients",
+    "SEARCH_INGREDIENTS": "Search ingredients...",
+    "CUISINE": "Cuisine",
+    "SEARCH_CUISINE": "Search cuisine...",
+    "RATING": "Rating",
+    "EXACT": "Exact",
+    "TIME": "Time",
+    "PREP_TIME": "Preparation time",
+    "COOK_TIME": "Cook time",
+    "TOTAL_TIME": "Total time",
+    "CREATION_DATE": "Creation date",
+    "APPLY": "Apply",
+    "CLEAR": "Clear",
+    "MIN": "min"
+  },
+  "SETTINGS": {
+    "TITLE": "Settings",
+    "THEME": "Theme",
+    "THEME_PREVIEW": "Aa",
+    "RESET_THEME": "Reset theme",
+    "EDIT_PROFILE": "Edit Profile",
+    "LIGHT": "Light",
+    "DARK": "Dark",
+    "BLUE": "Blue",
+    "GREEN": "Green"
+  },
+  "PROFILE": {
+    "EDIT_TITLE": "Edit Profile",
+    "BANNER_LABEL": "Banner",
+    "UPLOAD_BANNER": "Upload banner",
+    "PHOTO_LABEL": "Profile photo",
+    "UPLOAD_PHOTO": "Upload photo",
+    "DISPLAY_NAME_LABEL": "Display name",
+    "SAVE_CHANGES": "Save changes",
+    "UNFOLLOW": "Unfollow",
+    "FOLLOW": "Follow",
+    "EDIT_PROFILE_BTN": "Edit Profile",
+    "FOLLOWERS": "Followers",
+    "FOLLOWING": "Following",
+    "RECIPES": "Recipes",
+    "SAVING": "Saving...",
+    "CANCEL": "Cancel",
+    "ERRORS": {
+      "REQUIRED": "Display name is required",
+      "EMPTY": "Display name cannot be empty"
+    }
+  },
+  "RECIPE": {
+    "CARD": {
+      "PREP": "Prep: ",
+      "COOK": "Cook: ",
+      "SAVE": "Save recipe",
+      "UNSAVE": "Remove from favorites",
+      "DELETE": "Delete",
+      "SHARE": "Share"
+    },
+    "DETAIL": {
+      "STEPS": "Steps"
+    },
+    "ADD": {
+      "TITLE": "New Recipe",
+      "TITLE_LABEL": "Title",
+      "DESCRIPTION_LABEL": "Description",
+      "IMAGE_LABEL": "Image",
+      "UPLOAD_IMAGE": "Upload image",
+      "TIMES_LABEL": "Times (min)",
+      "PREP_LABEL": "Preparation",
+      "COOK_LABEL": "Cook",
+      "TOTAL_LABEL": "Total",
+      "CUISINE_LABEL": "Cuisine",
+      "CUISINE_PLACEHOLDER": "Select cuisine",
+      "SEARCH": "Search...",
+      "NEW_CUISINE": "New cuisine",
+      "TAGS_LABEL": "Tags",
+      "ADD_TAG_BTN": "Add tag...",
+      "NEW_TAG": "New tag",
+      "INGREDIENTS_LABEL": "Ingredients",
+      "ADD_INGREDIENT_BTN": "Add ingredient...",
+      "NEW_INGREDIENT": "New ingredient",
+      "PUBLIC_LABEL": "Public",
+      "PUBLIC": "Public",
+      "PRIVATE": "Private",
+      "STEPS_TITLE": "Steps",
+      "STEP_NUMBER": "Step {{number}}",
+      "STEP_TITLE_PLACEHOLDER": "Step title",
+      "STEP_DESC_PLACEHOLDER": "Step description",
+      "REMOVE_IMAGE": "Remove image",
+      "UPLOAD_STEP_IMAGE": "Upload image",
+      "ADD_STEP": "Add step",
+      "SAVE": "Save",
+      "SAVING": "Saving...",
+      "CANCEL": "Cancel",
+      "ADD_BTN": "Add",
+      "ERRORS": {
+        "TITLE_REQUIRED": "Title is required",
+        "DESCRIPTION_REQUIRED": "Description is required",
+        "PREPTIME_REQUIRED": "Preparation time is required",
+        "COOKTIME_REQUIRED": "Cook time is required",
+        "MIN_ERROR": "Value must be 0 or greater",
+        "SELECT_CUISINE": "Please select a cuisine",
+        "SELECT_TAGS": "Please add at least one tag",
+        "SELECT_INGREDIENTS": "Please add at least one ingredient",
+        "STEPS_EMPTY": "Please add at least one step",
+        "STEP_TITLE_REQUIRED": "Step {{number}} title is required",
+        "STEP_DESC_REQUIRED": "Step {{number}} description is required"
+      }
+    }
+  },
+  "SAVED": {
+    "TITLE": "Saved recipes",
+    "COUNT": "{{count}} recipes in your collection"
+  },
+  "RATING": {
+    "TITLE": "Ratings",
+    "WRITE_REVIEW": "Write a review",
+    "NO_REVIEWS": "No reviews yet",
+    "DELETE": "Delete",
+    "MODAL_TITLE": "New review",
+    "TITLE_PLACEHOLDER": "Title",
+    "DESC_PLACEHOLDER": "Description",
+    "RATING_LABEL": "Rating",
+    "SAVE": "Save",
+    "SAVING": "Saving...",
+    "ERRORS": {
+      "TITLE_REQUIRED": "Title is required",
+      "DESC_REQUIRED": "Description is required",
+      "RATING_REQUIRED": "Rating is required",
+      "SELECT_RATING": "Please select a rating",
+      "TITLE_EMPTY": "Title cannot be empty",
+      "DESC_EMPTY": "Description cannot be empty"
+    }
+  },
+  "INFO": {
+    "PREP": "Prep: ",
+    "COOK": "Cook: ",
+    "SAVE": "Save recipe",
+    "DELETE": "Delete",
+    "SHARE": "Share"
+  },
+  "FEED": {
+    "LOADING": "Loading more recipes..."
+  }
+}

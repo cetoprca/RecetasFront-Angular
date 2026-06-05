@@ -6,6 +6,7 @@ import { Theme, ThemeService } from '../services/theme.service';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { ImageService } from '../services/image.service';
+import { TranslateService } from '@ngx-translate/core';
 import { UserDTO } from '../../model/user/user-dto';
 import { environment } from '../../environments/environment';
 
@@ -51,7 +52,8 @@ export class ProfileEditView implements OnInit, OnDestroy {
     private authService: AuthService,
     private userService: UserService,
     private imageService: ImageService,
-    private router: Router
+    private router: Router,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -98,8 +100,8 @@ export class ProfileEditView implements OnInit, OnDestroy {
   getErrorMessage(): string {
     const control = this.profileForm.get('displayName');
     if (!control || !control.errors || !control.touched) return '';
-    if (control.hasError('required')) return 'Display name is required';
-    if (control.hasError('displayNameEmpty')) return 'Display name cannot be empty';
+    if (control.hasError('required')) return this.translateService.instant('PROFILE.ERRORS.REQUIRED');
+    if (control.hasError('displayNameEmpty')) return this.translateService.instant('PROFILE.ERRORS.EMPTY');
     return '';
   }
 

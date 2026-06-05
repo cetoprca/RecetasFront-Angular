@@ -1,9 +1,9 @@
 <div class="settings-container">
   <div class="settings-card" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text">
-    <h2 class="settings-title" [style.borderColor]="currentTheme.divider">Configuración</h2>
+    <h2 class="settings-title" [style.borderColor]="currentTheme.divider">{{ 'SETTINGS.TITLE' | translate }}</h2>
 
     <div class="settings-section">
-      <h3 class="section-title">Tema</h3>
+      <h3 class="section-title">{{ 'SETTINGS.THEME' | translate }}</h3>
       <div class="theme-options">
         @for (theme of themes; track theme.value) {
           <label class="theme-option" [class.selected]="selectedTheme === theme.value">
@@ -16,12 +16,12 @@
             <div class="theme-preview" [style.backgroundColor]="theme.background" [style.color]="theme.text">
               <span>Aa</span>
             </div>
-            <span class="theme-label">{{ theme.name }}</span>
+            <span class="theme-label">{{ 'SETTINGS.' + theme.value.toUpperCase() | translate }}</span>
           </label>
         }
       </div>
       <button class="reset-button" (click)="resetTheme()" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
-        Restablecer tema
+        {{ 'SETTINGS.RESET_THEME' | translate }}
       </button>
     </div>
 
@@ -31,7 +31,7 @@
       <button class="settings-edit-btn" (click)="navigateToEditProfile()"
         [style.backgroundColor]="currentTheme.buttonBg"
         [style.color]="currentTheme.buttonText">
-        Editar Perfil
+        {{ 'SETTINGS.EDIT_PROFILE' | translate }}
       </button>
     </div>
   </div>

@@ -23,7 +23,7 @@
           [style.backgroundColor]="isFollowing ? 'transparent' : currentTheme.primary"
           [style.color]="isFollowing ? currentTheme.text : currentTheme.buttonText"
           [style.borderColor]="isFollowing ? currentTheme.divider : 'transparent'">
-          {{ isFollowing ? 'Dejar de Seguir' : 'Seguir' }}
+          {{ isFollowing ? ('PROFILE.UNFOLLOW' | translate) : ('PROFILE.FOLLOW' | translate) }}
         </button>
       </div>
     } @else {
@@ -31,7 +31,7 @@
         <button class="edit-profile-btn" (click)="navigateToEditProfile()"
           [style.backgroundColor]="currentTheme.buttonBg"
           [style.color]="currentTheme.buttonText">
-          Editar Perfil
+          {{ 'PROFILE.EDIT_PROFILE_BTN' | translate }}
         </button>
       </div>
     }
@@ -39,15 +39,15 @@
     <div class="profile-stats">
       <div class="stat">
         <span class="stat-value">{{ followers }}</span>
-        <span class="stat-label">Seguidores</span>
+        <span class="stat-label">{{ 'PROFILE.FOLLOWERS' | translate }}</span>
       </div>
       <div class="stat">
         <span class="stat-value">{{ following }}</span>
-        <span class="stat-label">Siguiendo</span>
+        <span class="stat-label">{{ 'PROFILE.FOLLOWING' | translate }}</span>
       </div>
       <div class="stat">
         <span class="stat-value">{{ recipesCount }}</span>
-        <span class="stat-label">Recetas</span>
+        <span class="stat-label">{{ 'PROFILE.RECIPES' | translate }}</span>
       </div>
     </div>
 

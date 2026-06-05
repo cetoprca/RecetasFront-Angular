@@ -1,7 +1,18 @@
 <div [attr.data-theme]="currentTheme.value" class="app-container">
   <header [style.backgroundColor]="currentTheme.header" [style.color]="currentTheme.text">
-    <span>Rataouille.net</span>
+    <span>{{ 'NAV.SITE_TITLE' | translate }}</span>
     <div class="header-buttons">
+      <div class="lang-switcher">
+        <button class="icon-btn" (click)="toggleLangMenu($event)" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
+          <mat-icon>language</mat-icon>
+        </button>
+        @if (showLangMenu) {
+          <div class="lang-dropdown" [style.backgroundColor]="currentTheme.card" [style.borderColor]="currentTheme.divider">
+            <button class="lang-option" (click)="setLanguage('es')" [style.color]="currentTheme.text">🇪🇸 {{ 'LANG.ES' | translate }}</button>
+            <button class="lang-option" (click)="setLanguage('en')" [style.color]="currentTheme.text">🇬🇧 {{ 'LANG.EN' | translate }}</button>
+          </div>
+        }
+      </div>
       @if (isAuthenticated$ | async) {
         <button class="icon-btn" (click)="logout()" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
           <mat-icon>logout</mat-icon>

@@ -16,6 +16,7 @@ import { IngredientDTO } from '../../model/ingredient/ingredient-dto';
 import { StepDTO } from '../../model/step/step-dto';
 import { RecipeFormData } from '../services/recipe-form.resolver';
 import { CuisineService } from '../services/cuisine.service';
+import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../environments/environment';
 
 interface StepForm {
@@ -157,7 +158,8 @@ export class RecipeAddView implements OnInit, OnDestroy {
     private imageService: ImageService,
     private stepService: StepService,
     private cuisineService: CuisineService,
-    private router: Router
+    private router: Router,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -232,7 +234,10 @@ export class RecipeAddView implements OnInit, OnDestroy {
       const stepGroup = this.stepsFormArray.at(stepIndex);
       const control = stepGroup.get(field);
       if (!control || !control.touched) return '';
-      if (control.hasError('required')) return `Step ${stepIndex + 1} ${field === 'title' ? 'title' : 'description'} is required`;
+      if (control.hasError('required')) {
+        const key = field === 'title' ? 'RECIPE.ADD.ERRORS.STEP_TITLE_REQUIRED' : 'RECIPE.ADD.ERRORS.STEP_DESC_REQUIRED';
+        return this.translateService.instant(key, { number: stepIndex + 1 });
+      }
       return '';
     }
 
@@ -240,17 +245,20 @@ export class RecipeAddView implements OnInit, OnDestroy {
 
     if (control && control.touched) {
       if (control.hasError('required')) {
-        const labels: Record<string, string> = { title: 'Title', description: 'Description', prepTime: 'Preparation time', cookTime: 'Cook time' };
-        return `${labels[field] || field} is required`;
+        const keys: Record<string, string> = {
+          title: 'RECIPE.ADD.ERRORS.TITLE_REQUIRED', description: 'RECIPE.ADD.ERRORS.DESCRIPTION_REQUIRED',
+          prepTime: 'RECIPE.ADD.ERRORS.PREPTIME_REQUIRED', cookTime: 'RECIPE.ADD.ERRORS.COOKTIME_REQUIRED'
+        };
+        return this.translateService.instant(keys[field] || '');
       }
-      if (control.hasError('min')) return 'Value must be 0 or greater';
+      if (control.hasError('min')) return this.translateService.instant('RECIPE.ADD.ERRORS.MIN_ERROR');
     }
 
     if (this.submitted) {
-      if (this.recipeForm.hasError('cuisineEmpty') && field === 'cuisine') return 'Please select a cuisine';
-      if (this.recipeForm.hasError('tagsEmpty') && field === 'tags') return 'Please add at least one tag';
-      if (this.recipeForm.hasError('ingredientsEmpty') && field === 'ingredients') return 'Please add at least one ingredient';
-      if (this.recipeForm.hasError('stepsEmpty') && field === 'steps') return 'Please add at least one step';
+      if (this.recipeForm.hasError('cuisineEmpty') && field === 'cuisine') return this.translateService.instant('RECIPE.ADD.ERRORS.SELECT_CUISINE');
+      if (this.recipeForm.hasError('tagsEmpty') && field === 'tags') return this.translateService.instant('RECIPE.ADD.ERRORS.SELECT_TAGS');
+      if (this.recipeForm.hasError('ingredientsEmpty') && field === 'ingredients') return this.translateService.instant('RECIPE.ADD.ERRORS.SELECT_INGREDIENTS');
+      if (this.recipeForm.hasError('stepsEmpty') && field === 'steps') return this.translateService.instant('RECIPE.ADD.ERRORS.STEPS_EMPTY');
     }
     return '';
   }

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators, ValidatorFn, AbstractControl, Valid
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RatingDTO } from '../../model/rating/rating-dto';
 import { RatingService } from '../services/rating.service';
+import { TranslateService } from '@ngx-translate/core';
 import { Theme, ThemeService } from '../services/theme.service';
 
 interface RatingForm {
@@ -43,7 +44,8 @@ export class RatingModal {
     public dialogRef: MatDialogRef<RatingModal>,
     @Inject(MAT_DIALOG_DATA) public data: { recipeId: number },
     private themeService: ThemeService,
-    private ratingService: RatingService
+    private ratingService: RatingService,
+    private translateService: TranslateService
   ) {
     this.currentTheme = this.themeService.getCurrentTheme();
   }
@@ -57,14 +59,16 @@ export class RatingModal {
     if (!control || !control.touched) return '';
 
     if (control.hasError('required')) {
-      const labels: Record<string, string> = { title: 'Title', description: 'Description', rating: 'Rating' };
-      return `${labels[field] || field} is required`;
+      const keys: Record<string, string> = {
+        title: 'RATING.ERRORS.TITLE_REQUIRED', description: 'RATING.ERRORS.DESC_REQUIRED', rating: 'RATING.ERRORS.RATING_REQUIRED'
+      };
+      return this.translateService.instant(keys[field] || '');
     }
-    if (control.hasError('min')) return 'Please select a rating';
+    if (control.hasError('min')) return this.translateService.instant('RATING.ERRORS.SELECT_RATING');
 
-    if (this.ratingForm.hasError('titleEmpty') && field === 'title') return 'Title cannot be empty';
-    if (this.ratingForm.hasError('descriptionEmpty') && field === 'description') return 'Description cannot be empty';
-    if (this.ratingForm.hasError('ratingEmpty') && field === 'rating') return 'Please select a rating';
+    if (this.ratingForm.hasError('titleEmpty') && field === 'title') return this.translateService.instant('RATING.ERRORS.TITLE_EMPTY');
+    if (this.ratingForm.hasError('descriptionEmpty') && field === 'description') return this.translateService.instant('RATING.ERRORS.DESC_EMPTY');
+    if (this.ratingForm.hasError('ratingEmpty') && field === 'rating') return this.translateService.instant('RATING.ERRORS.SELECT_RATING');
     return '';
   }
 

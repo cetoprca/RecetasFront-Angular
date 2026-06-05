@@ -1,7 +1,9 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
@@ -56,10 +58,13 @@ import { RecipeAddView } from './recipe-add-view/recipe-add-view';
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
+    TranslateModule.forRoot(),
     AppRoutingModule,
     MaterialModule
   ],
   providers: [
+    provideTranslateHttpLoader({ prefix: './assets/i18n/', suffix: '.json' }),
     provideBrowserGlobalErrorListeners(),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],

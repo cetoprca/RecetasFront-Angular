@@ -2,7 +2,7 @@
   <div class="detail-container">
     <app-recipe-info [recipeData]="recipe"/>
     <div class="steps-separator" [style.backgroundColor]="currentTheme.card" [style.color]="currentTheme.text" [style.borderTop]="'1px solid ' + currentTheme.divider">
-      <span>Pasos</span>
+      <span>{{ 'RECIPE.DETAIL.STEPS' | translate }}</span>
     </div>
     <div class="steps-list">
       @for (step of steps; track step.id) {

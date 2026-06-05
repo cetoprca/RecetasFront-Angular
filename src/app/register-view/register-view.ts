@@ -8,6 +8,7 @@ import { UserService } from '../services/user.service';
 import { CredentialsDTO } from '../../model/auth/credentials-dto';
 import { sha256 } from '../utils/hash';
 import { ThemeService, Theme } from '../services/theme.service';
+import { TranslateService } from '@ngx-translate/core';
 
 interface RegisterForm {
   handle: FormControl<string | null>;
@@ -87,7 +88,8 @@ export class RegisterView implements OnInit, OnDestroy {
     private userService: UserService,
     private authService: AuthService,
     private router: Router,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -120,29 +122,30 @@ export class RegisterView implements OnInit, OnDestroy {
 
     if (control.hasError('required')) {
       const labels: Record<string, string> = {
-        handle: 'Handle', displayName: 'Display name',
-        password: 'Password', confirmPassword: 'Password confirmation'
+        handle: 'AUTH.REGISTER.HANDLE_LABEL', displayName: 'AUTH.REGISTER.DISPLAY_NAME_LABEL',
+        password: 'AUTH.REGISTER.PASSWORD_LABEL', confirmPassword: 'AUTH.REGISTER.CONFIRM_PASSWORD_LABEL'
       };
-      return `${labels[field] || field} is required`;
+      const fieldLabel = this.translateService.instant(labels[field] || field);
+      return this.translateService.instant('AUTH.REGISTER.ERRORS.REQUIRED', { field: fieldLabel });
     }
-    if (control.hasError('handleUppercase')) return 'Handle cannot contain uppercase letters';
-    if (control.hasError('handleInvalidChars')) return 'Handle can only contain lowercase letters, numbers, and underscores';
-    if (control.hasError('handleSpaces')) return 'Handle cannot contain spaces';
-    if (control.hasError('displayNameEmpty')) return 'Display name cannot be empty';
-    if (control.hasError('handleTaken')) return 'This handle is already taken';
-    if (control.hasError('minlength')) return `Must be at least ${control.getError('minlength').requiredLength} characters`;
-    if (control.hasError('maxlength')) return `Must be at most ${control.getError('maxlength').requiredLength} characters`;
-    if (control.hasError('lowercase')) return 'Must contain a lowercase letter';
-    if (control.hasError('uppercase')) return 'Must contain an uppercase letter';
-    if (control.hasError('specialChar')) return 'Must contain a special character';
-    if (field === 'confirmPassword' && control.hasError('passwordsMismatch')) return 'Passwords do not match';
+    if (control.hasError('handleUppercase')) return this.translateService.instant('AUTH.REGISTER.ERRORS.HANDLE_UPPERCASE');
+    if (control.hasError('handleInvalidChars')) return this.translateService.instant('AUTH.REGISTER.ERRORS.HANDLE_INVALID_CHARS');
+    if (control.hasError('handleSpaces')) return this.translateService.instant('AUTH.REGISTER.ERRORS.HANDLE_SPACES');
+    if (control.hasError('displayNameEmpty')) return this.translateService.instant('AUTH.REGISTER.ERRORS.DISPLAY_NAME_EMPTY');
+    if (control.hasError('handleTaken')) return this.translateService.instant('AUTH.REGISTER.ERRORS.HANDLE_TAKEN');
+    if (control.hasError('minlength')) return this.translateService.instant('AUTH.REGISTER.ERRORS.MIN_LENGTH', { count: control.getError('minlength').requiredLength });
+    if (control.hasError('maxlength')) return this.translateService.instant('AUTH.REGISTER.ERRORS.MAX_LENGTH', { count: control.getError('maxlength').requiredLength });
+    if (control.hasError('lowercase')) return this.translateService.instant('AUTH.REGISTER.ERRORS.NEEDS_LOWERCASE');
+    if (control.hasError('uppercase')) return this.translateService.instant('AUTH.REGISTER.ERRORS.NEEDS_UPPERCASE');
+    if (control.hasError('specialChar')) return this.translateService.instant('AUTH.REGISTER.ERRORS.NEEDS_SPECIAL');
+    if (field === 'confirmPassword' && control.hasError('passwordsMismatch')) return this.translateService.instant('AUTH.REGISTER.ERRORS.PASSWORDS_MISMATCH');
 
     return '';
   }
 
   async onRegister() {
     if (this.registerForm.invalid) {
-      this.errorMessage = 'Please fill in all fields correctly';
+      this.errorMessage = this.translateService.instant('AUTH.REGISTER.ERRORS.FILL_ALL_FIELDS');
       return;
     }
 
@@ -161,7 +164,7 @@ export class RegisterView implements OnInit, OnDestroy {
         });
       },
       error: (err) => {
-        this.errorMessage = 'Registration failed. The handle may already be taken.';
+        this.errorMessage = this.translateService.instant('AUTH.REGISTER.ERRORS.REGISTRATION_FAILED');
         console.error('Registration error:', err);
       }
     });

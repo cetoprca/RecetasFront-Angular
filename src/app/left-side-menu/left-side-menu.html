@@ -3,9 +3,9 @@
     <div class="profile-info">
       <div class="profile-picture">
         @if (currentUser?.profilePicturePath) {
-          <img [src]="imageUrl + currentUser?.profilePicturePath" alt="Profile">
+          <img [src]="imageUrl + currentUser?.profilePicturePath" alt="{{ 'NAV.PROFILE' | translate }}">
         } @else {
-          <img [src]="imageUrl + 'placeholder.png'" alt="Profile">
+          <img [src]="imageUrl + 'placeholder.png'" alt="{{ 'NAV.PROFILE' | translate }}">
         }
       </div>
       <div class="profile-text">
@@ -17,27 +17,27 @@
     <div class="menu-buttons">
       <button class="menu-button" (click)="navigateToFeed()" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
         <mat-icon>home</mat-icon>
-        <span>Inicio</span>
+        <span>{{ 'NAV.HOME' | translate }}</span>
       </button>
       <button class="menu-button" routerLink="/profile" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
         <mat-icon>person</mat-icon>
-        <span>Perfil</span>
+        <span>{{ 'NAV.PROFILE' | translate }}</span>
       </button>
       <button class="menu-button" routerLink="/saved" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
         <mat-icon>bookmark</mat-icon>
-        <span>Recetas guardadas</span>
+        <span>{{ 'NAV.SAVED' | translate }}</span>
       </button>
       <button class="menu-button" routerLink="/recipe/new" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
         <mat-icon>add_circle</mat-icon>
-        <span>Nueva receta</span>
+        <span>{{ 'NAV.NEW_RECIPE' | translate }}</span>
       </button>
       <button class="menu-button" routerLink="/settings" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
         <mat-icon>settings</mat-icon>
-        <span>Configuración</span>
+        <span>{{ 'NAV.SETTINGS' | translate }}</span>
       </button>
       <button class="menu-button" (click)="logout()" [style.backgroundColor]="currentTheme.buttonBg" [style.color]="currentTheme.buttonText">
         <mat-icon>logout</mat-icon>
-        <span>Cerrar sesión</span>
+        <span>{{ 'NAV.LOGOUT' | translate }}</span>
       </button>
     </div>
   </div>

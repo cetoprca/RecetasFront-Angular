@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -10,16 +10,16 @@ import { Router } from '@angular/router';
 })
 export class AuthInterceptor implements HttpInterceptor {
   constructor(
-    private authService: AuthService,
+    private injector: Injector,
     private router: Router
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const authService = this.injector.get(AuthService);
     return next.handle(req).pipe(
       catchError(error => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
-          this.authService.currentUser$.next(null);
-          // Only redirect if not already on login page
+          authService.currentUser$.next(null);
           if (!this.router.url.includes('/login')) {
             this.router.navigate(['/login']);
           }

@@ -19,7 +19,7 @@
           <div class="dropdown-menu" [style.backgroundColor]="currentTheme.card" [style.border]="'1px solid ' + currentTheme.divider">
             <button class="menu-option" (click)="deleteRating($event)" [style.color]="currentTheme.text">
               <mat-icon [style.color]="currentTheme.menuIcon">delete</mat-icon>
-              <span>Eliminar</span>
+              <span>{{ 'RATING.DELETE' | translate }}</span>
             </button>
           </div>
         }

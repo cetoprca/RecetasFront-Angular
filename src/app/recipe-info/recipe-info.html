@@ -19,17 +19,17 @@
           <div class="dropdown-menu" [style.backgroundColor]="currentTheme.card" [style.border]="'1px solid ' + currentTheme.divider">
             <button class="menu-option" (click)="saveRecipe()" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
               <mat-icon [style.color]="currentTheme.menuIcon">bookmark_border</mat-icon>
-              <span>Guardar receta</span>
+              <span>{{ 'INFO.SAVE' | translate }}</span>
             </button>
             @if (isAuthor) {
               <button class="menu-option" (click)="deleteRecipe()" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
                 <mat-icon style="color: rgb(220, 50, 50)">delete</mat-icon>
-                <span style="color: rgb(220, 50, 50)">Eliminar</span>
+                <span style="color: rgb(220, 50, 50)">{{ 'INFO.DELETE' | translate }}</span>
               </button>
             }
             <button class="menu-option" (click)="shareRecipe()" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
               <mat-icon [style.color]="currentTheme.menuIcon">share</mat-icon>
-              <span>Compartir</span>
+              <span>{{ 'INFO.SHARE' | translate }}</span>
             </button>
           </div>
         }
@@ -74,12 +74,12 @@
         <div class="times">
           <span class="time-item">
             <mat-icon class="time-icon">schedule</mat-icon>
-            Prep: {{recipePrepTime}}m
+            {{ 'INFO.PREP' | translate }}{{recipePrepTime}}m
           </span>
           <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
           <span class="time-item">
             <mat-icon class="time-icon">local_fire_department</mat-icon>
-            Coc: {{recipeCookTime}}m
+            {{ 'INFO.COOK' | translate }}{{recipeCookTime}}m
           </span>
           <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
           <span class="time-item total">

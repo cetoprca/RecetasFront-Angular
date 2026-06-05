@@ -20,22 +20,22 @@
             <button class="menu-option" (click)="saveRecipe($event)" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
               @if (recipeData.isSaved) {
                 <mat-icon [style.color]="currentTheme.menuIcon">bookmark</mat-icon>
-                <span>Eliminar de favoritos</span>
+                <span>{{ 'RECIPE.CARD.UNSAVE' | translate }}</span>
               }
               @else {
                 <mat-icon [style.color]="currentTheme.menuIcon">bookmark_border</mat-icon>
-                <span>Añadir a favoritos</span>
+                <span>{{ 'RECIPE.CARD.SAVE' | translate }}</span>
               }
             </button>
             @if (isAuthor) {
               <button class="menu-option" (click)="deleteRecipe($event)" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
                 <mat-icon style="color: rgb(220, 50, 50)">delete</mat-icon>
-                <span style="color: rgb(220, 50, 50)">Eliminar</span>
+                <span style="color: rgb(220, 50, 50)">{{ 'RECIPE.CARD.DELETE' | translate }}</span>
               </button>
             }
             <button class="menu-option" (click)="shareRecipe($event)" [style.color]="currentTheme.text" [style.--hover-bg]="currentTheme.hoverBg">
               <mat-icon [style.color]="currentTheme.menuIcon">share</mat-icon>
-              <span>Compartir</span>
+              <span>{{ 'RECIPE.CARD.SHARE' | translate }}</span>
             </button>
           </div>
         }
@@ -80,12 +80,12 @@
         <div class="times">
           <span class="time-item">
             <mat-icon class="time-icon">schedule</mat-icon>
-            Prep: {{recipeData.prepTime}}m
+            {{ 'RECIPE.CARD.PREP' | translate }}{{recipeData.prepTime}}m
           </span>
           <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
           <span class="time-item">
             <mat-icon class="time-icon">local_fire_department</mat-icon>
-            Coc: {{recipeData.cookTime}}m
+            {{ 'RECIPE.CARD.COOK' | translate }}{{recipeData.cookTime}}m
           </span>
           <span class="time-divider" [style.backgroundColor]="currentTheme.divider"></span>
           <span class="time-item total">

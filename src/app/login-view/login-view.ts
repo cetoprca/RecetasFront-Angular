@@ -9,6 +9,7 @@ import { AuthService } from '../services/auth.service';
 import { CredentialsDTO } from '../../model/auth/credentials-dto';
 import { sha256 } from '../utils/hash';
 import { ThemeService, Theme } from '../services/theme.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login-view',
@@ -27,7 +28,8 @@ export class LoginView implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -57,7 +59,7 @@ export class LoginView implements OnInit, OnDestroy {
 
   async onLogin() {
     if (!this.handle || !this.password) {
-      this.errorMessage = 'Please enter handle and password';
+      this.errorMessage = this.translateService.instant('AUTH.LOGIN.ERRORS.EMPTY_FIELDS');
       return;
     }
 
@@ -68,7 +70,7 @@ export class LoginView implements OnInit, OnDestroy {
         this.router.navigate(['/']);
       },
       error: (err) => {
-        this.errorMessage = 'Invalid credentials';
+        this.errorMessage = this.translateService.instant('AUTH.LOGIN.ERRORS.INVALID_CREDENTIALS');
         console.error('Login error:', err);
       }
     });
